@@ -72,7 +72,8 @@ int read_args(int* argcp, char* args[], int max, int* eofp)
 
 int execute(int argc, char *argv[])
 {
-        ...
+   // TODO: make that exec.
+   return 0;
 }
 
 
