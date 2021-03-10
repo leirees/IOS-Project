@@ -83,19 +83,19 @@ int read_args(int* argcp, char* args[], int max, int* eofp)
  */
 int execute(int argc, char *argv[])
 {
-   int pid = fork();
    int status;
+   int pid = fork();
 
    switch (pid)
    {
-   case -1:
-      return 1;   // Error on creating the child process.
+   case -1: // Error on creating the child process.
+      return 1;   
    
-   case 0:        // Child process' program.
+   case 0:  // Child process' program.
       execv(argv[0], argv);
       break;
 
-   default:       // Parent process.
+   default: // Parent process.
       wait(&status);
       return status;
    }
