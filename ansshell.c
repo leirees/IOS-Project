@@ -1,7 +1,14 @@
-// Answer Shell (ansshell)
-
-// Mod: David Cuenca Marcos, 2021/03/09
-
+/**
+ * @file ansshell.c
+ * @author Lecturer and Team 2.2
+ * 
+ * @brief Answer shell for IOS Project. (REDO, better) 
+ * 
+ * @version 0.1
+ * @date 2021-03-16
+ * 
+ * @copyright Copyright (c) 2021
+ */
 //////////////////////////////////////////////////
 
 #include <stdio.h>
@@ -75,11 +82,11 @@ int read_args(int* argcp, char* args[], int max, int* eofp)
 ///////////////////////////////////////
 
 /**
- * @brief 
+ * @brief Execute a process, given a command and its arguments.
  * 
- * @param argc 
- * @param argv 
- * @return int 
+ * @param argc Argument counter: the number of arguments that are passed (int, >= 1).
+ * @param argv Argument vector: the arguments that are passed (char*, len(char*) >= 1)
+ * @return int -1 if error creating the process, 1 if error while executing the process or 0 if ok.
  */
 int execute(int argc, char *argv[])
 {
@@ -88,14 +95,19 @@ int execute(int argc, char *argv[])
 
    switch (pid)
    {
-   case -1: // Error on creating the child process.
+   case -1:
+      // Error on creating the child process.
       return 1;   
    
-   case 0:  // Child process' program.
+   case 0:  
+      // Child process' program.
+      // Execute the give command, if possible.
       execv(argv[0], argv);
       break;
 
-   default: // Parent process.
+   default: 
+      // Parent process execution.
+      // Wait until child process terminates.
       wait(&status);
       return status;
    }
@@ -103,33 +115,50 @@ int execute(int argc, char *argv[])
 
 /**
  * @brief Main body of the application.
- * 
- * @return int 
+ *
+ * @return int 0 iff ok.
  */
 int main ()
 {
-   char *Prompt = "\x1b[31mansshell\x1b[0m> ";
+   char *prompt = "\x1b[31mansshell\x1b[0m> ";
    char *exec_error = "\x1b[31m **!! Execution error. Program couldn't be executed. !!** \x1b[0m\n";
 
-   int eof = 0;
    int argc;
    int status;
    int buff;
+
+   int eof = 0;
+
    char *args[MAXARGS];
 
    while (1) {
-      buff = write(0, Prompt, strlen(Prompt));
+      // The prompt on screen.
+      buff = write(1, prompt, strlen(prompt));
 
-      if (read_args(&argc, args, MAXARGS, &eof) && argc > 0) {
+      if (read_args(&argc, args, MAXARGS, &eof) && argc > 0) 
+      {
+         // TEMPORAL: exit early
+         if (!strcmp(args[0], "exit")) 
+         {
+            args[0] = "./bin/exit/exit";
+            status = execute(1, args);
+            return status;
+         }
+         
+         // If possible, run the command and return the output.
          status = execute(argc, args);
 
-         if (status == 1) {
+         if (status == 1) 
+         {
             write(2, exec_error, strlen(exec_error));
             break;
          }
       }
 
-      if (eof) exit(0);
+      if (eof) 
+      {
+         exit(0);
+      }
    }
 
    return 0;

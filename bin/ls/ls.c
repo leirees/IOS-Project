@@ -5,8 +5,17 @@
 //For EXIT codes and error handling
 #include <errno.h>
 #include <stdlib.h>
+//For stat system call for file attributes
+#include <sys/stat.h>
+//For write system call
+#include <unistd.h>
+//For string concatenation
+#include <string.h>
 
 void _ls(const char *dir,int op_a,int op_l){
+
+    //pointer to stat struct
+    struct stat sfile;
 	//Here we will list the directory
 	struct dirent *d;
 	DIR *dh = opendir(dir);
@@ -26,12 +35,27 @@ void _ls(const char *dir,int op_a,int op_l){
 	while ((d = readdir(dh)) != NULL){
 		//If hidden files are found we continue
 		if (!op_a && d->d_name[0] == '.') continue;
+        
+        char yellow[7 + strlen(d->d_name) + 4], name[strlen(d->d_name)], defaultcol[5]; //Allocate
+        strcpy(yellow, "\033[0;33m");   //Store yellow color
+        strcpy(name, d->d_name);    //Store name
+        strcpy(defaultcol, "\033[0m");  //Store default color
+        strcat(yellow, name);   //Concatenate color code + name
+        strcat(yellow, defaultcol); //Add default color code to string
+        write(1, yellow, strlen(yellow));   //Write the name in yellow
 
-        printf("\033[0;33m"); //Change color to Yellow
-        printf("%s  ", d->d_name); //Print files
-        printf("\033[0m"); //Change again color to default
-
-		if(op_l) {
+		if(op_l) {  //If -l
+            //stat system call
+            stat(d->d_name, &sfile);
+            //accessing st_size (of stat struct)   
+            printf("\n  Size: %ld", sfile.st_size);
+            //accessing st_uid (of stat struct)  
+            printf("\n  User ID: %d", sfile.st_uid);
+            //accessing st_mode (of stat struct)  
+            printf("\n  File Permissions User: ");
+            printf((sfile.st_mode & S_IRUSR)? "r":"-");
+            printf((sfile.st_mode & S_IWUSR)? "w":"-");
+            printf((sfile.st_mode & S_IXUSR)? "x":"-");
 			printf("\n");
 		}
 	}
