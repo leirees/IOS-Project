@@ -10,24 +10,27 @@
 
 #include "../utilities.h"
 #include "../colors.h"
-// #include "../string.h"
 
-// TODO: use ../string.h
 char *_strcat(const char *dest, const char *src)
 {
-    char *pointer = (char *) malloc((sizeof(dest) + sizeof(src)) / sizeof(char));
-    for (int i = 0; i < strlen(dest); i++) {
+    unsigned long length = strlen(dest) + strlen(src);
+
+    char *pointer = (char *)malloc(length);
+
+    for (int i = 0; i < strlen(dest); i++)
+    {
         pointer[i] = dest[i];
     }
 
-    for (int i = 0; i < strlen(src); i++) {
+    for (int i = 0; i < strlen(src); i++)
+    {
         pointer[i + strlen(dest)] = src[i];
     }
 
     return pointer;
 }
 
-void print(const char * str, const char *color) 
+void print(const char *str, const char *color)
 {
     char *dest = _strcat(_strcat(color, str), ANSI_COLOR_RESET);
     write(1, dest, strlen(dest));
@@ -40,13 +43,12 @@ void print(const char * str, const char *color)
  * @param argv 
  * @return int 0 iff ok.
  */
-int main(int argc, char * argv[])
+int main(int argc, char *argv[])
 {
-    const char *exitarn = "Do you really want to exit this wonderful world? :D";
-    const char *noIdont = "OK, good for me!";
-    const char *exitmsg = "BYE!!\n";
+    print("Do you really want to exit the game? \n", ANSI_COLOR_RESET);
+    print("OK, good for me!\n", ANSI_COLOR_RESET);
 
     // String manipulation to add yellow color.
-    print(exitmsg, ANSI_COLOR_YELLOW);
+    // print("BYE!!\n", ANSI_COLOR_YELLOW);
     exit(0);
 }
