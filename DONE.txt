@@ -1,0 +1,14 @@
+Used syscalls:
+    write();
+    read();
+    getcwd();
+    execv();
+    stat();
+    fork();
+
+    free();
+    malloc();
+
+
+Implemented commands:
+    

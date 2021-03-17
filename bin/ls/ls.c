@@ -43,12 +43,13 @@ void _ls(const char *dir,int op_a,int op_l){
         strcat(yellow, name);   //Concatenate color code + name
         strcat(yellow, defaultcol); //Add default color code to string
         write(1, yellow, strlen(yellow));   //Write the name in yellow
+		if (!op_l) write(1, "\n", 2);	//New line if not -l
 
 		if(op_l) {  //If -l
             //stat system call
             stat(d->d_name, &sfile);
             //accessing st_size (of stat struct)   
-            printf("\n  Size: %ld", sfile.st_size);
+			printf("\n  Size: %ld", sfile.st_size);
             //accessing st_uid (of stat struct)  
             printf("\n  User ID: %d", sfile.st_uid);
             //accessing st_mode (of stat struct)  

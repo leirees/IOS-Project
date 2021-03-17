@@ -1,4 +1,3 @@
-
 /**
  * @file cd.c
  * @author Team 2.2
@@ -13,24 +12,30 @@
 
 // Utilities to deal with files, directories.
 #include "../utilities.h"
-int cd(char *path){
+#include "../path.h"
 
+void _cd(char *path){
+    chdir(path);
 }
 
 int main(int argc, const char *argv[]){
 
-    DIR *dh = opendir(argv[1]);
-
     if (argc<=1 || argc>=3){
         //If the command is used incorrectly, it will teach the user how to use it.
-        write(2, "Usage: cd directory\n", 24);
+        write(2, "Usage: cd directory\n", 19);
+
     }else if(argc==2){
+            //try to open the directory written
+             DIR *dh = opendir(argv[1]);
+
         if(argv[1]==".."){
             //Go back to the previous directory.
-           chdir("..");
+           _cd("..");
+
         }else if(argv[1]=="."){
             //Print the current directory.
             pwd();
+
         }else if (!dh){
 		    if (errno = ENOENT){
 			    //If the directory is not found.
@@ -43,7 +48,7 @@ int main(int argc, const char *argv[]){
 		    exit(EXIT_FAILURE);
 	    }else{
             //Go on to the written directory.
-            chdir(dh);
+            _cd(readdir(dh)->d_name);
         }
     }
 }
