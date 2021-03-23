@@ -9,7 +9,7 @@
 #include <errno.h>
 
 // String managing
-#include <string.h>
+#include "string/string.h"
 
 // Unix syscall managing
 #include <unistd.h>

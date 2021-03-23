@@ -81,8 +81,8 @@ int execute(int argc, char *argv[])
 
 int main ()
 {
-   char *prompt = "\x1b[31mansshell\x1b[0m> ";
-   char *exec_error = "\x1b[31m **!! Execution error. Program couldn't be executed. !!** \x1b[0m\n";
+   char *prompt = concat(concat(ANSI_COLOR_GREEN, "ansshell"),  "> ");
+   char *exec_error = concat(ANSI_COLOR_RED, "**!! Execution error. Program couldn't be executed. !!**");
 
    int argc;
    int status;
@@ -95,7 +95,8 @@ int main ()
 
    while (1) {
       // The prompt on screen.
-      buff = write(1, prompt, strlen(prompt));
+      // buff = write(1, prompt, strlen(prompt));
+      print(prompt);
 
       if (read_args(&argc, args, MAXARGS, &eof) && argc > 0) 
       {
@@ -107,11 +108,11 @@ int main ()
             return status;
          }
          
-         // If possible, run the command and return the output.
          status = execute(argc, args);
 
          if (status == 1) 
          {
+            // Error in stderr.
             write(2, exec_error, strlen(exec_error));
             break;
          }

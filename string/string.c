@@ -1,9 +1,9 @@
 #include "string.h"
 
-char *concat(char * str1, char * str2)
+char *concat(char *str1, char *str2)
 {
     unsigned long length = strlen(str1) + strlen(str2);
-    char *pointer = (char *)malloc(length);
+    char *pointer = (char *) malloc(length);
 
     for (int i = 0; i < strlen(str1); i++)
     {
@@ -20,5 +20,13 @@ char *concat(char * str1, char * str2)
 
 void print(char *str)
 {
-    write(1, str, strlen(str));
+    // Resets the color of the element, in order to only print
+    // colored the text we want.
+    char *r = concat(str, ANSI_COLOR_RESET);
+    write(1, r, strlen(r));
+}
+
+void println(char *str)
+{
+    print(concat(str, "\n"));
 }

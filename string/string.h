@@ -12,7 +12,13 @@
  * 
  */
 
-#include "../headers.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
+#include <sys/wait.h>
+
+#define ANSI_COLOR_RESET   "\x1b[0m"
 
 /**
  * @brief Concatenates two strings and returns a pointer to the
@@ -25,8 +31,15 @@
 char *concat(char * str1, char * str2);
 
 /**
- * @brief Print a string in stdout, with a determined color.
+ * @brief Print a string in stdout.
  * 
  * @param str String to print.
  */
 void print(char *str);
+
+/**
+ * @brief Print a string in stdout, with linescape.
+ * 
+ * @param str 
+ */
+void println(char *str);
