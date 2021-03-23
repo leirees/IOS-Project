@@ -28,6 +28,7 @@ int main(int argc, const char *argv[]){
             //try to open the directory written
              DIR *dh = opendir(argv[1]);
 
+
         if(argv[1]==".."){
             //Go back to the previous directory.
            _cd("..");
