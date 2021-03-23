@@ -13,21 +13,23 @@
 #include <string.h>
 
 void _ls(const char *dir,int op_a,int op_l){
-
-    //pointer to stat struct
+	
+    //Pointer to stat struct
     struct stat sfile;
 	//Here we will list the directory
 	struct dirent *d;
 	DIR *dh = opendir(dir);
+	//If the directory is not accessible
 	if (!dh){
 		if (errno = ENOENT){
 			//If the directory is not found
 			perror("Directory doesn't exist");
 		}
 		else{
-			//If the directory is not readable then throw error and exit
+			//If the directory is not readable
 			perror("Unable to read directory");
 		}
+		//Throw error and exit
 		exit(EXIT_FAILURE);
 	}
 
@@ -48,11 +50,11 @@ void _ls(const char *dir,int op_a,int op_l){
 		if(op_l) {  //If -l
             //stat system call
             stat(d->d_name, &sfile);
-            //accessing st_size (of stat struct)   
+            //Accessing st_size (of stat struct) --> Size 
 			printf("\n  Size: %ld", sfile.st_size);
-            //accessing st_uid (of stat struct)  
+            //Accessing st_uid (of stat struct) --> User ID
             printf("\n  User ID: %d", sfile.st_uid);
-            //accessing st_mode (of stat struct)  
+            //Accessing st_mode (of stat struct) --> Permissions
             printf("\n  File Permissions User: ");
             printf((sfile.st_mode & S_IRUSR)? "r":"-");
             printf((sfile.st_mode & S_IWUSR)? "w":"-");
@@ -67,24 +69,24 @@ void _ls(const char *dir,int op_a,int op_l){
 }
 
 int main(int argc, const char *argv[]){
-	if (argc == 1){
-		_ls(".", 0, 0);
-	} else if (argc == 2){
+	if (argc == 1){		//If there is one argument
+		_ls(".", 0, 0);		//call ls
+	} else if (argc == 2){	//If there are two arguments
 		if (argv[1][0] == '-'){
 			//Checking if option is passed
 			//Options supporting: a, l
 			int op_a = 0, op_l = 0;
-			char *p = (char*)(argv[1] + 1);
+			char *p = (char*)(argv[1] + 1);	//Read the option
 			while(*p){
-				if(*p == 'a') op_a = 1;
-				else if(*p == 'l') op_l = 1;
+				if(*p == 'a') op_a = 1;	//If option is a
+				else if(*p == 'l') op_l = 1;	//If option is l
 				else{
 					perror("Option not available");
 					exit(EXIT_FAILURE);
 				}
 				p++;
 			}
-			_ls(".",op_a,op_l);
+			_ls(".",op_a,op_l);	//call ls
 		}
 	}
 	return 0;
