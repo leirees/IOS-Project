@@ -1,29 +1,4 @@
-/**
- * @file ansshell.c
- * @author Lecturer and Team 2.2
- * 
- * @brief Answer shell for IOS Project. (REDO, better) 
- * 
- * @version 0.1
- * @date 2021-03-16
- * 
- * @copyright Copyright (c) 2021
- */
-//////////////////////////////////////////////////
-
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <errno.h>
-
-#include <unistd.h>
-#include <sys/wait.h>
-
-#define error(a) {perror(a); exit(1);};
-#define MAXLINE 200
-#define MAXARGS 20
-
-/////////// reading commands:
+#include "ansshell.h"
 
 int read_args(int* argcp, char* args[], int max, int* eofp)
 {
@@ -79,15 +54,6 @@ int read_args(int* argcp, char* args[], int max, int* eofp)
    return 1;
 }
 
-///////////////////////////////////////
-
-/**
- * @brief Execute a process, given a command and its arguments.
- * 
- * @param argc Argument counter: the number of arguments that are passed (int, >= 1).
- * @param argv Argument vector: the arguments that are passed (char*, len(char*) >= 1)
- * @return int -1 if error creating the process, 1 if error while executing the process or 0 if ok.
- */
 int execute(int argc, char *argv[])
 {
    int status;
@@ -113,18 +79,14 @@ int execute(int argc, char *argv[])
    }
 }
 
-/**
- * @brief Main body of the application.
- *
- * @return int 0 iff ok.
- */
 int main ()
 {
-   char *prompt = "\x1b[31mansshell\x1b[0m> ";
-   char *exec_error = "\x1b[31m **!! Execution error. Program couldn't be executed. !!** \x1b[0m\n";
+   char *prompt = concat(concat(ANSI_COLOR_GREEN, "ansshell"),  "> ");
+   char *exec_error = concat(ANSI_COLOR_RED, "**!! Execution error. Program couldn't be executed. !!**");
 
    int argc;
    int status;
+
    int buff;
 
    int eof = 0;
@@ -133,7 +95,8 @@ int main ()
 
    while (1) {
       // The prompt on screen.
-      buff = write(1, prompt, strlen(prompt));
+      // buff = write(1, prompt, strlen(prompt));
+      print(prompt);
 
       if (read_args(&argc, args, MAXARGS, &eof) && argc > 0) 
       {
@@ -145,11 +108,11 @@ int main ()
             return status;
          }
          
-         // If possible, run the command and return the output.
          status = execute(argc, args);
 
          if (status == 1) 
          {
+            // Error in stderr.
             write(2, exec_error, strlen(exec_error));
             break;
          }

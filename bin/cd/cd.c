@@ -51,4 +51,5 @@ int main(int argc, const char *argv[]){
             _cd(readdir(dh)->d_name);
         }
     }
+    return 0;
 }
