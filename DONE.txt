@@ -1,4 +1,6 @@
 Used syscalls:
+    open();
+    opendir();
     write();
     read();
     getcwd();
@@ -11,4 +13,10 @@ Used syscalls:
 
 
 Implemented commands:
+    cd();
+    exit();
+    grep();
+    ls();
+    pwd();
+    touch();
     
