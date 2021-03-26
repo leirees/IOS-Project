@@ -8,12 +8,13 @@
 //For EXIT codes and error handling
 #include <errno.h>
 
-// String managing
-#include "string/string.h"
-
 // Unix syscall managing
 #include <unistd.h>
 #include <sys/wait.h>
+
+// String managing mod. library
+#include "string_lib/string.h"
+
 
 // EXIT codes
 #define SUCCESS 0

@@ -8,7 +8,7 @@
 
 int main(int argc, char *argv[])
 {
-    int des, fhandle, i, j, k, arg_ind = 2;
+    int des, fhandle, i, j, k, arg_ind = 2, occurances = 0;
     int linecount;
     int lineflag;
     char buf, line[160];
@@ -47,13 +47,16 @@ int main(int argc, char *argv[])
                     i++;
                     k++;
                 }
-                if (k == strlen(argv[2])) printf("%s", line);
+                if (k == strlen(argv[2])){      
+                    printf("%s", line);         //Print out the line
+                    occurances++;               //Count occurances of that string
+                } 
             }
             i++;
         }
-
     } while (fhandle != 0);
     
+    printf("\n  Number of occurances: %d \n", occurances);
     close(des);
     arg_ind++;
     printf("\n");

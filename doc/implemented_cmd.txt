@@ -1,0 +1,7 @@
+Implemented commands:
+    cd();
+    exit();
+    grep();
+    ls();
+    pwd();
+    touch();
