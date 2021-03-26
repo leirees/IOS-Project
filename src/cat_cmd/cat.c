@@ -2,7 +2,7 @@
  * @file cat.c
  * @author Mikel Aristu
  *
- * @brief The command used t o read files.
+ * @brief The command used to read files.
  *
  * @version 0.1
  * @date 2021-03-25

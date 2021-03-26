@@ -11,7 +11,7 @@
  */
 
 #include "headers.h"
-
+#include "string_lib/string.h"
 
 #define error(a) {perror(a); exit(1);};
 #define MAXLINE 200

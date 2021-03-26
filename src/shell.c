@@ -1,4 +1,14 @@
-#include "ansshell.h"
+/**
+ * @file ansshell.c
+ * @author IOS Lecturer, 2.2 Team
+ * @brief Implementation of shell.
+ * @version 0.1
+ * @date 2021-03-26
+ * 
+ * @copyright Copyright (c) 2021
+ */
+
+#include "shell.h"
 
 int read_args(int* argcp, char* args[], int max, int* eofp)
 {
@@ -68,7 +78,7 @@ int execute(int argc, char *argv[])
    case 0:  
       // Child process' program.
       // Execute the give command, if possible.
-      execv(argv[0], argv);
+      execvp(argv[0], argv);
       break;
 
    default: 
@@ -81,8 +91,9 @@ int execute(int argc, char *argv[])
 
 int main ()
 {
-   char *prompt = concat(concat(ANSI_COLOR_GREEN, "ansshell"),  "> ");
-   char *exec_error = concat(ANSI_COLOR_RED, "**!! Execution error. Program couldn't be executed. !!**");
+   char *prompt_name = "GlindOS";
+   char *prompt = concat(concat(ANSI_COLOR_GREEN, prompt_name),  concat(ANSI_COLOR_RESET, "\"> "));
+   char *exec_error = "**!! Execution error. Program couldn't be executed. !!**";
 
    int argc;
    int status;
@@ -103,7 +114,7 @@ int main ()
          // TEMPORAL: exit early
          if (!strcmp(args[0], "exit")) 
          {
-            args[0] = "./bin/exit/exit";
+            args[0] = "./src/exit_cmd/exit";
             status = execute(1, args);
             return status;
          }
@@ -113,7 +124,7 @@ int main ()
          if (status == 1) 
          {
             // Error in stderr.
-            write(2, exec_error, strlen(exec_error));
+            printerr(exec_error);
             break;
          }
       }
