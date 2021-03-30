@@ -1,10 +1,16 @@
-#include <string.h>
-#include <fcntl.h>  //Defines flags for open and related library functions
+//Defines flags for open and related library functions
+#include <fcntl.h>
+//For write system call
 #include <unistd.h>
+//Used for basic input/output stream
 #include <stdio.h>
+//Standart library
 #include <stdlib.h>
 #include <sys/uio.h>
+//For string concatenation
 #include <string.h>
+
+#define O_RDONLY 00    //Define the flag
 
 int main(int argc, char *argv[])
 {
@@ -12,11 +18,12 @@ int main(int argc, char *argv[])
     int linecount;
     int lineflag;
     char buf, line[160];
+    char ESC=27;	//In order to change the format to bold
 
     if (argc < 4) // To check the syntax
     {
-        printf("\n Error... Correct Syntax is : grep \"pattern\" \"filename\"\n");
-        exit(0);
+        write(2, "\n Error... Correct Syntax is : grep \"pattern\" \"filename\"\n\n", 58);	//To standart error
+        exit(0);	//Exit program
     }
 
     lineflag = 0;
@@ -55,8 +62,11 @@ int main(int argc, char *argv[])
             i++;
         }
     } while (fhandle != 0);
-    
+
+    printf("%c[1m",ESC);  /*- turn on bold */
     printf("\n  Number of occurances: %d \n", occurances);
+    printf("%c[0m",ESC); /* turn off bold */
+    
     close(des);
     arg_ind++;
     printf("\n");

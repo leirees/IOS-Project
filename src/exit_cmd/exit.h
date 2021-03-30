@@ -9,3 +9,4 @@
  */
 
 #include "../headers.h"
+#include "../signals_lib/signal_handler.h"

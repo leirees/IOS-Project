@@ -28,11 +28,13 @@ int main(int argc, char *argv[])
         else if (ans == 'Y' || ans == 'y')
         {
             println(concat(ANSI_COLOR_YELLOW, "BYE!! Have a nice day :D "));
+            kill(getppid(), 9);
             exit(SUCCESS);
         }
         else
         {
             printerr("Anserror!! Say something useful, you fool");
+            print(ANSI_COLOR_RESET);
         }
     } while(1);
 

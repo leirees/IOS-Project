@@ -30,15 +30,19 @@ char * concat(char * str1, char * str2)
 
 void print(char * str) 
 {
-    write(1, str, strlen(str));
+    char * result = concat(str, ANSI_COLOR_RESET); 
+    int buff = write(1, result, strlen(result));
 }
 
 void println(char * str)
 {
-    print(concat(str, "\n"));
+    char * result = concat(concat(str, ANSI_COLOR_RESET), "\n"); 
+    int buff = write(1, result, strlen(result));
 }
 
 void printerr(char * str)
 {
-    println(concat(ANSI_COLOR_RED, str));
+    char * result = concat(ANSI_COLOR_RED, concat(concat(str, ANSI_COLOR_RESET), "\n")); 
+    int buff = write(2, result, strlen(result));
+    buff = write(1, ANSI_COLOR_RESET, strlen(ANSI_COLOR_RESET));
 }

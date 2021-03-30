@@ -91,42 +91,49 @@ int execute(int argc, char *argv[])
 
 int main ()
 {
-   char *prompt_name = "GlindOS";
-   char *prompt = concat(concat(ANSI_COLOR_GREEN, prompt_name),  concat(ANSI_COLOR_RESET, "\"> "));
-   char *exec_error = "**!! Execution error. Program couldn't be executed. !!**";
-
    int argc;
    int status;
-
    int buff;
-
    int eof = 0;
 
    char *args[MAXARGS];
 
+   /* PROMPT AND MESSAGES */
+   char *prompt_name = "GlindOS";
+   char *prompt = concat(concat(ANSI_COLOR_GREEN, prompt_name),  concat(ANSI_COLOR_RESET, "\"> "));
+   char *exec_error = "**!! Execution error. Program couldn't be executed. !!**";
+
+   // MAIN LOOP OF THE PROGRAM.
    while (1) {
       // The prompt on screen.
-      // buff = write(1, prompt, strlen(prompt));
       print(prompt);
 
       if (read_args(&argc, args, MAXARGS, &eof) && argc > 0) 
       {
-         // TEMPORAL: exit early
+         // Command reading: optimize for reading a directory and executing the commands
+         // there are.
          if (!strcmp(args[0], "exit")) 
          {
-            args[0] = "./src/exit_cmd/exit";
-            status = execute(1, args);
-            return status;
-         }
-         
-         status = execute(argc, args);
-
-         if (status == 1) 
+            args[0] = "exit_cmd/exit";
+         } 
+         else if (!strcmp(args[0], "ls"))
          {
-            // Error in stderr.
-            printerr(exec_error);
-            break;
+            args[0] = "ls_cmd/ls";
          }
+         else if (!strcmp(args[0], "pwd"))
+         {
+            args[0] = "pwd_cmd/pwd";
+         }
+         else
+         {
+            printerr("Say something useful, you clod... Mehewww");
+         }
+
+         // Error control is done independently, in every child process.
+         // Terminal has nothing to do with errors from other processes.
+         status = execute(argc, args);
+      } else {
+         printerr("Say something useful, you clod... Mehewww");
       }
 
       if (eof) 

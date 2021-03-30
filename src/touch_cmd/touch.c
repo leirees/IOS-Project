@@ -10,14 +10,7 @@
  * @copyright Copyright (c) 2021
  */
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <unistd.h>
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <fcntl.h>
-#include <errno.h>
+#include <touch.h>
 
 /**
 * @brief This void method will call to the open function. In case of error, the open system call will return -1 and an error message will appear.

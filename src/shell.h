@@ -11,7 +11,9 @@
  */
 
 #include "headers.h"
-#include "string_lib/string.h"
+
+// Signal handler
+#include "signals_lib/signal_handler.h"
 
 #define error(a) {perror(a); exit(1);};
 #define MAXLINE 200

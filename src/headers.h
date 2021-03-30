@@ -1,11 +1,11 @@
-//Used for basic input/output stream
+// Used for basic input/output stream
 #include <stdio.h>
 #include <stdlib.h>
 
-//Used for handling directory files
+// Used for handling directory files
 #include <dirent.h>
 
-//For EXIT codes and error handling
+// For EXIT codes and error handling
 #include <errno.h>
 
 // Unix syscall managing
@@ -14,7 +14,6 @@
 
 // String managing mod. library
 #include "string_lib/string.h"
-
 
 // EXIT codes
 #define SUCCESS 0
