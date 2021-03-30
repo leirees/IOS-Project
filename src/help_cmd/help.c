@@ -10,7 +10,7 @@
 
 void _help(const char *command,int op_d,int op_m, int op_s){
 	
-if (command == "ls")
+if (strcmp(command, "ls") == 0)
 {
     if (op_d)
     {
@@ -24,7 +24,7 @@ if (command == "ls")
     {
         /* code */
     }
-}else if (command == "cat")
+}else if (strcmp(command, "cat") == 0)
 {
     /* code */
 }
