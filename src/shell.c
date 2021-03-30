@@ -3,65 +3,79 @@
  * @author IOS Lecturer, 2.2 Team
  * @brief Implementation of shell.
  * @version 0.1
- * @date 2021-03-26
+ * @date 2021-03-10
  * 
  * @copyright Copyright (c) 2021
  */
 
-#include "shell.h"
+#include "headers/shell.h"
 
 int read_args(int* argcp, char* args[], int max, int* eofp)
 {
    static char cmd[MAXLINE];
    char* cmdp;
-   int ret,i;
+   int ret, i;
 
    *argcp = 0;
    *eofp = 0;
 
-   i=0;
-   
-   while ((ret=read(0,cmd+i,1)) == 1) {
-      if (cmd[i]=='\n') break;  // correct line
+   i = 0;
+   ret = read(0, cmd + i, 1);
+   while (ret == 1) 
+   {
+      if (cmd[i] == '\n')
+      {
+         // Correct line
+         break;    
+      }
       i++;
 
-      if (i >= MAXLINE) {
-         ret=-2;                // line too long
+      if (i >= MAXLINE) 
+      {
+         // Line too long
+         ret =- 2;                
          break;
       }
    }
    
    switch (ret)
    {
-     case 1 : cmd[i+1]='\0';    // correct reading 
-         break;
-     case 0 : *eofp = 1;        // end of file
-         return 0;
-         break;
-     case -1 : *argcp = -1;     // reading failure
-         fprintf(stderr,"Reading failure \n");
-         return 0;
-         break;
-     case -2 : *argcp = -1;     // line too long
-         fprintf(stderr,"Line too long -- removed command\n");
-         return 0;
-         break;
+   case 1 : 
+      cmd[i+1]='\0';    // correct reading 
+      break;
+
+   case 0 : 
+      *eofp = 1;        // end of file
+      return EXIT_SUCCESS;
+   
+   case -1 : *argcp = -1;     // reading failure
+      fprintf(stderr,"Reading failure \n");
+      return EXIT_SUCCESS;
+      
+   case -2 : *argcp = -1;     // line too long
+      fprintf(stderr,"Line too long -- removed command\n");
+      return EXIT_SUCCESS;
    }
 
    // Analyzing the line
-   cmdp= cmd;
-   for (i=0; i<max; i++) {  /* to show every argument */
-      if ((args[i]= strtok(cmdp, " \t\n")) == (char*)NULL) break;
-      cmdp= NULL;
+   cmdp = cmd;
+   for (i = 0; i < max; i++) 
+   {  
+      /* to show every argument */
+      if ((args[i] = strtok(cmdp, " \t\n")) == (char*) NULL) 
+         break;
+      
+      cmdp = NULL;
    }
 
-   if (i >= max) {
+   if (i >= max) 
+   {
       fprintf(stderr,"Too many arguments -- removed command\n");
       return 0;
    }
    
-   *argcp= i;
-   return 1;
+   *argcp = i;
+   return EXIT_FAILURE;
 }
 
 int execute(int argc, char *argv[])
@@ -103,6 +117,7 @@ int main ()
    char *prompt = concat(concat(ANSI_COLOR_GREEN, prompt_name),  concat(ANSI_COLOR_RESET, "\"> "));
    char *exec_error = "**!! Execution error. Program couldn't be executed. !!**";
 
+
    // MAIN LOOP OF THE PROGRAM.
    while (1) {
       // The prompt on screen.
@@ -112,6 +127,7 @@ int main ()
       {
          // Command reading: optimize for reading a directory and executing the commands
          // there are.
+         // TODO: optimize...
          if (!strcmp(args[0], "exit")) 
          {
             args[0] = "exit_cmd/exit";
