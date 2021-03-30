@@ -10,32 +10,26 @@
 
 void _help(const char *command,int op_d,int op_m, int op_s){
 	
-    switch (command)
+if (command == "ls")
+{
+    if (op_d)
     {
-    case "ls":
-        if (op_d)
-        {
-            /* code */
-        }
-        if (op_m)
-        {
-            /* code */
-        }
-        if (op_s)
-        {
-            /* code */
-        }
-        
-        
-        break;
-    
-    case "cat":
         /* code */
-        break;
-
-    default:
-        break;
     }
+    if (op_m)
+    {
+        /* code */
+    }
+    if (op_s)
+    {
+        /* code */
+    }
+}else if (command == "cat")
+{
+    /* code */
+}
+
+
 }
 
 int main(int argc, const char *argv[]){
