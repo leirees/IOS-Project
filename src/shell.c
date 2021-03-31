@@ -136,17 +136,50 @@ int main ()
          // Command reading: optimize for reading a directory and executing the commands
          // there are.
          // TODO: optimize...
-         if (!strcmp(args[0], "exit")) 
+         if      (!strcmp(args[0], "cat")) 
+         {
+            args[0] = "bin/cat";
+         }
+         else if (!strcmp(args[0], "cd"))
+         {
+            // Make CD.
+            cd(args[1]);
+         }
+         else if (!strcmp(args[0], "cp"))
+         {
+            args[0] = "bin/cp";
+         } 
+         else if (!strcmp(args[0], "exit"))
          {
             args[0] = "bin/exit";
-         } 
+         }
+         else if (!strcmp(args[0], "grep"))
+         {
+            args[0] = "bin/grep";
+         }
+         else if (!strcmp(args[0], "help"))
+         {
+            args[0] = "bin/help";
+         }
          else if (!strcmp(args[0], "ls"))
          {
             args[0] = "bin/ls";
          }
+         else if (!strcmp(args[0], "mv"))
+         {
+            args[0] = "bin/mv";
+         }
          else if (!strcmp(args[0], "pwd"))
          {
             args[0] = "bin/pwd";
+         }
+         else if (!strcmp(args[0], "stee"))
+         {
+            args[0] = "bin/stee";
+         }
+         else if (!strcmp(args[0], "touch"))
+         {
+            args[0] = "bin/touch";
          }
          else
          {
@@ -162,9 +195,9 @@ int main ()
 
       if (eof) 
       {
-         exit(0);
+         exit(EXIT_SUCCESS);
       }
    }
 
-   return 0;
+   return EXIT_SUCCESS;
 }

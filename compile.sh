@@ -40,7 +40,7 @@ fi
 # Compile CD command.
 if [[ !(-s bin/cd) || -n "$(git diff src/cd.c)" || -n "$(git diff src/headers/cd.h)" ]]; then
     echo "Compile cd."
-    gcc -O2 src/cd.c -o bin/cd
+    gcc -c src/cd.c -o build/cd.o
 fi
 
 # Compile CP command.
@@ -102,6 +102,6 @@ fi
 # COMPILE SHELL.
 if [[ !(-s shell) || -n "$(git diff src/shell.c)" || -n "$(git diff src/headers/shell.h)" ]]; then
     echo "Finale. Compile shell."
-    gcc src/shell.c -o shell -lstring -lsignal
+    gcc src/shell.c build/cd.o -o shell -lstring -lsignal
 fi
 echo "**END**"

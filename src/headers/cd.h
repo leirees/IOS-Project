@@ -21,4 +21,5 @@
  * @param path Path to the new directory.
  */
 void _cd(char *path);
+extern int cd(char *path);
 

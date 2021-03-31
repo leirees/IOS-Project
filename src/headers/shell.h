@@ -26,6 +26,9 @@
 #include "libsignals.h"
 #include "libstring.h"
 
+// CD call
+#include "cd.h"
+
 #define error(a) {perror(a); exit(1);};
 #define MAXLINE 200
 #define MAXARGS 20

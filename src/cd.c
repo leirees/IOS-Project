@@ -17,7 +17,7 @@ void _cd(char *path)
     printf("\n");
 }
 
-int main(int argc, const char *argv[])
+int cd(int argc, const char *argv[])
 {
     if (argc == 2)
     {
