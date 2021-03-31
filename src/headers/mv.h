@@ -13,6 +13,7 @@
 #include <unistd.h>
 #include <dirent.h>
 #include <unistd.h>
+#include "libstring.h"
 
 /**
  * @brief Explain the user how to use the command.

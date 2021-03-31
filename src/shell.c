@@ -16,13 +16,13 @@ int read_args(int* argcp, char* args[], int max, int* eofp)
    char* cmdp;
    int ret, i;
 
+   i = 0;
    *argcp = 0;
    *eofp = 0;
 
-   i = 0;
-   ret = read(0, cmd + i, 1);
-   while (ret == 1) 
+   do
    {
+      ret = read(0, cmd + i, 1);
       if (cmd[i] == '\n')
       {
          // Correct line
@@ -33,26 +33,33 @@ int read_args(int* argcp, char* args[], int max, int* eofp)
       if (i >= MAXLINE) 
       {
          // Line too long
-         ret =- 2;                
+         ret = -2;                
          break;
       }
-   }
+   } while (ret == 1);
    
+
    switch (ret)
    {
    case 1 : 
-      cmd[i+1]='\0';    // correct reading 
+      // Correct reading
+      cmd[i+1]='\0';     
       break;
 
    case 0 : 
-      *eofp = 1;        // end of file
+      // End of file
+      *eofp = 1;        
       return EXIT_SUCCESS;
    
-   case -1 : *argcp = -1;     // reading failure
+   case -1 : 
+      // Reading failure
+      *argcp = -1;
       fprintf(stderr,"Reading failure \n");
       return EXIT_SUCCESS;
       
-   case -2 : *argcp = -1;     // line too long
+   case -2 : 
+      // Line too long
+      *argcp = -1;     
       fprintf(stderr,"Line too long -- removed command\n");
       return EXIT_SUCCESS;
    }
@@ -61,8 +68,9 @@ int read_args(int* argcp, char* args[], int max, int* eofp)
    cmdp = cmd;
    for (i = 0; i < max; i++) 
    {  
+      args[i] = strtok(cmdp, " \t\n");
       /* to show every argument */
-      if ((args[i] = strtok(cmdp, " \t\n")) == (char*) NULL) 
+      if (args[i] == (char*) NULL) 
          break;
       
       cmdp = NULL;
@@ -130,15 +138,15 @@ int main ()
          // TODO: optimize...
          if (!strcmp(args[0], "exit")) 
          {
-            args[0] = "exit_cmd/exit";
+            args[0] = "bin/exit";
          } 
          else if (!strcmp(args[0], "ls"))
          {
-            args[0] = "ls_cmd/ls";
+            args[0] = "bin/ls";
          }
          else if (!strcmp(args[0], "pwd"))
          {
-            args[0] = "pwd_cmd/pwd";
+            args[0] = "bin/pwd";
          }
          else
          {

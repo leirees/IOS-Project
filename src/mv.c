@@ -12,9 +12,9 @@
 
 int main(int argc, char *argv[])
 {
-    char *file=argv[1];
-    char *subdir=argv[2];
-    char newdirec[50];
+    char *file   = argv[1];
+    char *subdir = argv[2];
+    char *newdirec;
     
     if (argc <= 2 || argc >= 4)
     {
@@ -32,14 +32,12 @@ int main(int argc, char *argv[])
         else 
         {
             char *current;
-            current=getcwd(newdirec,50);
+            current = getcwd(newdirec, 50);
 
-            concat(newdirec,"/");
-            concat(newdirec,subdir);
-            concat(newdirec,"/");                    // attach mv location to path 
-            concat(newdirec, file);                        // keep original file name
+            // attach mv location to path && keep original file name
+            char *res = concat(concat(concat(concat(newdirec, "/"), subdir), "/"), file);                   
 
-            if(rename(file, direc)!=-1)
+            if(rename(file, direc) != -1)
             {
                 printf("Successful\n");
             }   
