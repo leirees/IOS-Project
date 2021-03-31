@@ -1,0 +1,26 @@
+MIN. REQUIREMENTS:
+I/O management
+-Syscalls
+    open
+    read
+    write
+    close
+    link
+    unlink
+    stat
+    readdir
+    lseek
+
+-C library functions
+    opendir
+    closedir
+
+Process management
+-Syscalls
+    fork
+    wait
+-C library functions
+    execlp
+    execvp
+
+

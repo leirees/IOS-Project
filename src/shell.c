@@ -143,7 +143,7 @@ int main ()
          else if (!strcmp(args[0], "cd"))
          {
             // Make CD.
-            cd(args[1]);
+            cd(argc, args);
          }
          else if (!strcmp(args[0], "cp"))
          {

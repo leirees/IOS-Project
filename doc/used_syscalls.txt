@@ -1,12 +1,16 @@
-Used syscalls:
-    open();
-    opendir();
-    write();
-    read();
-    getcwd();
-    execv();
-    stat();
-    fork();
+LIST OF ALL USED resources.
+-Syscalls:
+    open
+    write
+    read
+    getcwd
+    stat
+    fork
+    
+-C library functions
+    opendir
+    execv
 
-    free();
-    malloc();
+-Optional syscalls:
+    free
+    malloc

@@ -21,5 +21,13 @@
  * @param path Path to the new directory.
  */
 void _cd(char *path);
-extern int cd(char *path);
+
+/**
+ * @brief Change of directory, from current process.
+ * 
+ * @param argc 
+ * @param argv 
+ * @return int 
+ */
+extern int cd(int argc, const char *argv[]);
 

@@ -1,0 +1,14 @@
+COMMANDS WE MUST IMPLEMENT
+    cat             - DONE
+    cd              - DONE
+    cp              - DONE
+    grep            - DONE
+    help            - DONE
+    ls or ls -l     - DONE
+    man
+    mv              - DONE
+    pwd             - DONE
+    touch           - DONE
+
+ADDITIONAL COMMANDS
+    stee            - DONE
