@@ -10,60 +10,38 @@
 
 #include "headers/help.h"
 
-void _help(const char *command, int op_d, int op_m, int op_s) {	
-	if (!strcmp(command, "ls"))
-	{
-		if (op_d)
-		{
-			/* code */
-		}
-		if (op_m)
-		{
-			/* code */
-		}
-		if (op_s)
-		{
-			/* code */
-		}
-	}
-	else if (!strcmp(command, "cat"))
-	{
-		/* code */
-	}
+void _help(){
+
+	write(1, "\ncat :\n", 7);
+	write(1, "\tRead a file and write it in the standard output.\n", 50);
+	write(1, "\ncd :\n", 6);
+	write(1, "\tMove around nearby directories.\n", 33);
+	write(1, "\ncp :\n", 6);
+	write(1, "\tCopy files and directories.\n", 29);
+	write(1, "\nexit :\n", 8);
+	write(1, "\tCause normal process termination.\n", 35);
+	write(1, "\ngrep :\n", 8);
+	write(1, "\tPrint the occurrences of a string in lines and the number of them.\n", 68);
+	write(1, "\nhelp :\n", 8);
+	write(1, "\tDisplay information about builtin commands.\n", 45);
+	write(1, "\nls :\n", 6);
+	write(1, "\tList the content of the current directory.\n", 44);
+	write(1, "\nmv :\n", 6);
+	write(1, "\tMove (remame) files.\n", 22);
+	write(1, "\npwd :\n", 7);
+	write(1, "\tPrint name of current/working directory.\n", 42);
+	write(1, "\nstee :\n", 8);
+	write(1, "\tStore a line from stdin in a file.\n", 36);
+	write(1, "\ntouch :\n", 9);
+	write(1, "\tCreate a new file or change timestamps.\n\n", 42);
 }
 
-int main(int argc, const char *argv[]) {
-	if (argc == 1)
-	{	
-		// If there is one argument
-		write(2, "\n Error... Correct Syntax is : help [dms] [pattern ...]\n\n", 57);	//To standard error
-	} 
-	else if (argc == 2){	
-		// If there are two arguments
-		if (argv[1][0] == '-')
-		{
-			// Checking if option is passed
-			// Options supporting: d, m, s
-			int op_d = 0, op_m = 0, op_s = 0;
-			char *p = (char*) (argv[1] + 1);	//Read the option
-			
-			while(*p)
-			{
-				if(*p == 'd') op_d = 1;	//If option is d
-				else if(*p == 'm') op_m = 1;	//If option is m
-                else if(*p == 's') op_s = 1;    //If option is s
-				else
-				{
-					perror("Option not available");
-					exit(EXIT_FAILURE);
-				}
-				
-				p++;
-			}
-			
-			_help(argv[2], op_d, op_m, op_s);	//call help
-		}
-	}
+int main(int argc, const char *argv[]){
 
+	if (argc == 1){		//If there is one argument
+		_help();	//call help
+	} else if (argc != 1){	//If incorrect number of arguments
+		write(2, "\n Error... Correct Syntax is : help \n\n", 57);	//To standart error
+	}
 	return 0;
 }
