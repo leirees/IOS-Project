@@ -113,9 +113,7 @@ int execute(int argc, char *argv[])
 
 int main ()
 {
-   int argc;
-   int status;
-   int buff;
+   int argc, status, buff;
    int eof = 0;
 
    char *args[MAXARGS];
@@ -123,74 +121,46 @@ int main ()
    /* PROMPT AND MESSAGES */
    char *prompt_name = "GlindOS";
    char *prompt = concat(concat(ANSI_COLOR_GREEN, prompt_name),  concat(ANSI_COLOR_RESET, "\"> "));
-   char *exec_error = "**!! Execution error. Program couldn't be executed. !!**";
+   
+   // PATH
+   char *PATH[12] = {"cat", "cd", "cp", "exit", "grep", "help", "ls", "mv", "pwd", "stee", "touch", "help"};
+   unsigned int fromPath = 0; // In order to know if the command is in the path or not.
 
-
-   // MAIN LOOP OF THE PROGRAM.
    while (1) {
       // The prompt on screen.
       print(prompt);
 
       if (read_args(&argc, args, MAXARGS, &eof) && argc > 0) 
       {
-         // Command reading: optimize for reading a directory and executing the commands
-         // there are.
-         // TODO: optimize...
-         if      (!strcmp(args[0], "cat")) 
+         /**
+          * Every command is in the path of the program, and it is accessed through
+          * a for loop and by changing the path to it.
+          */
+         for (unsigned int i = 0; i < 12; i++) 
          {
-            args[0] = "bin/cat";
+            if (!strcmp(args[0], PATH[i]))
+            {
+               args[0] = concat("bin/", PATH[i]);
+               fromPath = 1;
+               break;
+            }
          }
-         else if (!strcmp(args[0], "cd"))
+
+         /**
+          * Error control is done independently, in every child process.
+          * Terminal has nothing to do with errors from other processes.
+          * 
+          * Instead, the errors may come if the shell tries to exec. something
+          * that is not a command, nor an executable file.
+          */
+         if (fromPath || !strncmp("./", args[0], 2))
          {
-            // Make CD.
-            cd(argc, args);
-         }
-         else if (!strcmp(args[0], "cp"))
-         {
-            args[0] = "bin/cp";
-         } 
-         else if (!strcmp(args[0], "exit"))
-         {
-            args[0] = "bin/exit";
-         }
-         else if (!strcmp(args[0], "grep"))
-         {
-            args[0] = "bin/grep";
-         }
-         else if (!strcmp(args[0], "help"))
-         {
-            args[0] = "bin/help";
-         }
-         else if (!strcmp(args[0], "ls"))
-         {
-            args[0] = "bin/ls";
-         }
-         else if (!strcmp(args[0], "mv"))
-         {
-            args[0] = "bin/mv";
-         }
-         else if (!strcmp(args[0], "pwd"))
-         {
-            args[0] = "bin/pwd";
-         }
-         else if (!strcmp(args[0], "stee"))
-         {
-            args[0] = "bin/stee";
-         }
-         else if (!strcmp(args[0], "touch"))
-         {
-            args[0] = "bin/touch";
+            status = execute(argc, args);
          }
          else
          {
             printerr("Say something useful, you clod... Mehewww");
-         }
-
-         // Error control is done independently, in every child process.
-         // Terminal has nothing to do with errors from other processes.
-         status = execute(argc, args);
-      } else {
-         printerr("Say something useful, you clod... Mehewww");
+         }   
       }
 
       if (eof) 
