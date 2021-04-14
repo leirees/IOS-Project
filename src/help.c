@@ -1,14 +1,12 @@
-/**
- * @file help.c
- * @author ...
- * @brief ...
- * @version 0.1
- * @date 2021-03-30
- * 
- * @copyright Copyright (c) 2021
- */
-
-#include "headers/help.h"
+//For write system call
+#include <unistd.h>
+//Used for basic input/output stream
+#include <stdio.h>
+//Standart library
+#include <stdlib.h>
+#include <sys/uio.h>
+//For string concatenation
+#include <string.h>
 
 void _help(){
 
@@ -41,7 +39,7 @@ int main(int argc, const char *argv[]){
 	if (argc == 1){		//If there is one argument
 		_help();	//call help
 	} else if (argc != 1){	//If incorrect number of arguments
-		write(2, "\n Error... Correct Syntax is : help \n\n", 57);	//To standart error
+		write(2, "\nError... Correct Syntax is: help\n\n", 35);	//To standart error
 	}
 	return 0;
 }
