@@ -13,5 +13,6 @@
 
 #include <unistd.h>
 
+#include <signal.h>
+
 #include "libstring.h"
-#include "libsignals.h"

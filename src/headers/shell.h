@@ -22,16 +22,27 @@
 #include <unistd.h>
 #include <sys/wait.h>
 
-// Signal handler
-#include "libsignals.h"
+// Signals and signal handlers
+#include <signal.h>
+
+// String library mod.
 #include "libstring.h"
 
 // CD call
 #include "cd.h"
 
-#define error(a) {perror(a); exit(1);};
-#define MAXLINE 200
-#define MAXARGS 20
+#define error(a) {printerr(a); exit(EXIT_FAILURE);};
+#define MAXLINE     200
+#define MAXARGS     20
+#define NUMCOMMANDS 13
+
+/**
+ * @brief Signal handler, in case of signals like Ctrl-C or Ctrl-Z,
+ * to get custom behaviors.
+ * 
+ * @param sig Signal code.
+ */
+void signal_handler(int sig);
 
 /**
  * @brief Read all the entries in a line of written code, for shell.

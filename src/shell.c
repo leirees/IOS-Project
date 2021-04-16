@@ -10,6 +10,34 @@
 
 #include "headers/shell.h"
 
+int pid;
+char *args[MAXARGS];
+
+void signal_handler(int sig)
+{
+   switch (sig)
+   {
+   case SIGINT:
+      if (pid != 0) 
+      {
+         kill(pid, SIGKILL);
+      }
+      else
+      {
+         println("I think you have missed something, somewhere...");
+      }
+      break;
+
+   case SIGTSTP:
+      args[0] = "bin/exit";
+      execute(1, args);
+      break;
+
+   default:
+      break;
+   }
+}
+
 int read_args(int* argcp, char* args[], int max, int* eofp)
 {
    static char cmd[MAXLINE];
@@ -89,7 +117,7 @@ int read_args(int* argcp, char* args[], int max, int* eofp)
 int execute(int argc, char *argv[])
 {
    int status;
-   int pid = fork();
+   pid = fork();
 
    switch (pid)
    {
@@ -116,17 +144,24 @@ int main ()
    int argc, status, buff;
    int eof = 0;
 
-   char *args[MAXARGS];
+   unsigned int command;
 
    /* PROMPT AND MESSAGES */
    char *prompt_name = "GlindOS";
    char *prompt = concat(concat(ANSI_COLOR_GREEN, prompt_name),  concat(ANSI_COLOR_RESET, "\"> "));
    
    // PATH
-   char *PATH[12] = {"cat", "cd", "cp", "exit", "grep", "help", "ls", "mv", "pwd", "stee", "touch", "help"};
+   char *PATH[NUMCOMMANDS] = {"cat", "cd", "cp", "exit", "grep", "help", "ls", "mv", "pwd", "stee", "touch", "help", "man"};
    unsigned int fromPath = 0; // In order to know if the command is in the path or not.
 
+   // Ignore Ctrl+C as SIGINT
+   signal(SIGINT, signal_handler);
+   signal(SIGTSTP, signal_handler);
+
    while (1) {
+      // Set pid to 0, in order to kill his child processes.
+      pid = 0;
+
       // The prompt on screen.
       print(prompt);
 
@@ -134,17 +169,23 @@ int main ()
       {
          /**
           * Every command is in the path of the program, and it is accessed through
-          * a for loop and by changing the path to it.
+          * a loop and by changing the path to it.
           */
-         for (unsigned int i = 0; i < 12; i++) 
+         command = 0;
+         fromPath = 0;  
+         
+         do
          {
-            if (!strcmp(args[0], PATH[i]))
+            if (!strcmp(args[0], PATH[command]))
             {
-               args[0] = concat("bin/", PATH[i]);
+               args[0] = concat("bin/", PATH[command]);
                fromPath = 1;
-               break;
             }
-         }
+            else
+            {
+               command++;
+            }
+         } while(!fromPath && command < NUMCOMMANDS);
 
          /**
           * Error control is done independently, in every child process.
@@ -167,6 +208,7 @@ int main ()
       {
          exit(EXIT_SUCCESS);
       }
+      
    }
 
    return EXIT_SUCCESS;

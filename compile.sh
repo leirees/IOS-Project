@@ -1,8 +1,8 @@
 #!/bin/bash
 # SCRIPT FOR COMPILING ALL THE DEPENDENCES THE PROGRAM WILL NEED.
 # BY DAVID CUENCA MARCOS, 30/03/2021.
-
-### TODO: Repair readline and set labels for every command compile. ###
+# CHANGES...
+# MOD. David Cuenca Marcos, 14/04/2021.
 
 echo "Current location: $(pwd)"
 
@@ -14,16 +14,6 @@ if [[ -n "$(git diff src/libstring/libstring.c)" || -n "$(git diff src/headers/l
 
     sudo cp build/libstring.so /usr/lib
     sudo chmod 0755 /usr/lib/libstring.so
-fi
-
-# Compile and make libsignals work
-if [[ -n "$(git diff src/libsignals/libsignals.c)" || -n "$(git diff src/headers/libsignals.h)" ]]; then
-    echo "Compile libsignals mod."
-    gcc -fPIC -c src/libsignals/libsignals.c -o build/libsignals.o
-    gcc -shared -Wl,-soname,libsignals.so -o build/libsignals.so build/libsignals.o
-
-    sudo cp build/libsignals.so /usr/lib
-    sudo chmod 0755 /usr/lib/libsignals.so
 fi
 
 # Configure ldcache
@@ -97,11 +87,18 @@ if [[ !(-s bin/touch) || -n "$(git diff src/touch.c)" || -n "$(git diff src/head
     gcc -O2 src/touch.c -o bin/touch
 fi
 
+# Compile MAN command.
+if [[ !(-s bin/man) || -n "$(git diff src/man.c)" || -n "$(git diff src/headers/man.h)" ]]; then
+    echo "Compile man."
+    gcc -O2 src/man.c -o bin/man
+fi
+
 ############### COMMAND COMPILATION PROCESS ###############
 
 # COMPILE SHELL.
 if [[ !(-s shell) || -n "$(git diff src/shell.c)" || -n "$(git diff src/headers/shell.h)" ]]; then
-    echo "Finale. Compile shell."
-    gcc src/shell.c build/cd.o -o shell -lstring -lsignal
+    echo "COMPILING SHELL"
+    gcc src/shell.c build/cd.o -o shell -lstring
 fi
+
 echo "**END**"
