@@ -12,17 +12,15 @@
 
 int pwd()
 {   
-    char *err = "ERROR: the directory couldn't be accessed!\n";
     char *dir = getcwd( (char *) NULL, 0);
 
     if (dir == NULL)
     {
-        write(2, err, strlen(err));
+        printerr("ERROR: the directory couldn't be accessed!\n");
     } 
     else
     {
-        strcat(dir, "\n");
-        write(1, dir, strlen(dir));
+        println(dir);
         free(dir);
     }
 

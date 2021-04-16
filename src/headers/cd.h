@@ -15,19 +15,13 @@
 #include <dirent.h>
 #include <unistd.h>
 
-/**
- * @brief Change of directory.
- * 
- * @param path Path to the new directory.
- */
-void _cd(char *path);
+#include "libstring.h"
 
 /**
  * @brief Change of directory, from current process.
  * 
- * @param argc 
- * @param argv 
- * @return int 
+ * @param path The path of the directory to go.
+ * @return int 0 iff success
  */
-extern int cd(int argc, const char *argv[]);
+extern int cd(char *path);
 

@@ -30,7 +30,7 @@ fi
 # Compile CD command.
 if [[ !(-s bin/cd) || -n "$(git diff src/cd.c)" || -n "$(git diff src/headers/cd.h)" ]]; then
     echo "Compile cd."
-    gcc -c src/cd.c -o build/cd.o
+    gcc -c src/cd.c -o build/cd.o -lstring
 fi
 
 # Compile CP command.
@@ -72,7 +72,7 @@ fi
 # Compile PWD command.
 if [[ !(-s bin/pwd) || -n "$(git diff src/pwd.c)" || -n "$(git diff src/headers/pwd.h)" ]]; then
     echo "Compile pwd."
-    gcc -O2 src/pwd.c -o bin/pwd
+    gcc -O2 src/pwd.c -o bin/pwd -lstring
 fi
 
 # Compile STEE command.
@@ -98,7 +98,7 @@ fi
 # COMPILE SHELL.
 if [[ !(-s shell) || -n "$(git diff src/shell.c)" || -n "$(git diff src/headers/shell.h)" ]]; then
     echo "COMPILING SHELL"
-    gcc src/shell.c build/cd.o -o shell -lstring
+    gcc src/shell.c src/cd.c -o shell -lstring
 fi
 
 echo "**END**"

@@ -10,17 +10,16 @@
 
 #include "headers/shell.h"
 
-int pid;
-char *args[MAXARGS];
+int current_pid;
 
 void signal_handler(int sig)
 {
    switch (sig)
    {
    case SIGINT:
-      if (pid != 0) 
+      if (current_pid != 0) 
       {
-         kill(pid, SIGKILL);
+         kill(current_pid, SIGKILL);
       }
       else
       {
@@ -29,8 +28,14 @@ void signal_handler(int sig)
       break;
 
    case SIGTSTP:
-      args[0] = "bin/exit";
-      execute(1, args);
+      // Save some space for buffer and exit cmd.
+      int buff;
+      char *exit_array[1];
+      exit_array[0] = "bin/exit";
+      
+      buff = execute(1, exit_array);
+      free(exit_array);
+
       break;
 
    default:
@@ -117,9 +122,9 @@ int read_args(int* argcp, char* args[], int max, int* eofp)
 int execute(int argc, char *argv[])
 {
    int status;
-   pid = fork();
+   current_pid = fork();
 
-   switch (pid)
+   switch (current_pid)
    {
    case -1:
       // Error on creating the child process.
@@ -141,6 +146,22 @@ int execute(int argc, char *argv[])
 
 int main ()
 {
+   /**
+    * RECALL: instead of changing from dir, make the user think he/she is in
+    * the correct dir. Make a little change in perspective.
+    * 
+    * That is, the user will think that the home dir is .gamedir, but the dev
+    * will know the real home is config/.gamedir.
+    */
+
+   // Root directory
+   char *root_dir = getcwd((char *) NULL, 0);
+
+   // PATH
+   char *PATH[NUMCOMMANDS] = {"cat", "cd", "cp", "exit", "grep", "help", "ls", "mv", "pwd", "stee", "touch", "help", "man"};
+   unsigned int fromPath = 0; // In order to know if the command is in the path or not.
+
+   char *args[MAXARGS];
    int argc, status, buff;
    int eof = 0;
 
@@ -148,11 +169,7 @@ int main ()
 
    /* PROMPT AND MESSAGES */
    char *prompt_name = "GlindOS";
-   char *prompt = concat(concat(ANSI_COLOR_GREEN, prompt_name),  concat(ANSI_COLOR_RESET, "\"> "));
-   
-   // PATH
-   char *PATH[NUMCOMMANDS] = {"cat", "cd", "cp", "exit", "grep", "help", "ls", "mv", "pwd", "stee", "touch", "help", "man"};
-   unsigned int fromPath = 0; // In order to know if the command is in the path or not.
+   char *prompt = concat(concat(ANSI_COLOR_GREEN, prompt_name),  concat(ANSI_COLOR_RESET, "$ "));
 
    // Ignore Ctrl+C as SIGINT
    signal(SIGINT, signal_handler);
@@ -160,7 +177,7 @@ int main ()
 
    while (1) {
       // Set pid to 0, in order to kill his child processes.
-      pid = 0;
+      current_pid = 0;
 
       // The prompt on screen.
       print(prompt);
@@ -178,7 +195,15 @@ int main ()
          {
             if (!strcmp(args[0], PATH[command]))
             {
-               args[0] = concat("bin/", PATH[command]);
+               if (!strcmp(args[0], "cd"))
+               {
+                  // In case of CD, since it is a function, we only need to exec. it.
+                  cd(args[1]);
+               } 
+               else
+               {
+                  args[0] = concat(concat(root_dir, "/bin/"), PATH[command]);
+               }
                fromPath = 1;
             }
             else

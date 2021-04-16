@@ -31,10 +31,13 @@
 // CD call
 #include "cd.h"
 
-#define error(a) {printerr(a); exit(EXIT_FAILURE);};
+#define error(a)    {printerr(a); exit(EXIT_FAILURE);};
 #define MAXLINE     200
 #define MAXARGS     20
+
 #define NUMCOMMANDS 13
+
+#define HOME        "config/.gamedir"
 
 /**
  * @brief Signal handler, in case of signals like Ctrl-C or Ctrl-Z,
