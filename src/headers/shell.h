@@ -31,13 +31,22 @@
 // CD call
 #include "cd.h"
 
-#define error(a)    {printerr(a); exit(EXIT_FAILURE);};
-#define MAXLINE     200
-#define MAXARGS     20
+#define error(a)            \
+    {                       \
+        printerr(a);        \
+        exit(EXIT_FAILURE); \
+    };
+#define MAXLINE 200
+#define MAXARGS 20
 
 #define NUMCOMMANDS 13
 
-#define HOME        "config/.gamedir"
+#define HOME "config/.gamedir"
+
+#define UP_ARROW    65
+#define DOWN_ARROW  66
+#define RIGHT_ARROW 67
+#define LEFT_ARROW  68
 
 /**
  * @brief Signal handler, in case of signals like Ctrl-C or Ctrl-Z,
@@ -57,7 +66,7 @@ void signal_handler(int sig);
  * @param eofp 
  * @return int 
  */
-int read_args(int* argcp, char* args[], int max, int* eofp);
+int read_args(int *argcp, char *args[], int max, int *eofp);
 
 /**
  * @brief Execute a process, given a command and its arguments.

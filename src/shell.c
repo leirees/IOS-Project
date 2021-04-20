@@ -10,43 +10,103 @@
 
 #include "headers/shell.h"
 
-int current_pid;
+pid_t child_pid, parent_pid;
+
+/**
+* @brief The menu screen!
+*/
+void print_menu()
+{
+   println("***************************************************************");
+   println("***************************************************************");
+   println("***************************************************************");
+   println("***************@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@****************");
+   println("**************|******* THE WIZARD OF OS *******|***************");
+   println("**************|                                |***************");
+   println("**************|**** \"A wizardry adventure\" ****|***************");
+   println("**************|                                |***************");
+   println("**************|  \"Hurry up! Toto is waiting!\"  |***************");
+   println("**************|                                |***************");
+   println("**************|*** Press enter key to begin ***|***************");
+   println("***************@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@****************");
+   println("***************************************************************");
+   println("***************************************************************");
+   println("***************************************************************");
+}
+
+/**
+ * @brief The options menu!
+ */
+void print_menu_options()
+{
+   println("***************************************************************");
+   println("***************************************************************");
+   println("***************************************************************");
+   println("***************@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@****************");
+   println("**************|                                |***************");
+   println("**************|  MENU:                         |***************");
+   println("**************|   1.  PLAY GAME                |***************");
+   println("**************|   2.  SCORE LIST               |***************");
+   println("**************|                                |***************");
+   println("**************|   X.  EXIT GAME                |***************");
+   println("**************|                                |***************");
+   println("***************@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@****************");
+   println("***************************************************************");
+   println("***************************************************************");
+   println("***************************************************************");
+   print("*** YOUR OPTION IS: ");
+}
 
 void signal_handler(int sig)
 {
    switch (sig)
    {
    case SIGINT:
-      if (current_pid != 0) 
+      if (child_pid < 0)
       {
-         kill(current_pid, SIGKILL);
+         println("");
+         println("Glinda, \"The good witch from the North\": Oh, dada.");
+         println("Glinda, \"The good witch from the North\": Good bye, dear!");
+         
+         child_pid = fork();
+
+         if (child_pid == 0) 
+         {
+            char *smt[1] = {"bin/exit"};
+            execvp("bin/exit", smt);
+         } else 
+         {
+            if (child_pid < 0) 
+            {
+               printerr("Glinda, \"The good witch from the North\": Hmmm... There must be something wrong with my magical wand.");
+               println ("Glinda, \"The good witch from the North\": I must revise it as soon as possible.");
+            }
+            else
+            {
+               wait(NULL);
+            }
+         }
+
       }
       else
       {
-         println("I think you have missed something, somewhere...");
+         println("");
+         println("Glinda, \"The good witch from the North\": Oh, are you abandonning this reality this way, aren't you? ");
+         println("Glinda, \"The good witch from the North\": Then, I'm afraid there must be something wrong with you, player.");
+         kill(parent_pid, SIGKILL);
       }
       break;
 
    case SIGTSTP:
-      // Save some space for buffer and exit cmd.
-      int buff;
-      char *exit_array[1];
-      exit_array[0] = "bin/exit";
-      
-      buff = execute(1, exit_array);
-      free(exit_array);
-
-      break;
-
-   default:
+      println("Hey! STOP IT >:(");
       break;
    }
 }
 
-int read_args(int* argcp, char* args[], int max, int* eofp)
+int read_args(int *argcp, char *args[], int max, int *eofp)
 {
    static char cmd[MAXLINE];
-   char* cmdp;
+   char *cmdp;
    int ret, i;
 
    i = 0;
@@ -59,138 +119,142 @@ int read_args(int* argcp, char* args[], int max, int* eofp)
       if (cmd[i] == '\n')
       {
          // Correct line
-         break;    
+         break;
       }
       i++;
 
-      if (i >= MAXLINE) 
+      if (i >= MAXLINE)
       {
          // Line too long
-         ret = -2;                
+         ret = -2;
          break;
       }
    } while (ret == 1);
-   
 
    switch (ret)
    {
-   case 1 : 
+   case 1:
       // Correct reading
-      cmd[i+1]='\0';     
+      cmd[i + 1] = '\0';
       break;
 
-   case 0 : 
+   case 0:
       // End of file
-      *eofp = 1;        
+      *eofp = 1;
       return EXIT_SUCCESS;
-   
-   case -1 : 
+
+   case -1:
       // Reading failure
       *argcp = -1;
-      fprintf(stderr,"Reading failure \n");
+      fprintf(stderr, "Reading failure \n");
       return EXIT_SUCCESS;
-      
-   case -2 : 
+
+   case -2:
       // Line too long
-      *argcp = -1;     
-      fprintf(stderr,"Line too long -- removed command\n");
+      *argcp = -1;
+      fprintf(stderr, "Line too long -- removed command\n");
       return EXIT_SUCCESS;
    }
 
    // Analyzing the line
    cmdp = cmd;
-   for (i = 0; i < max; i++) 
-   {  
+   for (i = 0; i < max; i++)
+   {
       args[i] = strtok(cmdp, " \t\n");
       /* to show every argument */
-      if (args[i] == (char*) NULL) 
+      if (args[i] == (char *)NULL)
          break;
-      
+
       cmdp = NULL;
    }
 
-   if (i >= max) 
+   if (i >= max)
    {
-      fprintf(stderr,"Too many arguments -- removed command\n");
+      fprintf(stderr, "Too many arguments -- removed command\n");
       return 0;
    }
-   
+
    *argcp = i;
    return EXIT_FAILURE;
 }
 
 int execute(int argc, char *argv[])
 {
-   int status;
-   current_pid = fork();
+   // The status to return to the parent.
+   int *status;
+   child_pid = fork();
 
-   switch (current_pid)
+   switch (child_pid)
    {
    case -1:
       // Error on creating the child process.
-      return 1;   
-   
-   case 0:  
+      return EXIT_FAILURE;
+
+   case 0:
       // Child process' program.
       // Execute the give command, if possible.
       execvp(argv[0], argv);
       break;
 
-   default: 
+   default:
       // Parent process execution.
-      // Wait until child process terminates.
-      wait(&status);
-      return status;
+      wait(status);
+      return *status;
    }
 }
 
-int main ()
+int main()
 {
-   /**
-    * RECALL: instead of changing from dir, make the user think he/she is in
-    * the correct dir. Make a little change in perspective.
-    * 
-    * That is, the user will think that the home dir is .gamedir, but the dev
-    * will know the real home is config/.gamedir.
-    */
+   // Get parent pid, for latter purposes: exit, comparing.
+   parent_pid = getpid();
 
    // Root directory
-   char *root_dir = getcwd((char *) NULL, 0);
+   char *root_dir = getcwd((char *)NULL, 0);
 
-   // PATH
+   // Commands from path
    char *PATH[NUMCOMMANDS] = {"cat", "cd", "cp", "exit", "grep", "help", "ls", "mv", "pwd", "stee", "touch", "help", "man"};
-   unsigned int fromPath = 0; // In order to know if the command is in the path or not.
+
+   // In order to know if the command is in the path or not.
+   unsigned int fromPath;
+   unsigned int command;
 
    char *args[MAXARGS];
    int argc, status, buff;
    int eof = 0;
 
-   unsigned int command;
-
-   /* PROMPT AND MESSAGES */
+   // Prompt design.
    char *prompt_name = "GlindOS";
-   char *prompt = concat(concat(ANSI_COLOR_GREEN, prompt_name),  concat(ANSI_COLOR_RESET, "$ "));
+   char *prompt = concat(concat(ANSI_COLOR_GREEN, prompt_name), concat(ANSI_COLOR_RESET, "$ "));
 
-   // Ignore Ctrl+C as SIGINT
+   // Process signals SIGINT and SIGTSTP, with particular behaviors.
    signal(SIGINT, signal_handler);
    signal(SIGTSTP, signal_handler);
 
-   while (1) {
-      // Set pid to 0, in order to kill his child processes.
-      current_pid = 0;
+   char begin;
+
+   do
+   {
+      print_menu();
+   } while ((begin = getchar()) != 10);
+   
+
+   while (1)
+   {
+      // Set child pid to -1, in order to remove processes.
+      child_pid = -1;
 
       // The prompt on screen.
       print(prompt);
 
-      if (read_args(&argc, args, MAXARGS, &eof) && argc > 0) 
+      if (read_args(&argc, args, MAXARGS, &eof) && argc > 0)
       {
          /**
           * Every command is in the path of the program, and it is accessed through
           * a loop and by changing the path to it.
           */
          command = 0;
-         fromPath = 0;  
-         
+         fromPath = 0;
+
          do
          {
             if (!strcmp(args[0], PATH[command]))
@@ -199,7 +263,7 @@ int main ()
                {
                   // In case of CD, since it is a function, we only need to exec. it.
                   cd(args[1]);
-               } 
+               }
                else
                {
                   args[0] = concat(concat(root_dir, "/bin/"), PATH[command]);
@@ -210,7 +274,7 @@ int main ()
             {
                command++;
             }
-         } while(!fromPath && command < NUMCOMMANDS);
+         } while (!fromPath && command < NUMCOMMANDS);
 
          /**
           * Error control is done independently, in every child process.
@@ -226,14 +290,13 @@ int main ()
          else
          {
             printerr("Say something useful, you clod... Mehewww");
-         }   
+         }
       }
 
-      if (eof) 
+      if (eof)
       {
          exit(EXIT_SUCCESS);
       }
-      
    }
 
    return EXIT_SUCCESS;
