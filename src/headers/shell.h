@@ -31,6 +31,12 @@
 // CD call
 #include "cd.h"
 
+// Exit game call
+#include "exit.h"
+
+// TERMIOS
+#include <termios.h>
+
 #define error(a)            \
     {                       \
         printerr(a);        \

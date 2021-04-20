@@ -10,13 +10,37 @@
 
 #include "headers/shell.h"
 
+// PID of parent and child processes.
 pid_t child_pid, parent_pid;
+// Commands from path.
+char *PATH[NUMCOMMANDS] = {"cat", "cd", "cp", "exit", "grep", "help", "ls", "mv", "pwd", "stee", "touch", "help", "man"};
+
+struct termios saved_glindos;
+struct termios config_glindos;
+
+/**
+ * @brief Restores the terminal, from a previous state.
+ */
+void restore_terminal()
+{
+   tcsetattr(STDIN_FILENO, TCSANOW, &saved_glindos);
+}
+
+void clear_screen() 
+{
+   for (__U16_TYPE rows = 0; rows < 7*MAXLINE; rows++)
+   {
+      println("");
+   }
+}
 
 /**
 * @brief The menu screen!
 */
 void print_menu()
 {
+   clear_screen();
+
    println("***************************************************************");
    println("***************************************************************");
    println("***************************************************************");
@@ -64,41 +88,17 @@ void signal_handler(int sig)
    case SIGINT:
       if (child_pid < 0)
       {
-         println("");
-         println("Glinda, \"The good witch from the North\": Oh, dada.");
-         println("Glinda, \"The good witch from the North\": Good bye, dear!");
-         
-         child_pid = fork();
-
-         if (child_pid == 0) 
-         {
-            char *smt[1] = {"bin/exit"};
-            execvp("bin/exit", smt);
-         } else 
-         {
-            if (child_pid < 0) 
-            {
-               printerr("Glinda, \"The good witch from the North\": Hmmm... There must be something wrong with my magical wand.");
-               println ("Glinda, \"The good witch from the North\": I must revise it as soon as possible.");
-            }
-            else
-            {
-               wait(NULL);
-            }
-         }
-
+         exit_game();
       }
       else
       {
-         println("");
-         println("Glinda, \"The good witch from the North\": Oh, are you abandonning this reality this way, aren't you? ");
-         println("Glinda, \"The good witch from the North\": Then, I'm afraid there must be something wrong with you, player.");
-         kill(parent_pid, SIGKILL);
+         speak_glinda("Oh, are you abandonning this reality this way, aren't you?\n Then, I'm afraid there must be something wrong with you, player.", 0);
+         kill(child_pid, SIGINT);
       }
       break;
 
    case SIGTSTP:
-      println("Hey! STOP IT >:(");
+      printerr("Hey! STOP IT NOW //////#!@@@@@ I'm the master here!!!· >:(");
       break;
    }
 }
@@ -180,8 +180,6 @@ int read_args(int *argcp, char *args[], int max, int *eofp)
 
 int execute(int argc, char *argv[])
 {
-   // The status to return to the parent.
-   int *status;
    child_pid = fork();
 
    switch (child_pid)
@@ -198,26 +196,31 @@ int execute(int argc, char *argv[])
 
    default:
       // Parent process execution.
-      wait(status);
-      return *status;
+      wait(NULL);
+      break;
    }
+
+   return EXIT_SUCCESS;
 }
 
 int main()
 {
+   // In order to know if the command is in the path or not.
+   __U16_TYPE from_path;
+   __U16_TYPE command;
+   __U16_TYPE exit_status;
+
+   // Terminal status
+   struct termios status_glindos;
+
+   // Root directory.
+   char *root_dir = getcwd((char *) NULL, 0);
+
    // Get parent pid, for latter purposes: exit, comparing.
    parent_pid = getpid();
+   child_pid = -1;
 
-   // Root directory
-   char *root_dir = getcwd((char *)NULL, 0);
-
-   // Commands from path
-   char *PATH[NUMCOMMANDS] = {"cat", "cd", "cp", "exit", "grep", "help", "ls", "mv", "pwd", "stee", "touch", "help", "man"};
-
-   // In order to know if the command is in the path or not.
-   unsigned int fromPath;
-   unsigned int command;
-
+   // Arguments.
    char *args[MAXARGS];
    int argc, status, buff;
    int eof = 0;
@@ -230,14 +233,12 @@ int main()
    signal(SIGINT, signal_handler);
    signal(SIGTSTP, signal_handler);
 
-   char begin;
-
+   // MENU:
    do
    {
       print_menu();
-   } while ((begin = getchar()) != 10);
+   } while (getchar() != 10);
    
-
    while (1)
    {
       // Set child pid to -1, in order to remove processes.
@@ -252,29 +253,46 @@ int main()
           * Every command is in the path of the program, and it is accessed through
           * a loop and by changing the path to it.
           */
-         command = 0;
-         fromPath = 0;
+         
+         from_path = 0;
+         exit_status = 1;
 
-         do
+         for (command = 0; command < NUMCOMMANDS; command++) 
          {
             if (!strcmp(args[0], PATH[command]))
             {
                if (!strcmp(args[0], "cd"))
                {
                   // In case of CD, since it is a function, we only need to exec. it.
-                  cd(args[1]);
+                  if (argc > 1) 
+                  {
+                     cd(args[1]);
+                  }
+                  else
+                  {
+                     cd(root_dir);
+                  }
+               } 
+               else if (!strcmp(args[0], "exit"))
+               {
+                  exit_status = exit_game();
+                  break;
                }
                else
                {
                   args[0] = concat(concat(root_dir, "/bin/"), PATH[command]);
                }
-               fromPath = 1;
+               
+               from_path = 1;
+               break;
             }
-            else
-            {
-               command++;
-            }
-         } while (!fromPath && command < NUMCOMMANDS);
+         }
+
+         // On exit, break the game loop.
+         if (!exit_status)
+         {
+            return EXIT_SUCCESS;
+         }
 
          /**
           * Error control is done independently, in every child process.
@@ -283,13 +301,9 @@ int main()
           * Instead, the errors may come if the shell tries to exec. something
           * that is not a command, nor an executable file.
           */
-         if (fromPath || !strncmp("./", args[0], 2))
+         if (from_path || !strncmp("./", args[0], 2))
          {
             status = execute(argc, args);
-         }
-         else
-         {
-            printerr("Say something useful, you clod... Mehewww");
          }
       }
 
