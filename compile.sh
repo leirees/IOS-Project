@@ -24,7 +24,7 @@ sudo ldconfig
 # Compile CAT command.
 if [[ !(-s bin/cat) || -n "$(git diff src/cat.c)" || -n "$(git diff src/headers/cat.h)" ]]; then
     echo "Compile cat."
-    gcc -O2 src/cat.c -o bin/cat
+    gcc -O2 src/cat.c -o bin/cat -lstring
 fi
 
 # Compile CD command.
@@ -36,7 +36,7 @@ fi
 # Compile CP command.
 if [[ !(-s bin/cp) || -n "$(git diff src/cp.c)" || -n "$(git diff src/headers/cp.h)" ]]; then
     echo "Compile cp."
-    gcc -O2 src/cp.c -o bin/cp
+    gcc -O2 src/cp.c -o bin/cp -lstring
 fi
 
 # Compile EXIT command.
@@ -48,19 +48,19 @@ fi
 # Compile GREP command.
 if [[ !(-s bin/grep) || -n "$(git diff src/grep.c)" || -n "$(git diff src/headers/grep.h)" ]]; then
     echo "Compile grep."
-    gcc -O2 src/grep.c -o bin/grep
+    gcc -O2 src/grep.c -o bin/grep -lstring
 fi
 
 # Compile HELP command.
 if [[ !(-s bin/help) || -n "$(git diff src/help.c)" || -n "$(git diff src/headers/help.h)" ]]; then
     echo "Compile help."
-    gcc -O2 src/help.c -o bin/help
+    gcc -O2 src/help.c -o bin/help -lstring
 fi
 
 # Compile LS command.
 if [[ !(-s bin/ls) || -n "$(git diff src/ls.c)" || -n "$(git diff src/headers/ls.h)" ]]; then
     echo "Compile ls."
-    gcc -O2 src/ls.c -o bin/ls
+    gcc -O2 src/ls.c -o bin/ls -lstring
 fi
 
 # Compile MV command.
@@ -78,19 +78,19 @@ fi
 # Compile STEE command.
 if [[ !(-s bin/stee) || -n "$(git diff src/stee.c)" || -n "$(git diff src/headers/stee.h)" ]]; then
     echo "Compile stee."
-    gcc -O2 src/stee.c -o bin/stee
+    gcc -O2 src/stee.c -o bin/stee -lstring
 fi
 
 # Compile TOUCH command.
 if [[ !(-s bin/touch) || -n "$(git diff src/touch.c)" || -n "$(git diff src/headers/touch.h)" ]]; then
     echo "Compile touch."
-    gcc -O2 src/touch.c -o bin/touch
+    gcc -O2 src/touch.c -o bin/touch -lstring
 fi
 
 # Compile MAN command.
 if [[ !(-s bin/man) || -n "$(git diff src/man.c)" || -n "$(git diff src/headers/man.h)" ]]; then
     echo "Compile man."
-    gcc -O2 src/man.c -o bin/man
+    gcc -O2 src/man.c -o bin/man -lstring
 fi
 
 ############### COMMAND COMPILATION PROCESS ###############

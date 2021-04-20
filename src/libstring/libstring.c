@@ -10,39 +10,46 @@
 
 #include "../headers/libstring.h"
 
-char * concat(char * str1, char * str2)
+char *concat(char *str1, char *str2)
 {
-    unsigned int result_length = strlen(str1) + strlen(str2);
-    char * result = (char *) malloc(result_length);
+    size_t length_str1  = strlen(str1);
+    size_t length_str2  = strlen(str2);
+    size_t total_length = length_str1 + length_str2;
+    
+    char *r_string = (char *) malloc(total_length);
 
-    for (unsigned int i = 0; i < strlen(str1); i++) 
+    for (__U16_TYPE i = 0; i < length_str1; i++) 
     {
-        result[i] = str1[i];
+        r_string[i] = str1[i];
     }
 
-    for (unsigned int i = 0; i < strlen(str2); i++) 
+    for (__U16_TYPE i = 0; i < length_str2; i++) 
     {
-        result[i + strlen(str1)] = str2[i];
+        r_string[i + length_str1] = str2[i];
     }
 
-    return result;
+    return r_string;
 }
 
-void print(char * str) 
+void print(char *str) 
 {
-    char * result = concat(str, ANSI_COLOR_RESET); 
-    int buff = write(1, result, strlen(result));
+    char *result = concat(str, ANSI_COLOR_RESET); 
+    ssize_t buff = write(1, result, strlen(result));
 }
 
-void println(char * str)
+void println(char *str)
 {
-    char * result = concat(concat(str, ANSI_COLOR_RESET), "\n"); 
-    int buff = write(1, result, strlen(result));
+    char *color = concat(ANSI_COLOR_RESET, "\n");
+    char *result = concat(str, color); 
+    ssize_t buff = write(1, result, strlen(result));
 }
 
-void printerr(char * str)
+void printerr(char *str)
 {
-    char * result = concat(ANSI_COLOR_RED, concat(concat(str, ANSI_COLOR_RESET), "\n")); 
-    int buff = write(2, result, strlen(result));
+    char *result = concat(
+            concat(ANSI_COLOR_RED, str), concat(ANSI_COLOR_RESET, "\n")
+            ); 
+            
+    ssize_t buff = write(2, result, strlen(result));
     buff = write(1, ANSI_COLOR_RESET, strlen(ANSI_COLOR_RESET));
 }

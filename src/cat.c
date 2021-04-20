@@ -1,6 +1,6 @@
 /**
  * @file cat.c
- * @author Mikel Aristu
+ * @author Mikel Aristu, David Cuenca
  * @brief The command used to read files.
  * @version 0.1
  * @date 2021-03-25
@@ -12,36 +12,31 @@
 
 int main(int argc, char *argv[])
 {
-   if (argc <= 1 || argc >= 3)
+   if(argc == 2)
    {
-        // If the command is used incorrectly, it will teach the user how to use it.
-        write(2, "Usage: cat file_name\n", strlen("cat file_name"));
-        printf("\n");
-   }
-   else if(argc == 2)
-   {
-      char ch;
-      FILE *fp; // File pointer of the file.
-
-      fp = fopen(argv[1], "r"); // Open the file in read mode.
+      // Open the file in read-only mode.
+      int file_descriptor = open(argv[1], O_RDONLY);
+      char *ch;
 
       // If there is any error when trying to open the file.
-      if (fp == NULL)
+      if (file_descriptor < 0)
       {
-         write(2,"Error while opening the file.\n",strlen("Error while opening the file.\n"));
+         printerr("Error while opening the file.");
          exit(EXIT_FAILURE);
       }
-      
-      printf("The contents of %s file are:\n", argv[1]);
 
-      // fgetc() returns EOF when arrives the end of the file.
       // Read while it has more lines, else, stop and close the file.
-      while((ch = fgetc(fp)) != EOF) 
+      while(read(file_descriptor, ch, 1) != 0) 
       {
-         printf("%c", ch); // Print each line.
+         write(1, ch, 1);
       }
       
-      fclose(fp);
+      close(file_descriptor);
+   }
+   else
+   {
+      // If the command is used incorrectly, it will teach the user how to use it.
+      println("Usage: cat file_name");
    }
 
    return 0;
