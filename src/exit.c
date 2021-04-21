@@ -12,23 +12,24 @@
 
 int exit_game()
 {
-    char ans;
+    char *ans;
     speak_glinda("Oh, my dear player, \nDo you really want to exit the game? [Y]es / [N]o, of course.", 0);
-    scanf("%c", &ans);
+    scanf("%s", &ans);
     
-    switch(ans)
+    if (!strcmp(ans, "y") || !strcmp(ans, "Y"))
     {
-    case 'y' | 'Y':
         speak_glinda("Ok darling, have a nice day. See ya', dada!", 1);
         _exit(127);
-    case 'n' | 'N':
+    }
+    else if (!strcmp(ans, "n") || !strcmp(ans, "N"))
+    {
         speak_glinda("Well, let's play together! Let's go to hell!", 1);
-        break;
-    default:
+    }
+    else
+    {
         printerr("Say something useful, you fool!");
         speak_ofelia("You spoke wrongly, useless ape!", 0);
-        break;
     }
-    
+
     return EXIT_FAILURE;
 }

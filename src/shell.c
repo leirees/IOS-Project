@@ -9,98 +9,28 @@
  */
 
 #include "headers/shell.h"
-
-// PID of parent and child processes.
-pid_t child_pid, parent_pid;
-// Commands from path.
-char *PATH[NUMCOMMANDS] = {"cat", "cd", "cp", "exit", "grep", "help", "ls", "mv", "pwd", "stee", "touch", "help", "man"};
+#include "headers/global_variables.h"
 
 struct termios saved_glindos;
 struct termios config_glindos;
 
-/**
- * @brief Restores the terminal, from a previous state.
- */
-void restore_terminal()
+void setup_signals()
 {
-   tcsetattr(STDIN_FILENO, TCSANOW, &saved_glindos);
+   // Process signals SIGINT and SIGTSTP, with particular behaviors.
+   signal(SIGINT, signal_handler);
+   signal(SIGTSTP, signal_handler);
 }
 
-void clear_screen() 
+void setup_global_variables()
 {
-   for (__U16_TYPE rows = 0; rows < 7*MAXLINE; rows++)
-   {
-      println("");
-   }
-}
-
-/**
-* @brief The menu screen!
-*/
-void print_menu()
-{
-   clear_screen();
-
-   println("***************************************************************");
-   println("***************************************************************");
-   println("***************************************************************");
-   println("***************@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@****************");
-   println("**************|******* THE WIZARD OF OS *******|***************");
-   println("**************|                                |***************");
-   println("**************|**** \"A wizardry adventure\" ****|***************");
-   println("**************|                                |***************");
-   println("**************|  \"Hurry up! Toto is waiting!\"  |***************");
-   println("**************|                                |***************");
-   println("**************|*** Press enter key to begin ***|***************");
-   println("***************@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@****************");
-   println("***************************************************************");
-   println("***************************************************************");
-   println("***************************************************************");
-}
-
-/**
- * @brief The options menu!
- */
-void print_menu_options()
-{
-   println("***************************************************************");
-   println("***************************************************************");
-   println("***************************************************************");
-   println("***************@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@****************");
-   println("**************|                                |***************");
-   println("**************|  MENU:                         |***************");
-   println("**************|   1.  PLAY GAME                |***************");
-   println("**************|   2.  SCORE LIST               |***************");
-   println("**************|                                |***************");
-   println("**************|   X.  EXIT GAME                |***************");
-   println("**************|                                |***************");
-   println("***************@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@****************");
-   println("***************************************************************");
-   println("***************************************************************");
-   println("***************************************************************");
-   print("*** YOUR OPTION IS: ");
-}
-
-void signal_handler(int sig)
-{
-   switch (sig)
-   {
-   case SIGINT:
-      if (child_pid < 0)
-      {
-         exit_game();
-      }
-      else
-      {
-         speak_glinda("Oh, are you abandonning this reality this way, aren't you?\n Then, I'm afraid there must be something wrong with you, player.", 0);
-         kill(child_pid, SIGINT);
-      }
-      break;
-
-   case SIGTSTP:
-      printerr("Hey! STOP IT NOW //////#!@@@@@ I'm the master here!!!· >:(");
-      break;
-   }
+   // Initialise global variables.
+   // FLAGS
+   exit_status = 0;
+   // PID
+   child_pid = -1;
+   parent_pid = 0;
+   // Fail counter.
+   fails = 0;
 }
 
 int read_args(int *argcp, char *args[], int max, int *eofp)
@@ -205,22 +135,23 @@ int execute(int argc, char *argv[])
 
 int main()
 {
-   // In order to know if the command is in the path or not.
-   __U16_TYPE from_path;
-   __U16_TYPE command;
-   __U16_TYPE exit_status;
+   // Begin configuring the signal handing.
+   setup_signals();
 
-   // Terminal status
-   struct termios status_glindos;
+   // First, set the state of the game to config.
+   STATE = CONFIG_TERM;
 
+   // Declare local variables.
+   __INT8_TYPE__ from_path;
+   __INT8_TYPE__ command;
+
+   // Command path.
+   char *PATH[NUMCOMMANDS] = {"cat", "cd", "cp", "exit", "grep", "help", "ls", "mv", "pwd", "stee", "touch", "help", "man"};
+   
    // Root directory.
    char *root_dir = getcwd((char *) NULL, 0);
 
-   // Get parent pid, for latter purposes: exit, comparing.
-   parent_pid = getpid();
-   child_pid = -1;
-
-   // Arguments.
+   // Arguments for the commands.
    char *args[MAXARGS];
    int argc, status, buff;
    int eof = 0;
@@ -228,11 +159,7 @@ int main()
    // Prompt design.
    char *prompt_name = "GlindOS";
    char *prompt = concat(concat(ANSI_COLOR_GREEN, prompt_name), concat(ANSI_COLOR_RESET, "$ "));
-
-   // Process signals SIGINT and SIGTSTP, with particular behaviors.
-   signal(SIGINT, signal_handler);
-   signal(SIGTSTP, signal_handler);
-
+   
    // MENU:
    do
    {
@@ -241,6 +168,17 @@ int main()
    
    while (1)
    {
+      switch (STATE)
+      {
+      case CONFIG_TERM:
+         setup_global_variables();
+         STATE = INIT_MENU;
+         break;
+      
+      default:
+         break;
+      }
+
       // Set child pid to -1, in order to remove processes.
       child_pid = -1;
 

@@ -22,9 +22,6 @@
 #include <unistd.h>
 #include <sys/wait.h>
 
-// Signals and signal handlers
-#include <signal.h>
-
 // String library mod.
 #include "libstring.h"
 
@@ -34,8 +31,11 @@
 // Exit game call
 #include "exit.h"
 
-// TERMIOS
-#include <termios.h>
+// Menu settings and functions
+#include "menu.h"
+
+// Signal handler
+#include "signal_handler.h"
 
 #define error(a)            \
     {                       \
@@ -54,13 +54,27 @@
 #define RIGHT_ARROW 67
 #define LEFT_ARROW  68
 
+// GLOBAL VARIABLES //
+__INT8_TYPE__ STATE;
+
+// Flags.
+__INT8_TYPE__ exit_status;
+// PID.
+pid_t child_pid;
+pid_t parent_pid;
+// Fail counter.
+__INT8_TYPE__ fails;
+
 /**
- * @brief Signal handler, in case of signals like Ctrl-C or Ctrl-Z,
- * to get custom behaviors.
- * 
- * @param sig Signal code.
+ * STATUS OF THE GAME.
  */
-void signal_handler(int sig);
+#define CONFIG_TERM        -1
+#define INIT_MENU           0
+#define CHOOSE_OPTIONS      1
+#define GAME_FAIL_0         2
+#define GAME_FAIL_1         3
+#define GAME_FAIL_2         4
+#define GAME_OVER           5
 
 /**
  * @brief Read all the entries in a line of written code, for shell.
