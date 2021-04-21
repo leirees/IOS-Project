@@ -41,7 +41,7 @@ int main (int argc, char* argv[])
 	int zenb;
 	char zerrenda[MAX_ARG][MAX_CAR];
 	int r;
-//	FILE* fp;
+
 	struct termios saved_tm;
 
 	if (argc != 1) {
