@@ -145,9 +145,11 @@ int main()
    __INT8_TYPE__ from_path;
    __INT8_TYPE__ command;
 
+   char chosen_option;
+
    // Command path.
    char *PATH[NUMCOMMANDS] = {"cat", "cd", "cp", "exit", "grep", "help", "ls", "mv", "pwd", "stee", "touch", "help", "man"};
-   
+
    // Root directory.
    char *root_dir = getcwd((char *) NULL, 0);
 
@@ -160,12 +162,6 @@ int main()
    char *prompt_name = "GlindOS";
    char *prompt = concat(concat(ANSI_COLOR_GREEN, prompt_name), concat(ANSI_COLOR_RESET, "$ "));
    
-   // MENU:
-   do
-   {
-      print_menu();
-   } while (getchar() != 10);
-   
    while (1)
    {
       switch (STATE)
@@ -174,81 +170,136 @@ int main()
          setup_global_variables();
          STATE = INIT_MENU;
          break;
-      
+
+      case INIT_MENU:
+         // Initial menu.
+         do
+         {
+            print_menu();
+         } while (getchar() != 10);
+         STATE = CHOOSE_MENU_OPTIONS;
+         break;
+
+      case CHOOSE_MENU_OPTIONS:
+         // Choose menu options.
+         do {
+            switch (chosen_option)
+            {
+            case 1:
+               print_menu_options(chosen_option);
+               break;
+            
+            case 2:
+               print_menu_options(chosen_option);
+               break;
+
+            case 3:
+               print_menu_options(chosen_option);
+               break;
+
+            default:
+               print_menu_options(0);
+               break;
+            }
+         } while(getchar() != 10);
+
+         // Enter the game :)
+         switch (chosen_option)
+         {
+         case 1:
+            STATE = GAME_RUNNING;
+            break;
+         
+         case 2:
+            STATE = SHOW_SCORES;
+            break;
+
+         case 3:
+            STATE = GAME_OVER_EXIT;
+            break;
+
+         default:
+            printerr("Unknown option.");
+            break;
+         }
+
+         break;
+
+      case GAME_RUNNING:
+          // The prompt on screen.
+         print(prompt);
+
+         if (read_args(&argc, args, MAXARGS, &eof) && argc > 0)
+         {
+            /**
+             * Every command is in the path of the program, and it is accessed through
+             * a loop and by changing the path to it.
+             */
+            
+            from_path = 0;
+            exit_status = 1;
+
+            for (command = 0; command < NUMCOMMANDS; command++) 
+            {
+               if (!strcmp(args[0], PATH[command]))
+               {
+                  if (!strcmp(args[0], "cd"))
+                  {
+                     // In case of CD, since it is a function, we only need to exec. it.
+                     if (argc > 1) 
+                     {
+                        cd(args[1]);
+                     }
+                     else
+                     {
+                        cd(root_dir);
+                     }
+                  } 
+                  else if (!strcmp(args[0], "exit"))
+                  {
+                     exit_status = exit_game();
+                     break;
+                  }
+                  else
+                  {
+                     args[0] = concat(concat(root_dir, "/bin/"), PATH[command]);
+                  }
+                  
+                  from_path = 1;
+                  break;
+               }
+            }
+
+            // On exit, break the game loop.
+            if (!exit_status)
+            {
+               return EXIT_SUCCESS;
+            }
+
+            /**
+             * Error control is done independently, in every child process.
+             * Terminal has nothing to do with errors from other processes.
+             * 
+             * Instead, the errors may come if the shell tries to exec. something
+             * that is not a command, nor an executable file.
+             */
+            if (from_path || !strncmp("./", args[0], 2))
+            {
+               status = execute(argc, args);
+            }
+         }
+
+         if (eof)
+         {
+            exit(EXIT_SUCCESS);
+         }
+
+         break;
       default:
          break;
       }
 
-      // Set child pid to -1, in order to remove processes.
-      child_pid = -1;
-
-      // The prompt on screen.
-      print(prompt);
-
-      if (read_args(&argc, args, MAXARGS, &eof) && argc > 0)
-      {
-         /**
-          * Every command is in the path of the program, and it is accessed through
-          * a loop and by changing the path to it.
-          */
-         
-         from_path = 0;
-         exit_status = 1;
-
-         for (command = 0; command < NUMCOMMANDS; command++) 
-         {
-            if (!strcmp(args[0], PATH[command]))
-            {
-               if (!strcmp(args[0], "cd"))
-               {
-                  // In case of CD, since it is a function, we only need to exec. it.
-                  if (argc > 1) 
-                  {
-                     cd(args[1]);
-                  }
-                  else
-                  {
-                     cd(root_dir);
-                  }
-               } 
-               else if (!strcmp(args[0], "exit"))
-               {
-                  exit_status = exit_game();
-                  break;
-               }
-               else
-               {
-                  args[0] = concat(concat(root_dir, "/bin/"), PATH[command]);
-               }
-               
-               from_path = 1;
-               break;
-            }
-         }
-
-         // On exit, break the game loop.
-         if (!exit_status)
-         {
-            return EXIT_SUCCESS;
-         }
-
-         /**
-          * Error control is done independently, in every child process.
-          * Terminal has nothing to do with errors from other processes.
-          * 
-          * Instead, the errors may come if the shell tries to exec. something
-          * that is not a command, nor an executable file.
-          */
-         if (from_path || !strncmp("./", args[0], 2))
-         {
-            status = execute(argc, args);
-         }
-      }
-
-      if (eof)
-      {
-         exit(EXIT_SUCCESS);
-      }
+      // END OF THE LOOP!
    }
 
    return EXIT_SUCCESS;
