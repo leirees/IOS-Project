@@ -1,15 +1,18 @@
-//For write system call
-#include <unistd.h>
-//Used for basic input/output stream
-#include <stdio.h>
-//Standart library
-#include <stdlib.h>
-#include <sys/uio.h>
-//For string concatenation
-#include <string.h>
+/**
+ * @file help.c
+ * @author The Wizard of OS team
+ * @brief Gives info about available commands
+ * @version 1
+ * @date 2021-04-21
+ * 
+ * @copyright Copyright (c) 2021
+ */
+
+#include "headers/help.h"
 
 void _help(){
 
+	//Prints all the available commands to the stdout
 	write(1, "\ncat :\n", 7);
 	write(1, "\tRead a file and write it in the standard output.\n", 50);
 	write(1, "\ncd :\n", 6);

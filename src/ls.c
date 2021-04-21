@@ -1,8 +1,8 @@
 /**
  * @file ls.c
- * @author ...
- * @brief ...
- * @version 0.1
+ * @author The Wizard of OS team
+ * @brief Lists the directory and files
+ * @version 1
  * @date 2021-03-30
  * 
  * @copyright Copyright (c) 2021

@@ -1,8 +1,8 @@
 /**
  * @file grep.c
- * @author ...
- * @brief ...
- * @version 0.1
+ * @author The Wizard of OS team
+ * @brief Prints the line containing the word and the occurance number
+ * @version 1
  * @date 2021-03-30
  * 
  * @copyright Copyright (c) 2021
@@ -16,7 +16,7 @@ int main(int argc, char *argv[])
     int linecount;
     int lineflag;
     char buf, line[160];
-    char ESC=27;	// In order to change the format to bold
+    char ESC = 27;	// In order to change the format to bold
 
     if (argc < 4) // To check the syntax
     {
