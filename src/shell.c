@@ -9,14 +9,15 @@
  */
 
 #include "headers/shell.h"
-#include "headers/global_variables.h"
 
 struct termios saved_glindos;
 struct termios config_glindos;
 
+/**
+ * @brief Process signals SIGINT and SIGTSTP, with particular behaviors.
+ */
 void setup_signals()
 {
-   // Process signals SIGINT and SIGTSTP, with particular behaviors.
    signal(SIGINT, signal_handler);
    signal(SIGTSTP, signal_handler);
 }
@@ -25,7 +26,7 @@ void setup_global_variables()
 {
    // Initialise global variables.
    // FLAGS
-   exit_status = 0;
+   exit_status = 1;
    // PID
    child_pid = -1;
    parent_pid = 0;
@@ -140,12 +141,12 @@ int main()
 
    // First, set the state of the game to config.
    STATE = CONFIG_TERM;
+   parent_pid = getpid();
 
    // Declare local variables.
    __INT8_TYPE__ from_path;
    __INT8_TYPE__ command;
-
-   char chosen_option;
+   __INT8_TYPE__ chosen_option;
 
    // Command path.
    char *PATH[NUMCOMMANDS] = {"cat", "cd", "cp", "exit", "grep", "help", "ls", "mv", "pwd", "stee", "touch", "help", "man"};
@@ -176,32 +177,20 @@ int main()
          do
          {
             print_menu();
-         } while (getchar() != 10);
+         } while (getchar() != ENTER_KEY);
+         
          STATE = CHOOSE_MENU_OPTIONS;
+         
          break;
 
       case CHOOSE_MENU_OPTIONS:
          // Choose menu options.
+         chosen_option = 0;
+
          do {
-            switch (chosen_option)
-            {
-            case 1:
-               print_menu_options(chosen_option);
-               break;
-            
-            case 2:
-               print_menu_options(chosen_option);
-               break;
-
-            case 3:
-               print_menu_options(chosen_option);
-               break;
-
-            default:
-               print_menu_options(0);
-               break;
-            }
-         } while(getchar() != 10);
+            print_menu_options(chosen_option);
+            scanf("%d", &chosen_option);
+         } while(chosen_option <= 0 && chosen_option > 3);
 
          // Enter the game :)
          switch (chosen_option)
@@ -217,16 +206,12 @@ int main()
          case 3:
             STATE = GAME_OVER_EXIT;
             break;
-
-         default:
-            printerr("Unknown option.");
-            break;
          }
 
          break;
 
       case GAME_RUNNING:
-          // The prompt on screen.
+         // The prompt on screen.
          print(prompt);
 
          if (read_args(&argc, args, MAXARGS, &eof) && argc > 0)
@@ -295,7 +280,10 @@ int main()
          }
 
          break;
-      default:
+
+      case GAME_OVER_EXIT:
+         exit_game();
+         STATE = CONFIG_TERM;
          break;
       }
 

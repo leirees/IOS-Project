@@ -5,7 +5,7 @@
  * @brief Restores the terminal, from a previous state.
  * @param saved_glindos The terminal settings to restore;
  */
-void restore_terminal(struct termios saved_glindos);
+void restore_terminal(struct termios *saved_glindos);
 
 /**
  * @brief Clean the screen of the terminal.

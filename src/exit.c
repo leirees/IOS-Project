@@ -14,14 +14,14 @@ int exit_game()
 {
     char *ans;
     speak_glinda("Oh, my dear player, \nDo you really want to exit the game? [Y]es / [N]o, of course.", 0);
-    scanf("%s", &ans);
+    scanf("%s", ans);
     
-    if (!strcmp(ans, "y") || !strcmp(ans, "Y"))
+    if (!strncmp(ans, "y", 1) || !strncmp(ans, "Y", 1))
     {
         speak_glinda("Ok darling, have a nice day. See ya', dada!", 1);
         _exit(127);
     }
-    else if (!strcmp(ans, "n") || !strcmp(ans, "N"))
+    else if (!strncmp(ans, "n", 1) || !strncmp(ans, "N", 1))
     {
         speak_glinda("Well, let's play together! Let's go to hell!", 1);
     }
