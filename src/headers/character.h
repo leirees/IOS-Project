@@ -1,6 +1,7 @@
 #include "libstring.h"
 
-typedef struct {
+typedef struct
+{
     char *name;
     __INT8_TYPE__ is_with_you;
 } character;

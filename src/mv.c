@@ -12,44 +12,43 @@
 
 int main(int argc, char *argv[])
 {
-    char *file   = argv[1];
+    char *file = argv[1];
     char *subdir = argv[2];
     char *newdirec;
-    
+
     if (argc <= 2 || argc >= 4)
     {
         //If the command is used incorrectly, it will teach the user how to use it.
         howToUse();
     }
-    else if(argc==3)
+    else if (argc == 3)
     {
         DIR *direc = opendir(subdir);
-        
-        if(direc == NULL)
+
+        if (direc == NULL)
         {
             printf("Error: File not moved\n");
-        } 
-        else 
+        }
+        else
         {
             char *current;
             current = getcwd(newdirec, 50);
 
             // attach mv location to path && keep original file name
-            char *res = concat(concat(concat(concat(newdirec, "/"), subdir), "/"), file);                   
+            char *res = concat(concat(concat(concat(newdirec, "/"), subdir), "/"), file);
 
-            if(rename(file, direc) != -1)
+            if (rename(file, direc) != -1)
             {
                 printf("Successful\n");
-            }   
+            }
             else
             {
                 printf("Error:\nDirectory not found in CWD\n");
             }
-            
+
             closedir(direc);
         }
-     }
-
+    }
 }
 
 void howToUse()

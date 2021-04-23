@@ -15,7 +15,7 @@ int exit_game()
     char *ans;
     speak_glinda("Oh, my dear player, \nDo you really want to exit the game? [Y]es / [N]o, of course.", 0);
     scanf("%s", ans);
-    
+
     if (!strncmp(ans, "y", 1) || !strncmp(ans, "Y", 1))
     {
         speak_glinda("Ok darling, have a nice day. See ya', dada!", 1);

@@ -3,7 +3,8 @@
 /**
  * @brief A brief definition of a character with title.
  */
-typedef struct {
+typedef struct
+{
     __INT8_TYPE__ is_evil;
     char *short_title;
     char *real_title;

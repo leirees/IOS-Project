@@ -29,7 +29,7 @@ int cd(char *path)
         {
             //If the directory is not found.
             printerr("Glinda, \"The good witch from the North\": It look like that place you mean doesn't exist, my dear sweet child.");
-            println ("Glinda, \"The good witch from the North\": You'd better apply in you Geography lectures, if you don't want to loose yourself.");
+            println("Glinda, \"The good witch from the North\": You'd better apply in you Geography lectures, if you don't want to loose yourself.");
         }
         else
         {
@@ -41,17 +41,17 @@ int cd(char *path)
     }
     else
     {
-        if (closedir(dh) < 0) 
+        if (closedir(dh) < 0)
         {
             // If the directory cannot bet closed.
             printerr("Glinda, \"The good witch from the North\": It look like that place you mean doesn't exist, my dear sweet child.");
-            println ("Glinda, \"The good witch from the North\": You'd better apply in you Geography lectures, if you don't want to loose yourself.");
+            println("Glinda, \"The good witch from the North\": You'd better apply in you Geography lectures, if you don't want to loose yourself.");
             return EXIT_FAILURE;
         }
-        
+
         // Then, if the directory is closed, we can change of dir.
         chdir(path);
-    } 
+    }
 
     return EXIT_SUCCESS;
 }

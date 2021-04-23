@@ -11,13 +11,13 @@
 #include "headers/pwd.h"
 
 int pwd()
-{   
-    char *dir = getcwd( (char *) NULL, 0);
+{
+    char *dir = getcwd((char *)NULL, 0);
 
     if (dir == NULL)
     {
         printerr("ERROR: the directory couldn't be accessed!\n");
-    } 
+    }
     else
     {
         println(dir);
@@ -27,7 +27,7 @@ int pwd()
     return (dir == NULL ? EXIT_FAILURE : EXIT_SUCCESS);
 }
 
-int main(int argc, char * argv[]) 
+int main(int argc, char *argv[])
 {
     pwd();
     return 0;

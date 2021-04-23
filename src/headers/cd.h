@@ -24,4 +24,3 @@
  * @return int 0 iff success
  */
 extern int cd(char *path);
-

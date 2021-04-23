@@ -23,4 +23,3 @@ void print_menu();
  * @param selected_option The selected option, as an integer.
  */
 void print_menu_options(__INT8_TYPE__ selected_option);
-

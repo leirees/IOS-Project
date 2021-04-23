@@ -152,7 +152,7 @@ int main()
    char *PATH[NUMCOMMANDS] = {"cat", "cd", "cp", "exit", "grep", "help", "ls", "mv", "pwd", "stee", "touch", "help", "man"};
 
    // Root directory.
-   char *root_dir = getcwd((char *) NULL, 0);
+   char *root_dir = getcwd((char *)NULL, 0);
 
    // Arguments for the commands.
    char *args[MAXARGS];
@@ -162,7 +162,7 @@ int main()
    // Prompt design.
    char *prompt_name = "GlindOS";
    char *prompt = concat(concat(ANSI_COLOR_GREEN, prompt_name), concat(ANSI_COLOR_RESET, "$ "));
-   
+
    while (1)
    {
       switch (STATE)
@@ -178,19 +178,20 @@ int main()
          {
             print_menu();
          } while (getchar() != ENTER_KEY);
-         
+
          STATE = CHOOSE_MENU_OPTIONS;
-         
+
          break;
 
       case CHOOSE_MENU_OPTIONS:
          // Choose menu options.
          chosen_option = 0;
 
-         do {
+         do
+         {
             print_menu_options(chosen_option);
             scanf("%d", &chosen_option);
-         } while(chosen_option <= 0 && chosen_option > 3);
+         } while (chosen_option <= 0 && chosen_option > 3);
 
          // Enter the game :)
          switch (chosen_option)
@@ -198,7 +199,7 @@ int main()
          case 1:
             STATE = GAME_RUNNING;
             break;
-         
+
          case 2:
             STATE = SHOW_SCORES;
             break;
@@ -220,18 +221,18 @@ int main()
              * Every command is in the path of the program, and it is accessed through
              * a loop and by changing the path to it.
              */
-            
+
             from_path = 0;
             exit_status = 1;
 
-            for (command = 0; command < NUMCOMMANDS; command++) 
+            for (command = 0; command < NUMCOMMANDS; command++)
             {
                if (!strcmp(args[0], PATH[command]))
                {
                   if (!strcmp(args[0], "cd"))
                   {
                      // In case of CD, since it is a function, we only need to exec. it.
-                     if (argc > 1) 
+                     if (argc > 1)
                      {
                         cd(args[1]);
                      }
@@ -239,7 +240,7 @@ int main()
                      {
                         cd(root_dir);
                      }
-                  } 
+                  }
                   else if (!strcmp(args[0], "exit"))
                   {
                      exit_status = exit_game();
@@ -249,7 +250,7 @@ int main()
                   {
                      args[0] = concat(concat(root_dir, "/bin/"), PATH[command]);
                   }
-                  
+
                   from_path = 1;
                   break;
                }
@@ -259,7 +260,7 @@ int main()
             if (!exit_status)
             {
                STATE = GAME_OVER_EXIT;
-            } 
+            }
             else
             {
                /**

@@ -1,9 +1,9 @@
 /**
  * @file cp.h
- * @author ...
- * @brief ...
- * @version 0.1
- * @date 2021-03-30
+ * @author Mikel Aristu
+ * @brief cp command header, to copy files
+ * @version 0.2
+ * @date 2021-04-23
  * 
  * @copyright Copyright (c) 2021
  * 
@@ -17,11 +17,3 @@
 #include <sys/stat.h>
 #include <errno.h>
 #include <fcntl.h>
-
-/**
- * @brief Go to path. Change directory.
- * 
- * @param path Path to the new directory.
- * @return int 1 iff success, 0 otherwise.
- */
-extern int cd(char *path);

@@ -16,7 +16,7 @@ void _touch(char *f_name, char flags, int modes)
 {
     int fd;
     fd = open(f_name, flags, modes);
-    
+
     if (fd == -1)
     {
         printf(" touch has failed - errno =(%d) \n", errno);
@@ -27,7 +27,8 @@ void _touch(char *f_name, char flags, int modes)
     }
 }
 
-int main(int argc, char *argv[]){
+int main(int argc, char *argv[])
+{
     if (argc == 2)
     {
         //Explanation of modes:
@@ -35,7 +36,7 @@ int main(int argc, char *argv[]){
         //S_IRUSR: 00400 user has read permission.
         //S_IRGRP: 00040 group has read permission.
         //S_IROTH: 00004 others have read permission.
-        _touch(argv[1], O_CREAT, S_IWUSR|S_IRUSR|S_IRGRP|S_IROTH);
+        _touch(argv[1], O_CREAT, S_IWUSR | S_IRUSR | S_IRGRP | S_IROTH);
     }
     else
     {
@@ -44,4 +45,4 @@ int main(int argc, char *argv[]){
     }
 
     return 0;
- }
+}

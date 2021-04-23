@@ -1,6 +1,6 @@
 /**
  * @file getpass.c
- * @author Mikel Aristu, David Cuenca Marcos
+ * @author Mikel Aristu, David Cuenca
  *
  * @brief The command used to decrypt the pass in order to access the emerald city.
  *
@@ -12,11 +12,11 @@
 
 #include "headers/getpass.h"
 
-void docommand() 
+void docommand()
 {
     int pipefd[2];
 
-    if (pipe(pipefd)) 
+    if (pipe(pipefd))
     {
         // Get a pipe (buffer and fd pair) from the OS.
         perror("pipe");
@@ -27,13 +27,13 @@ void docommand()
      * We are the child process, but since we have TWO commands to execute we
      * need to have two disposable processes, so fork again. 
      */
-    switch (fork()) 
+    switch (fork())
     {
     case -1:
         // In case of error...
         perror("fork");
         exit(127);
-    
+
     case 0:
         // Child process
 
@@ -41,18 +41,18 @@ void docommand()
          * Do redirections and close the wrong side of the pipe the other side 
          * of the pipe 
          */
-        close(pipefd[0]);  
-        
+        close(pipefd[0]);
+
         // dup2() makes newfd be the copy of oldfd, closing newfd first if necessary.
-        
+
         // Automatically closes previous fd 1
-        dup2(pipefd[1], 1);  
+        dup2(pipefd[1], 1);
         // Cleanup
-        close(pipefd[1]);  
-        
+        close(pipefd[1]);
+
         // exec ls
-        execlp("/bin/ls", "ls", (char *) NULL);
-        
+        execlp("/bin/ls", "ls", (char *)NULL);
+
         /** 
          * Return value from execlp() can be ignored because if execlp returns at all, the 
          * return value must have been -1, meaning error; and the reason for the error is 
@@ -60,10 +60,10 @@ void docommand()
          */
         perror("/bin/ls");
         exit(127);
-    
+
     default:
         // Parent process
-        
+
         /**
          * It is important that the last command in the pipeline is execd by the parent, 
          * because that is the process we want the shell to wait on. That is, the shell 
@@ -74,18 +74,18 @@ void docommand()
          * otherwise their sides of the pipes won't be closed so the later-on processes 
          * will be waiting for more input still.
          */
-        
+
         // Do redirections and close the wrong side of the pipe
-        
+
         // The other side of the pipe.
-        close(pipefd[1]);  
+        close(pipefd[1]);
         // Automatically closes previous fd 0.
         dup2(pipefd[0], 0);
         // Cleanup.
         close(pipefd[0]);
 
         // Execute tr changing the letter b by s
-        execlp("/bin/tr", "tr", "b", "s", (char *) NULL);
+        execlp("/bin/tr", "tr", "b", "s", (char *)NULL);
         perror("/bin/tr");
         exit(127);
     }
@@ -114,9 +114,9 @@ int main()
      * It depends on how it's being buffered.  When doing a fork or execlp, we are careful to empty 
      * our stdio buffers first.
      */
-    fflush(stdout);  
+    fflush(stdout);
 
-    switch ((current_pid = fork())) 
+    switch ((current_pid = fork()))
     {
     case -1:
         perror("fork");
@@ -125,7 +125,7 @@ int main()
     case 0:
         /* child */
         docommand();
-        break;  
+        break;
 
     default:
         // Parent; fork() return value is child pid.
@@ -144,5 +144,5 @@ int main()
         printf("Child exit status was %d\n", WEXITSTATUS(status));
     }
 
-    return(0);
+    return (0);
 }

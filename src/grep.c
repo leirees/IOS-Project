@@ -16,12 +16,12 @@ int main(int argc, char *argv[])
     int linecount;
     int lineflag;
     char buf, line[160];
-    char ESC = 27;	// In order to change the format to bold
+    char ESC = 27; // In order to change the format to bold
 
     if (argc < 4) // To check the syntax
     {
-        write(2, "\n Error... Correct Syntax is : grep \"pattern\" \"filename\"\n\n", 58);	//To standart error
-        exit(0);	//Exit program
+        write(2, "\n Error... Correct Syntax is : grep \"pattern\" \"filename\"\n\n", 58); //To standart error
+        exit(0);                                                                           //Exit program
     }
 
     lineflag = 0;
@@ -47,16 +47,17 @@ int main(int argc, char *argv[])
             {
                 k = 1;
                 i++;
-                while ((k < strlen(argv[2])) && (line[i] == argv[2][k]))    //Check all characters in a line
+                while ((k < strlen(argv[2])) && (line[i] == argv[2][k])) //Check all characters in a line
                 {
                     i++;
                     k++;
                 }
 
-                if (k == strlen(argv[2])){      
-                    printf("%s", line);         // Print out the line
-                    occurances++;               // Count occurances of that string
-                } 
+                if (k == strlen(argv[2]))
+                {
+                    printf("%s", line); // Print out the line
+                    occurances++;       // Count occurances of that string
+                }
             }
 
             i++;
@@ -64,13 +65,13 @@ int main(int argc, char *argv[])
 
     } while (fhandle != 0);
 
-    printf("%c[1m", ESC);  /* turn on bold */
+    printf("%c[1m", ESC); /* turn on bold */
     printf("\n  Number of occurances: %d \n", occurances);
     printf("%c[0m", ESC); /* turn off bold */
-    
+
     close(des);
 
     arg_ind++;
-    
+
     printf("\n");
 }

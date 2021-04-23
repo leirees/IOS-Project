@@ -50,10 +50,10 @@
 
 #define HOME "config/.gamedir"
 
-#define UP_ARROW    65
-#define DOWN_ARROW  66
+#define UP_ARROW 65
+#define DOWN_ARROW 66
 #define RIGHT_ARROW 67
-#define LEFT_ARROW  68
+#define LEFT_ARROW 68
 
 // GLOBAL VARIABLES //
 static __INT8_TYPE__ STATE;
@@ -69,24 +69,23 @@ static __INT8_TYPE__ fails;
 /**
  * KEYS
  */
-#define ENTER_KEY               10
+#define ENTER_KEY 10
 
-#define I_KEY                   73
-#define K_KEY                   75
+#define I_KEY 73
+#define K_KEY 75
 
-#define LOWERCASE               22
+#define LOWERCASE 22
 
 /**
  * STATUS OF THE GAME.
  */
-#define CONFIG_TERM             -1
-#define INIT_MENU               0
-#define CHOOSE_MENU_OPTIONS     1
-#define GAME_RUNNING            2
-#define SHOW_SCORES             3
-#define GAME_OVER_EXIT          4
-#define GAME_OVER               5
-// END-MAIN
+#define CONFIG_TERM -1
+#define INIT_MENU 0
+#define CHOOSE_MENU_OPTIONS 1
+#define GAME_RUNNING 2
+#define SHOW_SCORES 3
+#define GAME_OVER_EXIT 4
+#define GAME_OVER 5
 
 /**
  * @brief Read all the entries in a line of written code, for shell.

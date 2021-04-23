@@ -1,9 +1,9 @@
 #include "character.h"
 
-#define TREES       underlined(bold("Forest trees"))
-#define GUARDIAN    undelined(bold("Guardian"))
-#define GHOST       underlined(bold("Ghost"))
-#define ADMIN       underlined(bold("ADMIN"))
+#define TREES underlined(bold("Forest trees"))
+#define GUARDIAN undelined(bold("Guardian"))
+#define GHOST underlined(bold("Ghost"))
+#define ADMIN underlined(bold("ADMIN"))
 
 static character trees;
 static character guardian;

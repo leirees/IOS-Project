@@ -24,4 +24,4 @@
 //For string concatenation
 #include <string.h>
 
-#define O_RDONLY 00    //Define the flag
+#define O_RDONLY 00 //Define the flag

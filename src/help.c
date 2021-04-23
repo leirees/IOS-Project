@@ -10,7 +10,8 @@
 
 #include "headers/help.h"
 
-void _help(){
+void _help()
+{
 
 	write(1, "\nThis is what you can use:\n", 27);
 	//Prints all the available commands to the stdout
@@ -38,13 +39,17 @@ void _help(){
 	write(1, "\tTo exit the Terminal World.\n\n", 30);
 }
 
-int main(int argc, const char *argv[]){
-
-	if (argc == 1){		//If there is one argument
-		_help();	//call help
-	} else if (argc != 1){	//If incorrect number of arguments
-		write(2, "\nYou can't even write a word correctly...\n", 42);	//To standart error
-		speak_ofelia("Look at the manual, you little useless piece of garbage!", 0);		//Bad witch in action
+int main(int argc, const char *argv[])
+{
+	if (argc == 1)
+	{			 //If there is one argument
+		_help(); //call help
 	}
+	else if (argc != 1)
+	{																				 //If incorrect number of arguments
+		write(2, "\nYou can't even write a word correctly...\n", 42);				 //To standart error
+		speak_ofelia("Look at the manual, you little useless piece of garbage!", 0); //Bad witch in action
+	}
+
 	return 0;
 }

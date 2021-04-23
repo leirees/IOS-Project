@@ -13,33 +13,32 @@
 #include <unistd.h>
 
 // COLORS in ANSI, for Terminal coloring
-#define ANSI_COLOR_RED      "\x1b[31m"
-#define ANSI_COLOR_GREEN    "\x1b[32m"
-#define ANSI_COLOR_YELLOW   "\x1b[33m"
-#define ANSI_COLOR_BLUE     "\x1b[34m"
-#define ANSI_COLOR_MAGENTA  "\x1b[35m"
-#define ANSI_COLOR_CYAN     "\x1b[36m"
-#define ANSI_COLOR_WHITE    "\x1b[37m"
-#define ANSI_COLOR_RESET    "\x1b[0m"
+#define ANSI_COLOR_RED "\x1b[31m"
+#define ANSI_COLOR_GREEN "\x1b[32m"
+#define ANSI_COLOR_YELLOW "\x1b[33m"
+#define ANSI_COLOR_BLUE "\x1b[34m"
+#define ANSI_COLOR_MAGENTA "\x1b[35m"
+#define ANSI_COLOR_CYAN "\x1b[36m"
+#define ANSI_COLOR_WHITE "\x1b[37m"
+#define ANSI_COLOR_RESET "\x1b[0m"
 
 // BOLD text
-#define BOLD                "\x1b[1m"
-#define NO_BOLD             "\x1b[0m"
+#define BOLD "\x1b[1m"
+#define NO_BOLD "\x1b[0m"
 
 // UNDERLINE text
-#define UNDERLINE           "\x1b[4m"
-#define NO_UNDERLINE        "\x1b[0m"
+#define UNDERLINE "\x1b[4m"
+#define NO_UNDERLINE "\x1b[0m"
 
 // REVERSE background, text color
-#define REVERSE             "\x1b[7m"
-#define NO_REVERSE          "\x1b[0m"
-
+#define REVERSE "\x1b[7m"
+#define NO_REVERSE "\x1b[0m"
 
 // The player
-#define PLAYER          underlined(concat(concat(ANSI_COLOR_WHITE, bold("The Player")), ANSI_COLOR_RESET));
+#define PLAYER underlined(concat(concat(ANSI_COLOR_WHITE, bold("The Player")), ANSI_COLOR_RESET));
 
 // System
-#define THE_SYSTEM      underlined(concat(reversed(concat(ANSI_COLOR_RED, "THE SYSTEM")), ANSI_COLOR_RESET));
+#define THE_SYSTEM underlined(concat(reversed(concat(ANSI_COLOR_RED, "THE SYSTEM")), ANSI_COLOR_RESET));
 
 /**
  * @brief Concat two string.
