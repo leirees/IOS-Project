@@ -4,7 +4,7 @@
  *
  * @brief The command used to create items.
  *
- * @version 0.2
+ * @version 0.3
  * @date 2021-03-24
  *
  * @copyright Copyright (c) 2021
@@ -31,11 +31,11 @@ int main(int argc, char *argv[]){
     if (argc == 2)
     {
         //Explanation of modes:
-        //S_IRWXU: 00700 user (the file owner) has read, write and execute permission.
+        //S_IWUSR: 00400 user has write permission
         //S_IRUSR: 00400 user has read permission.
         //S_IRGRP: 00040 group has read permission.
         //S_IROTH: 00004 others have read permission.
-        _touch(argv[1], O_CREAT, S_IRWXU|S_IRUSR|S_IRGRP|S_IROTH);
+        _touch(argv[1], O_CREAT, S_IWUSR|S_IRUSR|S_IRGRP|S_IROTH);
     }
     else
     {
