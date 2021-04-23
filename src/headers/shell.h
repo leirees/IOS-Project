@@ -50,10 +50,15 @@
 
 #define HOME "config/.gamedir"
 
+// ARROWS
 #define UP_ARROW 65
 #define DOWN_ARROW 66
 #define RIGHT_ARROW 67
 #define LEFT_ARROW 68
+
+// PROMPT DESIGN
+#define PROMPT_DESIGN concat(concat(ANSI_COLOR_BLUE, prompt_name), concat(ANSI_COLOR_RESET, "$ "))
+#define PROMPT_NAME "GlindOS"
 
 // GLOBAL VARIABLES //
 static __INT8_TYPE__ STATE;

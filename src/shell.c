@@ -136,32 +136,33 @@ int execute(int argc, char *argv[])
 
 int main()
 {
-   // Begin configuring the signal handing.
+   // Before configuring any other feature, configure signal handler.
    setup_signals();
 
-   // First, set the state of the game to config.
+   // Then, set the state of the game to general configuration state.
    STATE = CONFIG_TERM;
+
+   // Get the PID of the current process.
    parent_pid = getpid();
 
    // Declare local variables.
+   char *args[MAXARGS];
+   int status;
+   int argc;
+   int eof = 0;
    __INT8_TYPE__ from_path;
    __INT8_TYPE__ command;
    __INT8_TYPE__ chosen_option;
 
-   // Command path.
+   // Set the commands in the standard command path.
    char *PATH[NUMCOMMANDS] = {"cat", "cd", "cp", "exit", "grep", "help", "ls", "mv", "pwd", "stee", "touch", "help", "man"};
 
-   // Root directory.
+   // Set the root directory of the game.
    char *root_dir = getcwd((char *)NULL, 0);
 
-   // Arguments for the commands.
-   char *args[MAXARGS];
-   int argc, status, buff;
-   int eof = 0;
-
-   // Prompt design.
-   char *prompt_name = "GlindOS";
-   char *prompt = concat(concat(ANSI_COLOR_GREEN, prompt_name), concat(ANSI_COLOR_RESET, "$ "));
+   // Set the default prompt design.
+   char *prompt_name = PROMPT_NAME;
+   char *prompt = PROMPT_DESIGN;
 
    while (1)
    {

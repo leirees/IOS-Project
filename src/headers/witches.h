@@ -1,4 +1,4 @@
-#include "headers/character_with_title.h"
+#include "character_with_title.h"
 
 // The four witcher talk
 #define GLINDA underlined(concat(concat(concat(ANSI_COLOR_CYAN, bold("Glinda")), ", \"The Good Witch of the NORTH\""), ANSI_COLOR_RESET));

@@ -97,8 +97,8 @@ fi
 
 # COMPILE SHELL.
 if [[ !(-s shell) || -n "$(git diff src/shell.c)" || -n "$(git diff src/headers/shell.h)" ]]; then
-    echo "COMPILING SHELL"
-    gcc src/shell.c src/cd.c src/exit.c src/signal_handler.c src/menu.c src/character_with_title.c -o shell -lstring
+    echo "COMPILING GAME FILE"
+    gcc src/shell.c src/cd.c src/exit.c src/signal_handler.c src/menu.c src/character_with_title.c -o TheWizardOfOS -lstring
 fi
 
 echo "**END**"

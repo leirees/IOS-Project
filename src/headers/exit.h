@@ -13,6 +13,7 @@
 #include <unistd.h>
 
 #include "libstring.h"
+#include "witches.h"
 
 /**
  * @brief Finish the execution of the terminal.
