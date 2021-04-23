@@ -258,19 +258,21 @@ int main()
             // On exit, break the game loop.
             if (!exit_status)
             {
-               return EXIT_SUCCESS;
-            }
-
-            /**
-             * Error control is done independently, in every child process.
-             * Terminal has nothing to do with errors from other processes.
-             * 
-             * Instead, the errors may come if the shell tries to exec. something
-             * that is not a command, nor an executable file.
-             */
-            if (from_path || !strncmp("./", args[0], 2))
+               STATE = GAME_OVER_EXIT;
+            } 
+            else
             {
-               status = execute(argc, args);
+               /**
+                * Error control is done independently, in every child process.
+                * Terminal has nothing to do with errors from other processes.
+                * 
+                * Instead, the errors may come if the shell tries to exec. something
+                * that is not a command, nor an executable file.
+                */
+               if (from_path || !strncmp("./", args[0], 2))
+               {
+                  status = execute(argc, args);
+               }
             }
          }
 
@@ -286,7 +288,6 @@ int main()
          STATE = CONFIG_TERM;
          break;
       }
-
       // END OF THE LOOP!
    }
 

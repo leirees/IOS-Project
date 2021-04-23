@@ -2,7 +2,7 @@
  * @file exit.c
  * @author David Cuenca Marcos
  * @brief Exit command implementation.
- * @version 0.1
+ * @version 2
  * @date 2021-03-27
  * 
  * @copyright Copyright (c) 2021
@@ -19,7 +19,7 @@ int exit_game()
     if (!strncmp(ans, "y", 1) || !strncmp(ans, "Y", 1))
     {
         speak_glinda("Ok darling, have a nice day. See ya', dada!", 1);
-        _exit(127);
+        return EXIT_SUCCESS;
     }
     else if (!strncmp(ans, "n", 1) || !strncmp(ans, "N", 1))
     {
