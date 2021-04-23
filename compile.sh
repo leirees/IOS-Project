@@ -28,7 +28,7 @@ if [[ !(-s bin/cat) || -n "$(git diff src/cat.c)" || -n "$(git diff src/headers/
 fi
 
 # Compile CD command.
-if [[ !(-s bin/cd) || -n "$(git diff src/cd.c)" || -n "$(git diff src/headers/cd.h)" ]]; then
+if [[ -n "$(git diff src/cd.c)" || -n "$(git diff src/headers/cd.h)" ]]; then
     echo "Compile cd."
     gcc -c src/cd.c -o build/cd.o -lstring
 fi
@@ -40,9 +40,9 @@ if [[ !(-s bin/cp) || -n "$(git diff src/cp.c)" || -n "$(git diff src/headers/cp
 fi
 
 # Compile EXIT command.
-if [[ !(-s bin/exit) || -n "$(git diff src/exit.c)" || -n "$(git diff src/headers/exit.h)" ]]; then
+if [[ -n "$(git diff src/exit.c)" || -n "$(git diff src/headers/exit.h)" ]]; then
     echo "Compile exit."
-    gcc -O2 src/exit.c -o bin/exit -lstring
+    gcc -c src/exit.c -o build/exit.o -lstring
 fi
 
 # Compile GREP command.
@@ -98,7 +98,7 @@ fi
 # COMPILE SHELL.
 if [[ !(-s shell) || -n "$(git diff src/shell.c)" || -n "$(git diff src/headers/shell.h)" ]]; then
     echo "COMPILING SHELL"
-    gcc src/shell.c src/cd.c -o shell -lstring
+    gcc src/shell.c src/cd.c src/exit.c src/signal_handler.c src/menu.c src/character_with_title.c -o shell -lstring
 fi
 
 echo "**END**"

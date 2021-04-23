@@ -8,6 +8,22 @@
  * @copyright Copyright (c) 2021
  */
 
+// String library mod.
+#include "libstring.h"
+
+// CD call
+#include "cd.h"
+
+// Exit game call
+#include "exit.h"
+
+// Menu settings and functions
+#include "menu.h"
+
+// Signal handler
+#include "signal_handler.h"
+
+// MAIN
 // Used for basic input/output stream
 #include <stdio.h>
 #include <stdlib.h>
@@ -22,30 +38,55 @@
 #include <unistd.h>
 #include <sys/wait.h>
 
-// Signals and signal handlers
-#include <signal.h>
-
-// String library mod.
-#include "libstring.h"
-
-// CD call
-#include "cd.h"
-
-#define error(a)    {printerr(a); exit(EXIT_FAILURE);};
-#define MAXLINE     200
-#define MAXARGS     20
+#define error(a)            \
+    {                       \
+        printerr(a);        \
+        exit(EXIT_FAILURE); \
+    };
+#define MAXLINE 200
+#define MAXARGS 20
 
 #define NUMCOMMANDS 13
 
-#define HOME        "config/.gamedir"
+#define HOME "config/.gamedir"
+
+#define UP_ARROW    65
+#define DOWN_ARROW  66
+#define RIGHT_ARROW 67
+#define LEFT_ARROW  68
+
+// GLOBAL VARIABLES //
+static __INT8_TYPE__ STATE;
+
+// Flags.
+static __INT8_TYPE__ exit_status;
+// PID.
+static pid_t child_pid;
+static pid_t parent_pid;
+// Fail counter.
+static __INT8_TYPE__ fails;
 
 /**
- * @brief Signal handler, in case of signals like Ctrl-C or Ctrl-Z,
- * to get custom behaviors.
- * 
- * @param sig Signal code.
+ * KEYS
  */
-void signal_handler(int sig);
+#define ENTER_KEY               10
+
+#define I_KEY                   73
+#define K_KEY                   75
+
+#define LOWERCASE               22
+
+/**
+ * STATUS OF THE GAME.
+ */
+#define CONFIG_TERM             -1
+#define INIT_MENU               0
+#define CHOOSE_MENU_OPTIONS     1
+#define GAME_RUNNING            2
+#define SHOW_SCORES             3
+#define GAME_OVER_EXIT          4
+#define GAME_OVER               5
+// END-MAIN
 
 /**
  * @brief Read all the entries in a line of written code, for shell.
@@ -57,7 +98,7 @@ void signal_handler(int sig);
  * @param eofp 
  * @return int 
  */
-int read_args(int* argcp, char* args[], int max, int* eofp);
+int read_args(int *argcp, char *args[], int max, int *eofp);
 
 /**
  * @brief Execute a process, given a command and its arguments.

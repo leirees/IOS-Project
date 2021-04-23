@@ -10,9 +10,14 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-
 #include <unistd.h>
 
-#include <signal.h>
-
 #include "libstring.h"
+
+/**
+ * @brief Finish the execution of the terminal.
+ * Indeed, exit the game at once.
+ * 
+ * @return int 0 if successfully exited.
+ */
+extern int exit_game();

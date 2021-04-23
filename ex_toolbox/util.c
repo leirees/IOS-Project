@@ -12,8 +12,8 @@ void SetTermNoCanon( struct termios *SavedTM)
     tm.c_cc[VMIN]= 1;			
     tm.c_cc[VTIME]= 0;
     tcsetattr(0, TCSANOW, &tm);		// ezaugarriak aldatu
-
 }
+
 void Berreskuratu_tm(struct termios *tm)
 {
     tcsetattr(0, TCSANOW, tm);
