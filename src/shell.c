@@ -140,7 +140,7 @@ int main()
    setup_signals();
 
    // Then, set the state of the game to general configuration state.
-   STATE = CONFIG_TERM;
+   state = CONFIG_TERM;
 
    // Get the PID of the current process.
    parent_pid = getpid();
@@ -166,11 +166,11 @@ int main()
 
    while (1)
    {
-      switch (STATE)
+      switch (state)
       {
       case CONFIG_TERM:
          setup_global_variables();
-         STATE = INIT_MENU;
+         state = INIT_MENU;
          break;
 
       case INIT_MENU:
@@ -180,7 +180,7 @@ int main()
             print_menu();
          } while (getchar() != ENTER_KEY);
 
-         STATE = CHOOSE_MENU_OPTIONS;
+         state = CHOOSE_MENU_OPTIONS;
 
          break;
 
@@ -198,15 +198,15 @@ int main()
          switch (chosen_option)
          {
          case 1:
-            STATE = GAME_RUNNING;
+            state = GAME_RUNNING;
             break;
 
          case 2:
-            STATE = SHOW_SCORES;
+            state = SHOW_SCORES;
             break;
 
          case 3:
-            STATE = GAME_OVER_EXIT;
+            state = GAME_OVER_EXIT;
             break;
          }
 
@@ -260,7 +260,7 @@ int main()
             // On exit, break the game loop.
             if (!exit_status)
             {
-               STATE = GAME_OVER_EXIT;
+               state = GAME_OVER_EXIT;
             }
             else
             {
@@ -287,7 +287,7 @@ int main()
 
       case GAME_OVER_EXIT:
          exit_game();
-         STATE = CONFIG_TERM;
+         state = CONFIG_TERM;
          break;
       }
       // END OF THE LOOP!

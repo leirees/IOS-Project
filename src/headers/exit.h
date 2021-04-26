@@ -8,12 +8,7 @@
  * @copyright Copyright (c) 2021
  */
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
-
-#include "libstring.h"
-#include "witches.h"
+#include "main_header.h"
 
 /**
  * @brief Finish the execution of the terminal.

@@ -1,4 +1,4 @@
-#include "character.h"
+#include "main_header.h"
 
 // The Three Knights of the Player
 #define SCARECROWN underlined(bold("The Brainless Scarecrown"));
@@ -13,7 +13,7 @@ static character dog;
 
 extern void create_scarecrown();
 
-extern void create_tinman(__INT8_TYPE__ is_with_you);
+extern void create_tinman(int8 is_with_you);
 
 extern void create_lion();
 

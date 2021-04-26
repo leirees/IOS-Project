@@ -8,14 +8,7 @@
  * @copyright Copyright (c) 2021
  */
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <errno.h>
-#include <string.h>
-#include <dirent.h>
-#include <unistd.h>
-
-#include "libstring.h"
+#include "main_header.h"
 
 /**
  * @brief Change of directory, from current process.

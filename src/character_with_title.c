@@ -1,6 +1,6 @@
 #include "headers/character_with_title.h"
 
-void speak(character_with_title *someone, char *text, __INT8_TYPE__ is_title_short)
+void speak(character_with_title *someone, char *text, unsigned char is_title_short)
 {
     char *title;
 
