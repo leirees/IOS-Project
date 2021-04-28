@@ -1,8 +1,11 @@
 #!/bin/bash
 # SCRIPT FOR COMPILING ALL THE DEPENDENCES THE PROGRAM WILL NEED.
+# CREATION
 # BY DAVID CUENCA MARCOS, 30/03/2021.
-# CHANGES...
+# CHANGESLOG
 # MOD. David Cuenca Marcos, 14/04/2021.
+# MOD. David Cuenca Marcos, 28/04/2021: ALL flag, for complete compilation; .version saving, for later, next compilations,
+# in other Linux flavours, Windows.
 
 # true iff Compile everything, as an argument.
 ALL="$1"
@@ -10,9 +13,9 @@ ALL="$1"
 last_vers="$(uname -r)"
 vers=$last_vers
 
-if [[ !(-s .vers) ]]; then
+if [[ !(-s .version) ]]; then
     echo $vers > .version
-else 
+else
     last_vers="$(cat .version)"
 
     if [[ $vers != $last_vers ]]; then
