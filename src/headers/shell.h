@@ -30,6 +30,17 @@
 #include "signal_handler.h"
 
 /**
+ * @brief Process signals SIGINT and SIGTSTP, with particular behaviors.
+ */
+void setup_signals();
+
+/**
+ * @brief Setup all the characters, variables.
+ * 
+ */
+void setup();
+
+/**
  * @brief Read all the entries in a line of written code, for shell.
  * For reading commands.
  * 

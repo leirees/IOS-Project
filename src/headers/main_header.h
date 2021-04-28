@@ -1,6 +1,6 @@
 /**
  * @file main_header.h
- * @author David Cuenca Marcos
+ * @author 2.2 Team developement group
  * @brief Header for general purposes, such as global variables and libraries used everywhere.
  * @version 0.1
  * @date 2021-04-26
@@ -28,13 +28,15 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
+#include <signal.h>
 
 // Character struct.
 #include "character.h"
-#include "character_with_title.h"
-
-#include "witches.h"
-#include "generic_char.h"
+#include "charwtitle.h"
+#include "charcomp.h"
+#include "charwitch.h"
+#include "charextra.h"
+#include "charplayer.h"
 
 // Home directory
 #define HOME "config/.gamedir"
@@ -45,8 +47,7 @@ typedef __INT8_TYPE__ int8;
 typedef __U16_TYPE u16;
 typedef short int16;
 typedef unsigned int u32;
-typedef char* string;
-
+typedef char *string;
 
 #define error(a)            \
     {                       \
@@ -73,6 +74,10 @@ typedef char* string;
 // Lowecase code ASCII (use the sum)
 #define LOWERCASE 22
 
+// Boolean values
+#define true 1
+#define false 0
+
 /**
  * New status of the game.
  */
@@ -84,15 +89,33 @@ typedef char* string;
 #define GAME_OVER_EXIT 4
 #define GAME_OVER 5
 
-// Character's definition.
-/* DEFINE HERE ALL THE CHARACTERS */
-// TODO: write all the script inside the program.
-
 // GLOBAL VARIABLES //
 static u8 state;
-static u8 fails;
 static u8 exit_status;
 
 // PID.
 static pid_t child_pid;
 static pid_t parent_pid;
+
+// Character's definition.
+// Main character
+static player dorothy;
+
+static character scarecrown;
+static character tinman;
+static character lion;
+
+static character_with_title glinda;
+static character_with_title ofelia;
+
+// Secondary character
+static character admin;
+static character dog;
+
+static character_with_title gertrudis;
+static character_with_title jasmine;
+
+// Extras
+static character trees;
+static character guardian;
+static character ghost;

@@ -10,28 +10,27 @@
 
 #include "headers/shell.h"
 
-struct termios saved_glindos;
-struct termios config_glindos;
-
-/**
- * @brief Process signals SIGINT and SIGTSTP, with particular behaviors.
- */
 void setup_signals()
 {
    signal(SIGINT, signal_handler);
    signal(SIGTSTP, signal_handler);
 }
 
-void setup_global_variables()
+void setup()
 {
-   // Initialise global variables.
-   // FLAGS
-   exit_status = 1;
    // PID
    child_pid = -1;
-   parent_pid = 0;
-   // Fail counter.
-   fails = 0;
+   parent_pid = getpid();
+
+   // FLAGS
+   exit_status = 1;  
+
+   // Characters
+   create_character(&scarecrown, SCARECROWN, false, false, false, true);
+   create_character(&tinman, TINMAN, false, false, false, true);
+   create_character(&lion, LION, false, false, false, true);
+   create_charwtitle(&glinda, "Glinda", SHORT_GLINDA, GLINDA, true, false, false, false);
+   create_charwtitle(&ofelia, "Ofelia", SHORT_OFELIA, OFELIA, true, true, false, false);
 }
 
 int read_args(int *argcp, char *args[], int max, int *eofp)
@@ -150,9 +149,9 @@ int main()
    int status;
    int argc;
    int eof = 0;
-   __INT8_TYPE__ from_path;
-   __INT8_TYPE__ command;
-   __INT8_TYPE__ chosen_option;
+   u8 from_path;
+   u8 command;
+   u8 chosen_option;
 
    // Set the commands in the standard command path.
    char *PATH[NUMCOMMANDS] = {"cat", "cd", "cp", "exit", "grep", "help", "ls", "mv", "pwd", "stee", "touch", "help", "man"};
@@ -169,7 +168,7 @@ int main()
       switch (state)
       {
       case CONFIG_TERM:
-         setup_global_variables();
+         setup();
          state = INIT_MENU;
          break;
 
