@@ -10,6 +10,17 @@
 
 #include "headers/ls.h"
 
+/*
+#define ANSI_COLOR_GREEN "\x1b[32m"
+#define ANSI_COLOR_YELLOW "\x1b[33m"
+#define ANSI_COLOR_BLUE "\x1b[34m"
+#define ANSI_COLOR_CYAN "\x1b[36m"
+#define ANSI_COLOR_RESET "\x1b[0m"
+
+#define BOLD "\x1b[1m"
+#define NO_BOLD "\x1b[0m"
+*/
+
 void _ls(const char *dir, int op_a, int op_l)
 {
 	//Pointer to stat struct
@@ -44,13 +55,17 @@ void _ls(const char *dir, int op_a, int op_l)
 		if (!op_a && d->d_name[0] == '.')
 			continue;
 
-		char yellow[7 + strlen(d->d_name) + 4], name[strlen(d->d_name)], defaultcol[5]; //Allocate
-		strcpy(yellow, "\033[0;33m");													//Store yellow color
-		strcpy(name, d->d_name);														//Store name
-		strcpy(defaultcol, "\033[0m");													//Store default color
-		strcat(yellow, name);															//Concatenate color code + name
-		strcat(yellow, defaultcol);														//Add default color code to string
-		write(1, yellow, strlen(yellow));												//Write the name in yellow
+		if (!op_a){
+			char yellow[7 + strlen(d->d_name) + 4], name[strlen(d->d_name)], defaultcol[5]; //Allocate
+			strcpy(yellow, "\033[0;33m");													//Store yellow color
+			strcpy(name, d->d_name);														//Store name
+			strcpy(defaultcol, "\033[0m");													//Store default color
+			strcat(yellow, name);															//Concatenate color code + name
+			strcat(yellow, defaultcol);														//Add default color code to string
+			write(1, yellow, strlen(yellow));												//Write the name in yellow
+		} else if(op_a && d->d_name[0] == '.'){
+			//hemen idatzi urdinez
+		}										
 
 		if (!op_l)
 			write(1, "\n", 2); //New line if not -l

@@ -27,6 +27,9 @@
 //For string concatenation
 #include <string.h>
 
+//Colors, etc
+#include "libstring.h"
+
 /**
  * @brief List directory.
  * 
