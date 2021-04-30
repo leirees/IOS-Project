@@ -10,23 +10,19 @@
 
 //For write system call
 #include <unistd.h>
-
 //Used for basic input/output stream
 #include <stdio.h>
-
 //Standart library
 #include <stdlib.h>
 #include <sys/uio.h>
-
 //For string concatenation
 #include <string.h>
+// Character witches
+#include "main_header.h"
+#include "charwtitle.h"
 
 /**
  * @brief Help command.
  * 
- * @param command Command to get help about.
- * @param op_d ...
- * @param op_m ...
- * @param op_s ...
  */
-void _help(const char *command, int op_d, int op_m, int op_s);
+void _help();

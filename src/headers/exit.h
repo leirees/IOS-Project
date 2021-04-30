@@ -10,6 +10,14 @@
 
 #include "main_header.h"
 
+// Basic IO stream
+#include <stdio.h>
+#include <stdlib.h>
+// Modified String Library, by 2.2 Team.
+#include "libstring.h"
+// Include witches
+#include "charwitch.h"
+
 /**
  * @brief Finish the execution of the terminal.
  * Indeed, exit the game at once.
