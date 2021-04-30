@@ -9,6 +9,8 @@
  * 
  */
 
+// Remove cyclical imports TODO:
+
 // Modified String Library, by 2.2 Team.
 #include "libstring.h"
 
@@ -31,7 +33,7 @@
 #include <signal.h>
 
 // Character struct.
-#include "character.h"
+// #include "character.h"
 #include "charwtitle.h"
 #include "charcomp.h"
 #include "charwitch.h"

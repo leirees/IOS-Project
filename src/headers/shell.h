@@ -9,14 +9,6 @@
  */
 
 #include "main_header.h"
-
-// Number of commands.
-#define NUMCOMMANDS 13
-
-// PROMPT DESIGN
-#define PROMPT_DESIGN concat(concat(ANSI_COLOR_BLUE, prompt_name), concat(ANSI_COLOR_RESET, "$ "))
-#define PROMPT_NAME "GlindOS"
-
 // CD call
 #include "cd.h"
 
@@ -29,6 +21,13 @@
 // Signal handler
 #include "signal_handler.h"
 
+// Number of commands.
+#define NUMCOMMANDS 13
+
+// PROMPT DESIGN
+#define PROMPT_DESIGN concat(concat(ANSI_COLOR_BLUE, prompt_name), concat(ANSI_COLOR_RESET, "$ "))
+#define PROMPT_NAME "GlindOS"
+
 /**
  * @brief Process signals SIGINT and SIGTSTP, with particular behaviors.
  */
@@ -38,7 +37,13 @@ void setup_signals();
  * @brief Setup all the characters, variables.
  * 
  */
-void setup();
+void setup_game();
+
+/**
+ * @brief Creates all character objects for the game.
+ * 
+ */
+void create_characters();
 
 /**
  * @brief Read all the entries in a line of written code, for shell.
@@ -60,3 +65,9 @@ int read_args(int *argcp, char *args[], int max, int *eofp);
  * @return int -1 if error creating the process, 1 if error while executing the process or 0 if ok.
  */
 int execute(int argc, char *argv[]);
+
+/**
+ * @brief Shell object, for game.
+ * 
+ */
+void shell();
