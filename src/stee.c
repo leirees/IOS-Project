@@ -1,38 +1,36 @@
 /**
  * @file stee.c
- * @author Lecturers IOS.
- * @brief ...
- * @version 0.1
- * @date 2021-03-30
- * 
+ * @author Mikel Aristu
+ * @brief The command that saves the name of the player.
+ * @version 0.3
+ * @date 2021-04-30
+ *
  * @copyright Copyright (c) 2021
- * 
+ *
  */
-
 #include "headers/stee.h"
 
 int main(int argc, char *argv[])
 {
-   int fd;
-   char c;
+   FILE *fd;
+   char name[25];
 
-   if (argc != 2)
+   if (argc != 1)
    {
-      write(2, "Usage: stee output_file\n", 24);
+      write(2, "Usage: myname\n", 24);
       exit(1);
    }
-
-   if ((fd = open(argv[1], O_WRONLY | O_CREAT | O_TRUNC, 0666)) == -1)
+   printf("What's your name?\n");
+   scanf("%249s", name);
+   printf("\nHello %s I'm glad of hearing from you!\n", name);
+   
+   if((fd = fopen("../config/.player/.ref", "w"))==NULL)
    {
-      write(2, "ERROR open\n", 11);
-      exit(1);
+        write(2, "Failed saving your name\n", 23);
+        exit(1);
    }
 
-   while (read(0, &c, 1) > 0)
-   {
-      write(1, &c, 1);
-      write(fd, &c, 1);
-   }
-
-   close(fd);
+   fprintf(fd, "%s", name);
+   fclose(fd);
+   printf("correct\n");
 }
