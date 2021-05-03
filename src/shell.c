@@ -190,7 +190,7 @@ void shell()
 {
    // Declare local variables.
    char *path[NUMCOMMANDS] = {"cat", "cd", "cp", "exit", "grep", "help", "ls", "mv", "pwd", "stee", "touch", "help", "man"};
-   char *root_dir = getcwd((char *)NULL, 0);
+   char *root_dir = getcwd((char *)NULL, 0); 
 
    // Set the default prompt design.
    char *prompt_name = PROMPT_NAME;

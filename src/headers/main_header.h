@@ -3,82 +3,48 @@
  * @author 2.2 Team developement group
  * @brief Header for general purposes, such as global variables and libraries used everywhere.
  * @version 0.1
- * @date 2021-04-26
+ * @date 2021-05-02
  * 
  * @copyright Copyright (c) 2021
  * 
  */
 
-// Remove cyclical imports TODO:
-
-// Modified String Library, by 2.2 Team.
-#include "libstring.h"
-
-// Basic IO stream
-#include <stdio.h>
-#include <stdlib.h>
-
-// Hadle directory files
-#include <dirent.h>
-
-// Exit codes and error handling
-#include <errno.h>
-
-// Unix syscalls
-#include <unistd.h>
-#include <sys/wait.h>
+// System types, for C
 #include <sys/types.h>
-#include <sys/stat.h>
-#include <fcntl.h>
-#include <signal.h>
+// Standard C library error codes
+#include <errno.h>
+// Characters.
+#include "characters/character.h"
 
-// Character struct.
-// #include "character.h"
-#include "charwtitle.h"
-#include "charcomp.h"
-#include "charwitch.h"
-#include "charextra.h"
-#include "charplayer.h"
+// Max line and args (length) definitions.
+#define MAXLINE 200
+#define MAXARGS 20
 
 // Home directory
 #define HOME "config/.gamedir"
 
-// Define new datatypes
-typedef unsigned char u8;
-typedef __INT8_TYPE__ int8;
-typedef __U16_TYPE u16;
-typedef short int16;
-typedef unsigned int u32;
-typedef char *string;
-
+// For error handling, defined routine!
 #define error(a)            \
     {                       \
         printerr(a);        \
         exit(EXIT_FAILURE); \
     };
 
-#define MAXLINE 200
-#define MAXARGS 20
+/* KEYBOARD */
+// Keyboard letters.
+#define I_KEY 73
+#define K_KEY 75
 
-/**
- * Keyboard keys.
- */
+// Lowecase code ASCII gap.
+#define LOWERCASE 22
+
+// Arrow keys.
 #define UP_ARROW 65
 #define DOWN_ARROW 66
 #define RIGHT_ARROW 67
 #define LEFT_ARROW 68
 
 #define ENTER_KEY 10
-
-#define I_KEY 73
-#define K_KEY 75
-
-// Lowecase code ASCII (use the sum)
-#define LOWERCASE 22
-
-// Boolean values
-#define true 1
-#define false 0
 
 /**
  * New status of the game.
@@ -91,7 +57,24 @@ typedef char *string;
 #define GAME_OVER_EXIT 4
 #define GAME_OVER 5
 
-// GLOBAL VARIABLES //
+/* New DATATYPES */
+// Bool
+typedef u8 bool;
+#define true 1
+#define false 0
+
+//u8
+typedef unsigned char u8;
+//int8
+typedef __INT8_TYPE__ int8;
+//u16
+typedef __U16_TYPE u16;
+//int16
+typedef short int16;
+//u32
+typedef unsigned int u32;
+
+/* GLOBAL VARIABLES */
 static u8 state;
 static u8 exit_status;
 

@@ -34,7 +34,7 @@ int main(int argc, char *argv[])
             char *current;
             current = getcwd(newdirec, 50);
 
-            dirent *name_file = readdir(direc);
+            struct dirent *name_file = readdir(direc);
 
             // attach mv location to path && keep original file name
             char *res = concat(concat(concat(concat(newdirec, "/"), subdir), "/"), file);

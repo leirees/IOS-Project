@@ -8,10 +8,10 @@
  * @copyright Copyright (c) 2021
  */
 
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
-#include <string.h>
 
 // COLORS in ANSI, for Terminal coloring
 #define ANSI_COLOR_RED "\x1b[31m"
@@ -34,12 +34,6 @@
 // REVERSE background, text color
 #define REVERSE "\x1b[7m"
 #define NO_REVERSE "\x1b[0m"
-
-// The player
-#define PLAYER underlined(concat(concat(ANSI_COLOR_WHITE, bold("The Player")), ANSI_COLOR_RESET));
-
-// System
-#define THE_SYSTEM underlined(concat(reversed(concat(ANSI_COLOR_RED, "THE SYSTEM")), ANSI_COLOR_RESET));
 
 /**
  * @brief Concat two string.

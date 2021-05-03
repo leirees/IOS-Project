@@ -7,9 +7,9 @@
 echo "Current location: $(pwd)"
 
 # Compile and make libstring work
-if [[ -n "$(git diff src/libstring/libstring.c)" || -n "$(git diff src/headers/libstring.h)" ]]; then
+if [[ -n "$(git diff src/headers/libstring/libstring.c)" || -n "$(git diff src/headers/libstring/libstring.h)" ]]; then
     echo "Compile libstring mod."
-    gcc -fPIC -c src/libstring/libstring.c -o build/libstring.o
+    gcc -fPIC -c src/headers/libstring/libstring.c -o build/libstring.o
     gcc -shared -Wl,-soname,libstring.so -o build/libstring.so build/libstring.o
 
     sudo cp build/libstring.so /usr/lib

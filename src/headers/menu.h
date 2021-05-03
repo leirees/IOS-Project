@@ -1,5 +1,5 @@
 #include <termios.h>
-#include "libstring.h"
+#include "libstring/libstring.h"
 
 /**
  * @brief Restores the terminal, from a previous state.

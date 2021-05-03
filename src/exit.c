@@ -14,8 +14,6 @@ int exit_game()
 {
     char *ans;
     speak_charwtitle(&glinda, "Oh, my dear player, \nDo you really want to exit the game? [Y]es / [N]o, of course.", 1);
-    
-    // TODO: change by a syscall-implemented function
     scanf("%s", ans);
 
     if (!strncmp(ans, "y", 1) || !strncmp(ans, "Y", 1))
@@ -29,8 +27,8 @@ int exit_game()
     }
     else
     {
-        printerr("Say something useful, you fool!");
         speak_charwtitle(&ofelia, "You spoke wrongly, useless ape!", 0);
+        printerr("Say something useful, you fool!");
     }
 
     return EXIT_FAILURE;
