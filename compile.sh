@@ -114,7 +114,7 @@ if [[ $ALL == "true" || $last_vers != $vers || !(-s shell) || -n "$(git diff src
     gcc -c src/signal_handler.c -o build/signal_handler.o
     gcc -c src/menu.c -o build/menu.o
     
-    gcc src/shell.c build/cd.o build/exit.o build/signal_handler.o build/menu.o build/characters.o -o TheWizardOfOS -lstring
+    gcc -Wall src/shell.c build/cd.o build/exit.o build/signal_handler.o build/menu.o build/characters.o -o TheWizardOfOS -lstring
 fi
 
 if [[ $last_vers != $vers ]]; then

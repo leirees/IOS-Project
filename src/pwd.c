@@ -13,9 +13,9 @@
 
 int pwd()
 {
-    // Inside the game, it is impossible now to have a directory without permissions to read but to access.
+    // Inside the game, it is impossible to have a directory without permissions to read but to access.
     println(getcwd((char *)NULL, 0));
-    return (EXIT_SUCCESS);
+    return EXIT_SUCCESS;
 }
 
 int main(int argc, char *argv[])

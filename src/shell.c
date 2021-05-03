@@ -80,7 +80,7 @@ void create_characters()
    create_character(&guardian, guardian_name, false, false, false);
 }
 
-int read_args(int *argcp, char *args[], int max, int *eofp)
+int read_args(int16 *argcp, char *args[], int max, bool *eofp)
 {
    static char cmd[MAXLINE];
    char *cmdp;

@@ -59,7 +59,7 @@ void create_characters();
  * @param eofp 
  * @return int 
  */
-int read_args(int *argcp, char *args[], int max, int *eofp);
+int read_args(int16 *argcp, char *args[], int max, bool *eofp);
 
 /**
  * @brief Execute a process, given a command and its arguments.

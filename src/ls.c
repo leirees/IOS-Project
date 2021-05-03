@@ -38,7 +38,6 @@ void _ls(const char *dir, int op_a, int op_l)
 			printerr("Unable to read directory. Try again, ape.", err_title);
 		}
 
-		free(err_title);
 		_exit(EXIT_FAILURE);
 	}
 
