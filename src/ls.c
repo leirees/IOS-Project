@@ -42,9 +42,7 @@ void _ls(const char *dir, int op_a, int op_l)
 	}
 
 	/* 2- While the next entry is not readable we will print directory files */
-	d = readdir(dh);
-
-	while (d != NULL)
+	while ((d = readdir(dh)) != NULL)
 	{
 		if (d->d_name[0] == '.')
 		{
@@ -55,54 +53,59 @@ void _ls(const char *dir, int op_a, int op_l)
 			}
 			else
 			{
-				// Else, leave it hidden, in the night of the Terminal.
 				continue;
 			}
 		}
 		else
 		{
-			//If we are in Emerald City
-			if(strcmp(d->d_name, "emerald_city") == 0){
-
-				//Print in Green color and bold (Emerald City)
+			if (!strcmp(d->d_name, "emerald_city"))
+			{
+				// If we are in Emerald City, print in Green color and bold (Emerald City)
 				println(concat(concat(BOLD, concat(ANSI_COLOR_GREEN, d->d_name)), NO_BOLD));
-
-			} else{
-
+			}
+			else
+			{
 				// For the main path, simply print it on screen.
 				println(concat(ANSI_COLOR_YELLOW, d->d_name));
 			}
 		}
 
-		if (op_l)
+		// If ls -l,
+		if (op_l) 
 		{
 			// Stat syscall, in order to get additional info about a file.
 			stat(d->d_name, &sfile);
 
+			//Accessing st_size (of stat struct) --> Size
+			printf("Size: %ld", sfile.st_size);
+			//Accessing st_uid (of stat struct) --> User ID
+			printf("\n  User ID: %d", sfile.st_uid);
+			//Accessing st_mode (of stat struct) --> Permissions
+			printf("\n  File Permissions User: ");
+			printf((sfile.st_mode & S_IRUSR) ? "r" : "-");
+			printf((sfile.st_mode & S_IWUSR) ? "w" : "-");
+			printf((sfile.st_mode & S_IXUSR) ? "x" : "-");
+			printf("\n");
+
 			/* Properties of the file */
 			// Accessing st_size --> Size.
-			char *size;
-			sprintf(size, "Size: %ld", sfile.st_size);
-			println(size);
-			// Accessing st_uid  --> User ID.
-			char *uid;
-			sprintf(uid, "User ID: %d", sfile.st_uid);
-			println(uid);
-			// Accessing st_mode --> Permissions.
-			println("User file permissions: ");
-			print("\t");
-			print((sfile.st_mode & S_IRUSR) ? "r" : "-");
-			print((sfile.st_mode & S_IWUSR) ? "w" : "-");
-			print((sfile.st_mode & S_IXUSR) ? "x" : "-");
-			print("\n");
+			// char *size;
+			// sprintf(size, "Size: %ld", sfile.st_size);
+			// println(size);
+			// // Accessing st_uid  --> User ID.
+			// char *uid;
+			// sprintf(uid, "User ID: %d", sfile.st_uid);
+			// println(uid);
+			// // Accessing st_mode --> Permissions.
+			// println("User file permissions: ");
+			// print("\t");
+			// print((sfile.st_mode & S_IRUSR) ? "r" : "-");
+			// print((sfile.st_mode & S_IWUSR) ? "w" : "-");
+			// print((sfile.st_mode & S_IXUSR) ? "x" : "-");
+			// print("\n");
 		}
-		else
-		{
-			println("");
-		}
-
-		d = readdir(dh);
 	}
+
 }
 
 int main(int argc, const char *argv[])
@@ -130,12 +133,12 @@ int main(int argc, const char *argv[])
 			{
 				if (*p == 'a')
 				{
-					// If option is a
+					// If option is -a
 					op_a = 1;
 				}
 				else if (*p == 'l')
 				{
-					// If option is l
+					// If option is -l
 					op_l = 1;
 				}
 				else
