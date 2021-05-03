@@ -46,30 +46,6 @@ void _ls(const char *dir, int op_a, int op_l)
 
 	while (d != NULL)
 	{
-		// If hidden files are found we continue
-		// if (!op_a && d->d_name[0] == '.')
-		// 	continue;
-
-		// if (!op_a)
-		// {
-		// 	// char yellow[7 + strlen(d->d_name) + 4], name[strlen(d->d_name)], defaultcol[5]; 	//Allocate
-		// 	// strcpy(yellow, "\033[0;33m");													//Store yellow color
-		// 	// strcpy(name, d->d_name);															//Store name
-		// 	// strcpy(defaultcol, "\033[0m");													//Store default color
-		// 	// strcat(yellow, name);															//Concatenate color code + name
-		// 	// strcat(yellow, defaultcol);														//Add default color code to string
-		// 	// write(1, yellow, strlen(yellow));
-
-		// 	// Write the name in yellow
-		// 	println(concat(ANSI_COLOR_YELLOW, d->d_name));
-		// }
-		// else if (op_a && d->d_name[0] == '.')
-		// {
-		// 	//hemen idatzi urdinez
-		// }
-
-		/* -a option */
-		// Simplified version of the code above.
 		if (d->d_name[0] == '.')
 		{
 			if (op_a)
@@ -85,36 +61,19 @@ void _ls(const char *dir, int op_a, int op_l)
 		}
 		else
 		{
-			// For the main path, simply print it on screen.
-			println(concat(ANSI_COLOR_YELLOW, d->d_name));
+			//If we are in Emerald City
+			if(strcmp(d->d_name, "emerald_city") == 0){
+
+				//Print in Green color and bold (Emerald City)
+				println(concat(concat(BOLD, concat(ANSI_COLOR_GREEN, d->d_name)), NO_BOLD));
+
+			} else{
+
+				// For the main path, simply print it on screen.
+				println(concat(ANSI_COLOR_YELLOW, d->d_name));
+			}
 		}
 
-		// if (!op_l)
-		// 	write(1, "\n", 2); //New line if not -l
-
-		// if (op_l) //If -l
-		// {
-		// 	//stat system call
-		// 	stat(d->d_name, &sfile);
-		// 	//Accessing st_size (of stat struct) --> Size
-		// 	printf("\n  Size: %ld", sfile.st_size);
-		// 	//Accessing st_uid (of stat struct) --> User ID
-		// 	printf("\n  User ID: %d", sfile.st_uid);
-		// 	//Accessing st_mode (of stat struct) --> Permissions
-		// 	printf("\n  File Permissions User: ");
-		// 	printf((sfile.st_mode & S_IRUSR) ? "r" : "-");
-		// 	printf((sfile.st_mode & S_IWUSR) ? "w" : "-");
-		// 	printf((sfile.st_mode & S_IXUSR) ? "x" : "-");
-		// 	printf("\n");
-		// }
-
-		// if (!op_l)
-		// {
-		// 	printf("\n");
-		// }
-
-		/* -l option */
-		// Simplified version of the code above.
 		if (op_l)
 		{
 			// Stat syscall, in order to get additional info about a file.
