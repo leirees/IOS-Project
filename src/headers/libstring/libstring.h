@@ -62,8 +62,9 @@ extern void println(char *str);
  * @brief Print an error message.
  * 
  * @param str Error msg.
+ * @param err_title The character that advises the player about the error.
  */
-extern void printerr(char *str);
+extern void printerr(char *str, char *err_title);
 
 /**
  * @brief Set a string as bold text.

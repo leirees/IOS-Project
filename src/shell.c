@@ -11,14 +11,11 @@
 #include "headers/shell.h"
 
 char *args[MAXARGS];
-
 int8 status;
 int16 argc;
-u8 eof = 0;
+bool eof;
 
-u8 from_path;
-u8 command;
-u8 chosen_option;
+u8 last_state;
 
 void setup_signals()
 {
@@ -28,12 +25,12 @@ void setup_signals()
 
 void setup_game()
 {
+   // Root dir
+   root_dir = getcwd((char *)NULL, 0);
+
    // PID
    child_pid = -1;
    parent_pid = getpid();
-
-   // FLAGS
-   exit_status = 1;
 
    create_characters();
 }
@@ -46,53 +43,48 @@ void create_characters()
    char *tinman_name = TINMAN;
    char *lion_name = LION;
 
-   create_character(&scarecrown, scarecrown_name, false, false, false, true);
-   create_character(&tinman, tinman_name, false, false, false, true);
-   create_character(&lion, lion_name, false, false, false, true);
+   create_character(&scarecrown, scarecrown_name, false, false, true);
+   create_character(&lion, lion_name, false, false, true);
+   create_character(&tinman, tinman_name, false, false, true);
 
    // Witches creation
    char *short_title_glinda = SHORT_GLINDA;
    char *short_title_ofelia = SHORT_OFELIA;
-   char *title_glinda = GLINDA;
-   char *title_ofelia = OFELIA;
-
-   create_charwtitle(&glinda, "Glinda", short_title_glinda, title_glinda, true, false, false, false);
-   create_charwtitle(&ofelia, "Ofelia", short_title_ofelia, title_ofelia, true, true, false, false);
-
-   // Secondary characters
-   char *admin_name = ADMIN;
-   create_character(&admin, admin_name, true, false, false, false);
-
-   char *dog_name = DOG;
-   create_character(&dog, dog_name, false, false, false, false);
-
    char *short_title_gertrudis = SHORT_GERTRUDIS;
    char *short_title_jasmine = SHORT_JASMINE;
+   char *title_glinda = GLINDA;
+   char *title_ofelia = OFELIA;
    char *title_gertrudis = GERTRUDIS;
    char *title_jasmine = JASMINE;
 
-   // TODO: witch constructor.
-   create_charwtitle(&gertrudis, "Gertrudis", short_title_gertrudis, title_gertrudis, true, true, false, false);
-   create_charwtitle(&jasmine, "Jasmine", short_title_jasmine, title_jasmine, true, false, false, false);
+   create_witch(&glinda, "Glinda", short_title_glinda, title_glinda, false);
+   create_witch(&ofelia, "Ofelia", short_title_ofelia, title_ofelia, true);
+   create_witch(&gertrudis, "Gertrudis", short_title_gertrudis, title_gertrudis, true);
+   create_witch(&jasmine, "Jasmine", short_title_jasmine, title_jasmine, false);
 
-   // TODO: extras constructor.
+   // Secondary characters
+   char *admin_name = ADMIN;
+   create_character(&admin, admin_name, true, false, false);
+
+   char *dog_name = DOG;
+   create_character(&dog, dog_name, false, false, false);
+
    // Extras
    char *trees_name = TREES;
    char *ghost_name = GHOST;
    char *guardian_name = GUARDIAN;
 
-   create_character(&trees, trees_name, false, false, true, false);
-   create_character(&ghost, ghost_name, false, false, true, false);
-   create_character(&guardian, guardian_name, false, false, true, false);
+   create_character(&trees, trees_name, false, false, false);
+   create_character(&ghost, ghost_name, true, false, false);
+   create_character(&guardian, guardian_name, false, false, false);
 }
 
 int read_args(int *argcp, char *args[], int max, int *eofp)
 {
    static char cmd[MAXLINE];
    char *cmdp;
-   int ret, i;
+   int ret, i = 0;
 
-   i = 0;
    *argcp = 0;
    *eofp = 0;
 
@@ -168,17 +160,16 @@ int execute(int argc, char *argv[])
    switch (child_pid)
    {
    case -1:
-      // Error on creating the child process.
+      // Error in fork() (not so common)
       return EXIT_FAILURE;
 
    case 0:
-      // Child process' program.
-      // Execute the give command, if possible.
+      // Child process
       execvp(argv[0], argv);
       break;
 
    default:
-      // Parent process execution.
+      // Parent process.
       wait(NULL);
       break;
    }
@@ -186,28 +177,16 @@ int execute(int argc, char *argv[])
    return EXIT_SUCCESS;
 }
 
-void shell()
+int shell(char *path[NUMCOMMANDS], char *err_title, char *prompt)
 {
-   // Declare local variables.
-   char *path[NUMCOMMANDS] = {"cat", "cd", "cp", "exit", "grep", "help", "ls", "mv", "pwd", "stee", "touch", "help", "man"};
-   char *root_dir = getcwd((char *)NULL, 0); 
+   u8 command;
 
-   // Set the default prompt design.
-   char *prompt_name = PROMPT_NAME;
-   char *prompt = PROMPT_DESIGN;
-
-   from_path = 0;
-   exit_status = 1;
-
-   // The prompt on screen.
+   // Print the prompt on screen.
    print(prompt);
 
    if (read_args(&argc, args, MAXARGS, &eof) && argc > 0)
    {
-      /**
-       * Every command is in the path of the program, and it is accessed through
-       * a loop and by changing the path to it.
-       */
+      // Check commands from path.
       for (command = 0; command < NUMCOMMANDS; command++)
       {
          if (!strcmp(args[0], path[command]))
@@ -215,99 +194,89 @@ void shell()
             if (!strcmp(args[0], "cd"))
             {
                // CD command.
-               if (argc > 1)
-               {
-                  cd(args[1]);
-               }
-               else
-               {
-                  cd(root_dir);
-               }
+               cd(args[1]);
             }
             else if (!strcmp(args[0], "exit"))
             {
-               // If exit written, then, change of state.
-               // exit_game() call is then called outside the shell.
-               exit_status = true;
-               break;
+               // EXIT command.
+               last_state = state;
+               state = GAME_OVER_EXIT;
             }
             else
             {
                args[0] = concat(concat(root_dir, "/bin/"), path[command]);
+               status = execute(argc, args);
             }
-
-            from_path = 1;
             break;
          }
       }
 
-      // On exit, break the game loop.
-      if (exit_status)
+      // Check commands from outside the path (executable files).
+      if (!strncmp("./", args[0], 2))
       {
-         state = GAME_OVER_EXIT;
-      }
-      else
-      {
-         /**
-          * Error control is done independently, in every child process.
-          * Terminal has nothing to do with errors from other processes.
-          * 
-          * Instead, the errors may come if the shell tries to exec. something
-          * that is not a command, nor an executable file.
-          */
-         if (from_path || !strncmp("./", args[0], 2))
-         {
-            status = execute(argc, args);
-         } else {
-            printerr("There must be something wrong with you, I guess.");
-         }
+         status = execute(argc, args);
       }
    }
 
    if (eof)
    {
-      exit(EXIT_SUCCESS);
+      return EXIT_SUCCESS;
    }
 }
 
 int main()
 {
+   // Setup System Agent: the one that provides its body as the work in which we work.
+   char *err_title = THE_SYSTEM;
+
+   // Setup command path.
+   char *path[NUMCOMMANDS] = COMMANDS;
+
+   // Set the default prompt design.
+   char *prompt = PROMPT;
+
+   // Setup signals
+   setup_signals();
+
    // 1. Set game state to configuration state, and deal with signal handling.
    state = CONFIG_TERM;
-   setup_signals();
 
    do
    {
       switch (state)
       {
       case CONFIG_TERM:
-         setup();
+         // Setup game and change state.
+         setup_game();
+         last_state = state;
          state = INIT_MENU;
          break;
 
       case INIT_MENU:
-         // Initial menu.
+         // Initial menu: if ENTER_KEY pressed, go to CHOOSE_MENU_OPTIONS.
          do
          {
             print_menu();
          } while (getchar() != ENTER_KEY);
 
-         // If ENTER_KEY is pressed, then, go to CHOOSE_MENU_OPTIONS.
+         last_state = state;
          state = CHOOSE_MENU_OPTIONS;
          break;
 
       case CHOOSE_MENU_OPTIONS:
          // Choose menu options.
-         chosen_option = 0;
-
+         u8 option = 0;
          do
          {
-            print_menu_options(chosen_option);
-            scanf("%d", &chosen_option);
-         } while (chosen_option <= 0 && chosen_option > 3);
+            print_menu_options(option);
+            scanf("%d", &option);
+            print_menu_options(option);
+         } while (getchar() != ENTER_KEY);
+
+         last_state = state;
 
          // Enter the game :)
-         switch (chosen_option)
+         switch (option)
          {
          case 1:
             state = GAME_RUNNING;
@@ -321,20 +290,24 @@ int main()
             state = GAME_OVER_EXIT;
             break;
          }
-
          break;
 
       case GAME_RUNNING:
-         shell();
-
+         shell(path, err_title, prompt);
          break;
 
       case GAME_OVER_EXIT:
-         exit_game();
-         state = CONFIG_TERM;
+         if (exit_game())
+         {
+            state = CONFIG_TERM;
+         }
+         else
+         {
+            state = last_state;
+         }
          break;
       }
    } while (true);
 
-   return EXIT_SUCCESS;
+   _exit(EXIT_SUCCESS);
 }

@@ -9,35 +9,38 @@
  */
 
 #include "main_header.h"
-// CD call
-#include "cd.h"
-
-// Exit game call
-#include "exit.h"
-
-// Menu settings and functions
-#include "menu.h"
-
 // Signal handler
 #include "signal_handler.h"
 
-// Number of commands.
+/* COMMANDS for the game */
 #define NUMCOMMANDS 13
+#define COMMANDS                                                                                     \
+    {                                                                                                \
+        "cat", "cd", "cp", "exit", "grep", "help", "ls", "mv", "pwd", "stee", "touch", "help", "man" \
+    }
+
+// CD
+#include "cd.h"
+// EXIT
+#include "exit.h"
+
+/* Menu settings and functions */
+#include "menu.h"
 
 // PROMPT DESIGN
-#define PROMPT_DESIGN concat(concat(ANSI_COLOR_BLUE, prompt_name), concat(ANSI_COLOR_RESET, "$ "))
 #define PROMPT_NAME "GlindOS"
-
-/**
- * @brief Process signals SIGINT and SIGTSTP, with particular behaviors.
- */
-void setup_signals();
+#define PROMPT concat(concat(ANSI_COLOR_BLUE, PROMPT_NAME), concat(ANSI_COLOR_RESET, "$ "))
 
 /**
  * @brief Setup all the characters, variables.
  * 
  */
 void setup_game();
+
+/**
+ * @brief Process signals SIGINT and SIGTSTP, with particular behaviors.
+ */
+void setup_signals();
 
 /**
  * @brief Creates all character objects for the game.
@@ -69,5 +72,9 @@ int execute(int argc, char *argv[]);
 /**
  * @brief Shell object, for game.
  * 
+ * @param path The path with all the commands.
+ * @param err_title The error title, for error handling.
+ * @param prompt The prompt design.
+ * @return int 1 iff failure.
  */
-void shell();
+int shell(char *path[NUMCOMMANDS], char *err_title, char *prompt);

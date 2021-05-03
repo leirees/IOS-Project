@@ -10,7 +10,5 @@
  */
 
 #include "main_header.h"
-
-#include <unistd.h>
 #include <sys/stat.h>
 #include <fcntl.h>

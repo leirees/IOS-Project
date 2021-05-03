@@ -8,9 +8,6 @@
  * @copyright Copyright (c) 2021
  */
 
-#include <unistd.h>
-#include <sys/types.h>
+#include "main_header.h"
 #include <sys/stat.h>
 #include <fcntl.h>
-#include <stdlib.h>
-#include <stdio.h>

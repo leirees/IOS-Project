@@ -1,6 +1,5 @@
-#include "headers/main_header.h"
-
-extern void setup_signal();
+#include "main_header.h"
+#include <signal.h>
 
 /**
  * @brief The signal handler of the game.

@@ -1,6 +1,6 @@
 /**
  * @file cat.c
- * @author Mikel Aristu, David Cuenca
+ * @author Mikel Aristu, David Cuenca, Team 2.2
  * @brief The command used to read files.
  * @version 0.1
  * @date 2021-03-25
@@ -12,12 +12,13 @@
 
 int main(int argc, char *argv[])
 {
+   char ch[30] = "";
+   char str[80];
+   char *err_sys = THE_SYSTEM;
+   ssize_t write_buff;
+
    if (argc == 2)
    {
-      char ch[30] = "";
-      char str[80];
-      ssize_t write_buff = 0;
-
       int bytes_read = 0;
 
       // Open the file in read-only mode.
@@ -26,7 +27,7 @@ int main(int argc, char *argv[])
       // If there is any error when trying to open the file.
       if (file_descriptor < 0)
       {
-         printerr("Error while opening the file.");
+         printerr("Error while opening the file.", err_sys);
          exit(EXIT_FAILURE);
       }
 
@@ -34,8 +35,8 @@ int main(int argc, char *argv[])
       do
       {
          bytes_read = (file_descriptor, ch, MAXLINE);
-         sprintf(str, "%d", bytes_read);
-         puts(str);
+         sprintf(str, "Bytes read: %ld", bytes_read);
+         print(str);
       } while (bytes_read > 0);
 
       close(file_descriptor);
@@ -43,8 +44,8 @@ int main(int argc, char *argv[])
    else
    {
       // If the command is used incorrectly, it will teach the user how to use it.
-      println("Usage: cat file_name");
+      printerr("No, no, no. Usage: cat file_name. Revise your notes, please.", err_sys);
    }
 
-   return 0;
+   exit(EXIT_SUCCESS);
 }

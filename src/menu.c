@@ -1,3 +1,14 @@
+/**
+ * @file menu.c
+ * @author David Cuenca, Team 2.2
+ * @brief Menu file, for The Wizard Of OS.
+ * @version 0.1
+ * @date 2021-05-03
+ * 
+ * @copyright Copyright (c) 2021
+ * 
+ */
+
 #include "headers/menu.h"
 
 void restore_terminal(struct termios *saved_glindos)
@@ -7,9 +18,7 @@ void restore_terminal(struct termios *saved_glindos)
 
 void clear_screen()
 {
-    __U16_TYPE maxline = 800;
-
-    for (__U16_TYPE rows = 0; rows < maxline; rows++)
+    for (u16 rows = 0; rows < MAXLINE; rows++)
     {
         println("");
     }
@@ -36,7 +45,7 @@ void print_menu()
     println("***************************************************************");
 }
 
-void print_menu_options(__INT8_TYPE__ selected_option)
+void print_menu_options(u8 selected_option)
 {
     clear_screen();
     switch (selected_option)

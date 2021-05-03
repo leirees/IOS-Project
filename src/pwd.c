@@ -12,23 +12,12 @@
 
 int pwd()
 {
-    char *dir = getcwd((char *)NULL, 0);
-
-    if (dir == NULL)
-    {
-        printerr("ERROR: the directory couldn't be accessed!\n");
-    }
-    else
-    {
-        println(dir);
-        free(dir);
-    }
-
-    return (dir == NULL ? EXIT_FAILURE : EXIT_SUCCESS);
+    // Inside the game, it is impossible now to have a directory without permissions to read but to access.
+    println(getcwd((char *)NULL, 0));
+    return (EXIT_SUCCESS);
 }
 
 int main(int argc, char *argv[])
 {
-    pwd();
-    return 0;
+    _exit(pwd() ? EXIT_FAILURE : EXIT_SUCCESS);
 }

@@ -12,17 +12,18 @@
 
 int main(int argc, char *argv[])
 {
+    char *err_title = THE_SYSTEM;
+
     int des, fhandle, i, j, k, arg_ind = 2, occurances = 0;
     int linecount;
     int lineflag;
     char buf, line[160];
 
-    // In order to change the format to bold
-    char ESC = 27;
-
-    if (argc < 4) // To check the syntax
+    // To check the syntax, the number of args.
+    if (argc < 4)
     {
-        error("Error... Correct Syntax is : grep \"pattern\" \"filename\"\n");                                                                        //Exit program
+        printerr("Pattern recognition error! The CORRECT SYNTAX is : grep \"pattern\" \"filename\". Revise your notes, please.", err_title);
+        exit(EXIT_FAILURE);
     }
 
     lineflag = 0;
@@ -34,8 +35,10 @@ int main(int argc, char *argv[])
     // Read upto the end of file and copy to the array line[i].
     do
     {
+        //Read a line
         i = 0;
-        do //Read a line
+
+        do
         {
             fhandle = read(des, &buf, 1);
             line[i++] = buf;
@@ -43,15 +46,20 @@ int main(int argc, char *argv[])
 
         line[i] = '\0';
         linecount++;
+
+        //Check character matching
         i = 0;
 
-        while (line[i] != '\0') //Check character matching
+        while (line[i] != '\0')
         {
             if (line[i] == argv[2][0])
             {
+
+                // Check all characters in a line
                 k = 1;
                 i++;
-                while ((k < strlen(argv[2])) && (line[i] == argv[2][k])) //Check all characters in a line
+
+                while ((k < strlen(argv[2])) && (line[i] == argv[2][k]))
                 {
                     i++;
                     k++;
@@ -59,8 +67,10 @@ int main(int argc, char *argv[])
 
                 if (k == strlen(argv[2]))
                 {
-                    printf("%s", line); // Print out the line
-                    occurances++;       // Count occurances of that string
+                    // Print out the line
+                    printf("%s", line);
+                    // Count occurances of that string
+                    occurances++;
                 }
             }
 
@@ -69,10 +79,12 @@ int main(int argc, char *argv[])
 
     } while (fhandle != 0);
 
-    char *res = "Number of occurances: %d";
-    sprintf(res, occurances);
-    println(bold(res));
-    
     close(des);
     arg_ind++;
+
+    char *res;
+    sprintf(res, "Number of occurances: %d", occurances);
+    println(bold(res));
+
+    exit(EXIT_SUCCESS);
 }

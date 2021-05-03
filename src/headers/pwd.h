@@ -1,21 +1,17 @@
 /**
  * @file pwd.c
- * @author David Cuenca 
+ * @author David Cuenca, Team 2.2
  * @brief Asks for help to know where the main character is.
  * @version 0.1
  * @date 2021-03-16
  * 
  * @copyright Copyright (c) 2021
  */
-
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include "libstring/libstring.h"
+#include "main_header.h"
 
 /**
- * @brief Reads and writes the directory route to stdout.
+ * @brief Writes the current path from root, of the user.
  * 
- * @return int 1 if error; else 0.
+ * @return int 1 iff error.
  */
 int pwd();

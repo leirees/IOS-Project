@@ -1,6 +1,6 @@
 /**
  * @file help.c
- * @author The Wizard of OS team
+ * @author Zdravko Todorov, Team 2.2
  * @brief Gives info about available commands
  * @version 1
  * @date 2021-04-21
@@ -12,43 +12,58 @@
 
 void _help()
 {
-	write(1, "\nThis is what you can use:\n", 27);
-	//Prints all the available commands to the stdout
-	write(1, "\nhelp :\n", 8);
-	write(1, "\tYou've just used it.\n", 22);
-	write(1, "\ncat :\n", 7);
-	write(1, "\tRead a note you have found.\n", 29);
-	write(1, "\ncd :\n", 6);
-	write(1, "\tGo to a new location.\n", 23);
-	write(1, "\ncp :\n", 6);
-	write(1, "\tClone something.\n", 18);
-	write(1, "\ngrep :\n", 8);
-	write(1, "\tSearch a word in a book.\n", 26);
-	write(1, "\nls :\n", 6);
-	write(1, "\tLook around you.\n", 18);
-	write(1, "\nmv :\n", 6);
-	write(1, "\tMove items from one place to another.\n", 39);
-	write(1, "\npwd :\n", 7);
-	write(1, "\tLocate yourself in the Terminal World.\n", 40);
-	write(1, "\nstee :\n", 8);
-	write(1, "\tEdit a file.\n", 14);
-	write(1, "\ntouch :\n", 9);
-	write(1, "\tCraft a new item.\n", 19);
-	write(1, "\nexit :\n", 8);
-	write(1, "\tTo exit the Terminal World.\n\n", 30);
+	speak_charwtitle(&jasmine, "Our my sweetest child, this is the spells you can use in this travel:", 1);
+
+	/* Prints all the available commands to the stdout */
+	// HELP
+	println(bold("help:"));
+	println("\tYou've just used it to read this :)");
+	// CAT
+	println(bold("cat:"));
+	println("\tYou can read notes with this command.");
+	// CD
+	println(bold("cd :"));
+	println("\tTo move to another location in the map. Even teleport yourself and your companions!");
+	// CP
+	println(bold("cp :"));
+	println("\tTo clone something into something new!");
+	// GREP
+	println(bold("grep :"));
+	println("\tTo search something in a book or a note.");
+	// LS
+	println(bold("ls :"));
+	println("\tTo look around you and get notice of the path you have to follow!");
+	// MV
+	println(bold("mv :"));
+	println("\tTo move items or companions (Toto!) from one place to another, manually, of course.");
+	// PWD
+	println(bold("pwd :"));
+	println("\tTo locate yourself in OS. Answer: <<Where Am I?>>");
+	// STEE
+	println(bold("stee :"));
+	println("\tTo edit a file. Take a pencil and change it as you wish!");
+	// TOUCH
+	println(bold("touch :"));
+	println("\tTo craft a new item, following a recipe.");
+	// EXIT
+	println(bold("exit :"));
+	println("\tTo save your progress and exit the game.");
 }
 
 int main(int argc, const char *argv[])
 {
-	if (argc == 1)
-	{			 //If there is one argument
-		_help(); //call help
-	}
-	else if (argc != 1)
-	{																				 //If incorrect number of arguments
-		write(2, "\nYou can't even write a word correctly...\n", 42);				 //To standart error
-		speak_ofelia("Look at the manual, you little useless piece of garbage!", 0); //Bad witch in action
+	// If incorrect number of arguments
+	if (argc != 1)
+	{
+		char *err_title = THE_SYSTEM;
+		printerr("Oh, poor little player, you can't even ask for help correctly...", err_title);
+		
+		// Bad witch in action, oh yeah.
+		speak_charwtitle(&ofelia, "Look at the manual, you little useless piece of garbage!", 0);
+		_exit(EXIT_FAILURE);
 	}
 
-	return 0;
+	// If there is only argumentl, that is, if only "help" is written.
+	_help();
+	_exit(EXIT_SUCCESS);
 }

@@ -23,13 +23,6 @@
 // Home directory
 #define HOME "config/.gamedir"
 
-// For error handling, defined routine!
-#define error(a)            \
-    {                       \
-        printerr(a);        \
-        exit(EXIT_FAILURE); \
-    };
-
 /* KEYBOARD */
 // Keyboard letters.
 #define I_KEY 73
@@ -58,11 +51,6 @@
 #define GAME_OVER 5
 
 /* New DATATYPES */
-// Bool
-typedef u8 bool;
-#define true 1
-#define false 0
-
 //u8
 typedef unsigned char u8;
 //int8
@@ -74,9 +62,16 @@ typedef short int16;
 //u32
 typedef unsigned int u32;
 
+// Bool
+typedef u8 bool;
+#define true 1
+#define false 0
+
 /* GLOBAL VARIABLES */
 static u8 state;
-static u8 exit_status;
+
+// Root dir
+static char *root_dir;
 
 // PID.
 static pid_t child_pid;

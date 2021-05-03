@@ -15,6 +15,9 @@ ALL="$1"
 last_vers="$(uname -r)"
 vers=$last_vers
 
+echo "Current OS: $vers"
+echo "Current location: $(pwd)"
+
 if [[ !(-s .version) ]]; then
     echo $vers > .version
 else
@@ -26,15 +29,11 @@ else
     fi
 fi
 
-echo "Current OS: $vers"
-echo "Current location: $(pwd)"
-
-# Compile and make libstring work
-if [[ $ALL == "true" || $last_vers != $vers || -n "$(git diff src/libstring/libstring.c)" || -n "$(git diff src/headers/libstring.h)" ]]; then
+# Compile libstring
+if [[ $ALL == "true" || $last_vers != $vers || -n "$(git diff src/headers/libstring/libstring.c)" || -n "$(git diff src/headers/libstring/libstring.h)" ]]; then
     echo "Compile libstring mod."
     gcc -fPIC -c src/headers/libstring/libstring.c -o build/libstring.o
     gcc -shared -Wl,-soname,libstring.so -o build/libstring.so build/libstring.o
-
     chmod 0755 build/libstring.so
 fi
 
@@ -119,7 +118,7 @@ fi
 # COMPILE SHELL.
 if [[ $ALL == "true" || $last_vers != $vers || !(-s shell) || -n "$(git diff src/shell.c)" || -n "$(git diff src/headers/shell.h)" ]]; then
     echo "COMPILING GAME FILE"
-    gcc src/shell.c src/cd.c src/exit.c src/signal_handler.c src/menu.c src/character_with_title.c -o TheWizardOfOS -L$libstring -lstring
+    gcc src/shell.c src/cd.c src/exit.c src/signal_handler.c src/menu.c src/headers/characters/character.c -o TheWizardOfOS -L$libstring -lstring
 fi
 
 if [[ $last_vers != $vers ]]; then

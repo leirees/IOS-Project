@@ -2,6 +2,8 @@
 
 void signal_handler(int sig)
 {
+   char *err_title = THE_SYSTEM;
+
    switch (sig)
    {
    case SIGINT:
@@ -11,13 +13,14 @@ void signal_handler(int sig)
       }
       else
       {
-         speak_glinda("Oh, are you abandonning this reality this way, aren't you?\n Then, I'm afraid there must be something wrong with you, player.", 0);
+         speak_charwtitle(&glinda, "Oh, are you abandonning this reality this way, aren't you?", 0);
+         speak_charwtitle(&glinda, "Then, I'm afraid there must be something wrong with you, player.", 1);
          kill(child_pid, SIGINT);
       }
       break;
 
    case SIGTSTP:
-      printerr("Hey! STOP IT NOW //////#!@@@@@ I'm the master here!!!· >:(");
+      printerr("Hey! STOP IT NOW //////#!@@@@@ I'm the master here!!!· >:(", err_title);
       break;
    }
 }

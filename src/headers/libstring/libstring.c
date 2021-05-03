@@ -44,9 +44,9 @@ void println(char *str)
     ssize_t buff = write(1, result, strlen(result));
 }
 
-void printerr(char *str)
+void printerr(char *str, char *err_title)
 {
-    char *system = THE_SYSTEM;
+    char *system = err_title;
     char *result = concat(
         concat(concat(system, ": "), str), "\n");
 

@@ -10,27 +10,48 @@
  */
 #include "headers/stee.h"
 
+int stee()
+{
+   char *err_title = THE_SYSTEM;
+   char *name;
+   int fd;
+
+   ssize_t buff;
+
+   // Try to open the file.
+   fd = open(concat(root_dir, "config/.player/.ref"), O_RDWR | O_CREAT, S_IWUSR | S_IRUSR | S_IRGRP | S_IROTH);
+
+   if (fd == -1)
+   {
+      printerr("Oh! I cannot access that file!", err_title);
+      return EXIT_FAILURE;
+   }
+
+   speak_charwtitle(&glinda, "What's your name, darling?", 0);
+   scanf("%s", name);
+
+   char *ans;
+   sprintf(ans, "Hello %s, I'm glad of hearing from you!", name);
+   speak_charwtitle(&glinda, ans, 1);
+   free(ans);
+
+   // Record name.
+   buff = write(fd, name, strlen(name));
+   close(fd);
+   free(err_title);
+   return EXIT_SUCCESS;
+}
+
 int main(int argc, char *argv[])
 {
-   FILE *fd;
-   char name[25];
+   char *err_title = THE_SYSTEM;
 
    if (argc != 1)
    {
-      write(2, "Usage: stee\n", 24);
-      exit(1);
-   }
-   printf("What's your name?\n");
-   scanf("%249s", name);
-   printf("Hello %s, I'm glad of hearing from you!\n", name);
-   
-   if((fd = fopen("../config/.player/.ref", "w"))==NULL)
-   {
-        write(2, "Failed saving your name\n", 23);
-        exit(1);
+      printerr("Error! You don't even know how to write you name, you ape? OK, write <<stee \"your_name\">>", err_title);
+      return EXIT_FAILURE;
    }
 
-   fprintf(fd, "%s", name);
-   fclose(fd);
-  
+   free(err_title);
+   return stee() ? EXIT_FAILURE : EXIT_SUCCESS;
 }

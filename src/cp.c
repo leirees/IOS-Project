@@ -1,6 +1,6 @@
 /**
  * @file cp.c
- * @author Mikel Aristu
+ * @author Mikel Aristu, David Cuenca, Team 2.2
  * @brief cp command to copy files
  * @version 0.2
  * @date 2021-04-23
@@ -13,45 +13,51 @@
 
 int main(int argc, char *argv[])
 {
-    int firstFD, endFD, oread, owrite;
+    int origin, end, oread, owrite;
+    
     char *buffer[1024];
+    char *err_title = THE_SYSTEM;
     char *err;
 
     if (argc == 3)
     {
-        firstFD = open(argv[1], O_RDONLY);
-        if (firstFD == -1)
+        origin = open(argv[1], O_RDONLY);
+        
+        if (origin < 0)
         {
-            printerr("Error opening the file.");
-        }
-
-        endFD = open(argv[2], O_RDWR | O_CREAT, S_IWUSR | S_IRUSR | S_IRGRP | S_IROTH);
-        if (endFD == -1)
-        {
-            err = (char *) malloc(strlen("Error opening file %s errno = %d") + strlen(argv[2]) + strlen(errno));
-            err = "Error opening file %s errno = %d";
-            sprintf(err, argv[2], errno);
-            printerr(err);
-            free(err);
+            printerr("Error opening the file.", err_title);
+            free(err_title);
             exit(EXIT_FAILURE);
         }
 
-        while ((oread = read(firstFD, buffer, sizeof(buffer))) > 0)
+        end = open(argv[2], O_RDWR | O_CREAT, S_IWUSR | S_IRUSR | S_IRGRP | S_IROTH);
+
+        if (end < 0)
         {
-            if (write(endFD, buffer, oread) != oread)
+            sprintf(err, "Error opening file %s errno = %d", argv[2], errno);
+            printerr(err, err_title);
+            free(err_title);
+            exit(EXIT_FAILURE);
+        }
+
+        oread = read(origin, buffer, sizeof(buffer));
+
+        while (oread > 0)
+        {
+            if (write(end, buffer, oread) != oread)
             {
-                err = (char *) malloc(strlen("Error in writing data to %s" + strlen(argv[2])));
-                err = "Error in writing data to %s";
-                sprintf(err, argv[2]);
-                printerr(err);
-                free(err);
+                sprintf(err, "Error in writing data to %s", argv[2]);
+                printerr(err, err_title);
+                free(err_title);
                 exit(EXIT_FAILURE);
             }
+
+            oread = read(origin, buffer, sizeof(buffer));
         }
     }
     else
     {
-        error("Usage:\n cp file new_file\n")
+        printerr("Revise your notes. Usage:\n cp file new_file\n", err_title);
     }
     
     return EXIT_SUCCESS;

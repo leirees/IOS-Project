@@ -12,37 +12,33 @@
 
 #include "headers/touch.h"
 
-void _touch(char *f_name, char flags, int modes)
+int touch(char *f_name)
 {
-    int fd;
-    fd = open(f_name, flags, modes);
+    char *err_title = THE_SYSTEM;
+
+    // S_IWUSR: 00400 user has write permission
+    // S_IRUSR: 00400 user has read permission.
+    // S_IRGRP: 00040 group has read permission.
+    // S_IROTH: 00004 others have read permission.
+    int fd = open(f_name, O_CREAT, S_IWUSR | S_IRUSR | S_IRGRP | S_IROTH);
 
     if (fd == -1)
     {
-        printf(" touch has failed - errno =(%d) \n", errno);
+        printerr("Oh no! I cannot create that tool!", err_title);
+        return EXIT_FAILURE;
     }
-    else
-    {
-        printf(" touch executed successfully\n");
-    }
+
+    return EXIT_SUCCESS;
 }
 
 int main(int argc, char *argv[])
 {
-    if (argc == 2)
-    {
-        //Explanation of modes:
-        //S_IWUSR: 00400 user has write permission
-        //S_IRUSR: 00400 user has read permission.
-        //S_IRGRP: 00040 group has read permission.
-        //S_IROTH: 00004 others have read permission.
-        _touch(argv[1], O_CREAT, S_IWUSR | S_IRUSR | S_IRGRP | S_IROTH);
-    }
-    else
-    {
-        //If the command is used incorrectly, it will teach the user how to use it.
-        write(2, "Usage: touch file_name\n", 22);
+    char *err_title = THE_SYSTEM;
+
+    if (argc != 2) {
+        printerr("Oh no, you hit your hand while you where making that tool. You should revise it before it gets worse.", err_title);
+        _exit(EXIT_FAILURE);
     }
 
-    return 0;
+    _exit(touch(argv[1]) ? EXIT_FAILURE : EXIT_SUCCESS);
 }

@@ -9,7 +9,6 @@
  */
 
 #include "main_header.h"
-
 // Defines flags for open and related library functions
 #include <fcntl.h>
 // For write system call
