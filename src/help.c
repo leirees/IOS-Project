@@ -9,6 +9,7 @@
  */
 
 #include "headers/help.h"
+#include "headers/characters/character.h"
 
 void _help()
 {

@@ -8,6 +8,7 @@
  * @copyright Copyright (c) 2021
  */
 #include "headers/ls.h"
+#include "headers/characters/character.h"
 
 void _ls(const char *dir, int op_a, int op_l)
 {

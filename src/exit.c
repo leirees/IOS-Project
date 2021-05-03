@@ -9,6 +9,7 @@
  */
 
 #include "headers/exit.h"
+#include "headers/characters/character.h"
 
 int exit_game()
 {

@@ -9,6 +9,7 @@
  *
  */
 #include "headers/stee.h"
+#include "headers/characters/character.h"
 
 int stee()
 {

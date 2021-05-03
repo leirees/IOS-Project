@@ -11,6 +11,7 @@
 #include "main_header.h"
 // Signal handler
 #include "signal_handler.h"
+#include <sys/wait.h>
 
 /* COMMANDS for the game */
 #define NUMCOMMANDS 13

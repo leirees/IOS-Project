@@ -28,7 +28,7 @@
 
 /* Definition of EXTRAS */
 #define TREES underlined(bold("Forest trees"))
-#define GUARDIAN undelined(bold("Guardian"))
+#define GUARDIAN underlined(bold("Guardian"))
 #define GHOST underlined(bold("Ghost"))
 #define ADMIN underlined(bold("ADMIN"))
 
@@ -121,3 +121,26 @@ void create_witch(character_with_title *c, char *name, char *short_title, char *
  * @param is_title_short 1, if the title is short; else, 0.
  */
 void speak_charwtitle(character_with_title *c, char *text, unsigned char is_title_short);
+
+// Character's definition.
+// Main character
+static player dorothy;
+
+static character scarecrown;
+static character tinman;
+static character lion;
+
+static character_with_title glinda;
+static character_with_title ofelia;
+
+// Secondary character
+static character admin;
+static character dog;
+
+static character_with_title gertrudis;
+static character_with_title jasmine;
+
+// Extras
+static character trees;
+static character guardian;
+static character ghost;

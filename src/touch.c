@@ -11,6 +11,7 @@
  */
 
 #include "headers/touch.h"
+#include "headers/characters/character.h"
 
 int touch(char *f_name)
 {

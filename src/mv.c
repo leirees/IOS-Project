@@ -9,6 +9,7 @@
  */
 
 #include "headers/mv.h"
+#include "headers/characters/character.h"
 
 void howToUse()
 {

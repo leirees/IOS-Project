@@ -9,6 +9,7 @@
  */
 
 #include "headers/pwd.h"
+#include "headers/characters/character.h"
 
 int pwd()
 {

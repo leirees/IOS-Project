@@ -9,6 +9,7 @@
  */
 
 #include "headers/shell.h"
+#include "headers/characters/character.h"
 
 char *args[MAXARGS];
 int8 status;
@@ -228,7 +229,8 @@ int main()
 {
    // Setup System Agent: the one that provides its body as the work in which we work.
    char *err_title = THE_SYSTEM;
-
+   u8 option;
+   
    // Setup command path.
    char *path[NUMCOMMANDS] = COMMANDS;
 
@@ -265,7 +267,7 @@ int main()
 
       case CHOOSE_MENU_OPTIONS:
          // Choose menu options.
-         u8 option = 0;
+         option = 0;
          do
          {
             print_menu_options(option);

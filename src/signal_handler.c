@@ -1,4 +1,5 @@
 #include "headers/signal_handler.h"
+#include "headers/characters/character.h"
 
 void signal_handler(int sig)
 {

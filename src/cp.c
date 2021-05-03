@@ -10,6 +10,7 @@
  */
 
 #include "headers/cp.h"
+#include "headers/characters/character.h"
 
 int main(int argc, char *argv[])
 {

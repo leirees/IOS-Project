@@ -13,15 +13,10 @@
 #include <sys/types.h>
 // Standard C library error codes
 #include <errno.h>
-// Characters.
-#include "characters/character.h"
 
 // Max line and args (length) definitions.
 #define MAXLINE 200
 #define MAXARGS 20
-
-// Home directory
-#define HOME "config/.gamedir"
 
 /* KEYBOARD */
 // Keyboard letters.
@@ -68,7 +63,7 @@ typedef u8 bool;
 #define false 0
 
 /* GLOBAL VARIABLES */
-static u8 state;
+static int8 state;
 
 // Root dir
 static char *root_dir;
@@ -76,26 +71,3 @@ static char *root_dir;
 // PID.
 static pid_t child_pid;
 static pid_t parent_pid;
-
-// Character's definition.
-// Main character
-static player dorothy;
-
-static character scarecrown;
-static character tinman;
-static character lion;
-
-static character_with_title glinda;
-static character_with_title ofelia;
-
-// Secondary character
-static character admin;
-static character dog;
-
-static character_with_title gertrudis;
-static character_with_title jasmine;
-
-// Extras
-static character trees;
-static character guardian;
-static character ghost;

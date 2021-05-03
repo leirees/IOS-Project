@@ -1,4 +1,5 @@
 #include "main_header.h"
+#include "exit.h"
 #include <signal.h>
 
 /**

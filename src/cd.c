@@ -9,6 +9,7 @@
  */
 
 #include "headers/cd.h"
+#include "headers/characters/character.h"
 
 int cd(char *path)
 {

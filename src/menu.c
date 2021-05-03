@@ -10,6 +10,7 @@
  */
 
 #include "headers/menu.h"
+#include "headers/characters/character.h"
 
 void restore_terminal(struct termios *saved_glindos)
 {
