@@ -16,19 +16,23 @@ int main(int argc, char *argv[])
     int linecount;
     int lineflag;
     char buf, line[160];
-    char ESC = 27; // In order to change the format to bold
+
+    // In order to change the format to bold
+    char ESC = 27;
 
     if (argc < 4) // To check the syntax
     {
-        write(2, "\n Error... Correct Syntax is : grep \"pattern\" \"filename\"\n\n", 58); //To standart error
-        exit(0);                                                                           //Exit program
+        error("Error... Correct Syntax is : grep \"pattern\" \"filename\"\n");                                                                        //Exit program
     }
 
     lineflag = 0;
-    des = open(argv[3], O_RDONLY); // Open the file specified by the command
+
+    // Open the file specified by the command
+    des = open(argv[3], O_RDONLY);
     linecount = 0;
 
-    do // Read upto the end of file and copy to the array line[].
+    // Read upto the end of file and copy to the array line[i].
+    do
     {
         i = 0;
         do //Read a line
@@ -65,13 +69,10 @@ int main(int argc, char *argv[])
 
     } while (fhandle != 0);
 
-    printf("%c[1m", ESC); /* turn on bold */
-    printf("\n  Number of occurances: %d \n", occurances);
-    printf("%c[0m", ESC); /* turn off bold */
-
+    char *res = "Number of occurances: %d";
+    sprintf(res, occurances);
+    println(bold(res));
+    
     close(des);
-
     arg_ind++;
-
-    printf("\n");
 }

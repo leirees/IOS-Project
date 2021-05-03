@@ -11,7 +11,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
-#include "libstring.h"
+#include "libstring/libstring.h"
 
 /**
  * @brief Reads and writes the directory route to stdout.

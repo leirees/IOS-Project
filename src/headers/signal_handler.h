@@ -1,9 +1,10 @@
-#include <signal.h>
-#include "libstring.h"
+#include "headers/main_header.h"
+
+extern void setup_signal();
 
 /**
  * @brief The signal handler of the game.
  * 
  * @param sig The signal.
  */
-void signal_handler(int sig);
+extern void signal_handler(int sig);

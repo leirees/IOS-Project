@@ -8,7 +8,7 @@
  * @copyright Copyright (c) 2021
  */
 
-#include "../headers/libstring.h"
+#include "libstring.h"
 
 char *concat(char *str1, char *str2)
 {

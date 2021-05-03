@@ -8,9 +8,7 @@
  * @copyright Copyright (c) 2021
  */
 
-// String library mod.
-#include "libstring.h"
-
+#include "main_header.h"
 // CD call
 #include "cd.h"
 
@@ -23,74 +21,29 @@
 // Signal handler
 #include "signal_handler.h"
 
-// MAIN
-// Used for basic input/output stream
-#include <stdio.h>
-#include <stdlib.h>
-
-// Used for handling directory files
-#include <dirent.h>
-
-// For EXIT codes and error handling
-#include <errno.h>
-
-// Unix syscall managing
-#include <unistd.h>
-#include <sys/wait.h>
-
-#define error(a)            \
-    {                       \
-        printerr(a);        \
-        exit(EXIT_FAILURE); \
-    };
-#define MAXLINE 200
-#define MAXARGS 20
-
+// Number of commands.
 #define NUMCOMMANDS 13
-
-#define HOME "config/.gamedir"
-
-// ARROWS
-#define UP_ARROW 65
-#define DOWN_ARROW 66
-#define RIGHT_ARROW 67
-#define LEFT_ARROW 68
 
 // PROMPT DESIGN
 #define PROMPT_DESIGN concat(concat(ANSI_COLOR_BLUE, prompt_name), concat(ANSI_COLOR_RESET, "$ "))
 #define PROMPT_NAME "GlindOS"
 
-// GLOBAL VARIABLES //
-static __INT8_TYPE__ STATE;
-
-// Flags.
-static __INT8_TYPE__ exit_status;
-// PID.
-static pid_t child_pid;
-static pid_t parent_pid;
-// Fail counter.
-static __INT8_TYPE__ fails;
+/**
+ * @brief Process signals SIGINT and SIGTSTP, with particular behaviors.
+ */
+void setup_signals();
 
 /**
- * KEYS
+ * @brief Setup all the characters, variables.
+ * 
  */
-#define ENTER_KEY 10
-
-#define I_KEY 73
-#define K_KEY 75
-
-#define LOWERCASE 22
+void setup_game();
 
 /**
- * STATUS OF THE GAME.
+ * @brief Creates all character objects for the game.
+ * 
  */
-#define CONFIG_TERM -1
-#define INIT_MENU 0
-#define CHOOSE_MENU_OPTIONS 1
-#define GAME_RUNNING 2
-#define SHOW_SCORES 3
-#define GAME_OVER_EXIT 4
-#define GAME_OVER 5
+void create_characters();
 
 /**
  * @brief Read all the entries in a line of written code, for shell.
@@ -112,3 +65,9 @@ int read_args(int *argcp, char *args[], int max, int *eofp);
  * @return int -1 if error creating the process, 1 if error while executing the process or 0 if ok.
  */
 int execute(int argc, char *argv[]);
+
+/**
+ * @brief Shell object, for game.
+ * 
+ */
+void shell();

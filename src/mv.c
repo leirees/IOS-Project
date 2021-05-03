@@ -34,10 +34,12 @@ int main(int argc, char *argv[])
             char *current;
             current = getcwd(newdirec, 50);
 
+            struct dirent *name_file = readdir(direc);
+
             // attach mv location to path && keep original file name
             char *res = concat(concat(concat(concat(newdirec, "/"), subdir), "/"), file);
 
-            if (rename(file, direc) != -1)
+            if (rename(file, name_file->d_name) != -1)
             {
                 printf("Successful\n");
             }

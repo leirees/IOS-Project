@@ -12,7 +12,6 @@
 
 void _help()
 {
-
 	write(1, "\nThis is what you can use:\n", 27);
 	//Prints all the available commands to the stdout
 	write(1, "\nhelp :\n", 8);

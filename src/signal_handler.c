@@ -1,5 +1,4 @@
 #include "headers/signal_handler.h"
-#include "headers/shell.h"
 
 void signal_handler(int sig)
 {

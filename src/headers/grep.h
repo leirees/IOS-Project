@@ -8,20 +8,9 @@
  * @copyright Copyright (c) 2021
  */
 
-//Defines flags for open and related library functions
+#include "main_header.h"
+
+// Defines flags for open and related library functions
 #include <fcntl.h>
-
-//For write system call
+// For write system call
 #include <unistd.h>
-
-//Used for basic input/output stream
-#include <stdio.h>
-
-//Standart library
-#include <stdlib.h>
-#include <sys/uio.h>
-
-//For string concatenation
-#include <string.h>
-
-#define O_RDONLY 00 //Define the flag

@@ -9,10 +9,6 @@
  * 
  */
 
-#include "libstring.h"
-#include <stdio.h>
+#include "main_header.h"
 
-#include <unistd.h>
-#include <fcntl.h>
-
-#define MAXLINE 200
+#include "libstring/libstring.h"
