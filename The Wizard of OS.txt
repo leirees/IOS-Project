@@ -1,0 +1,781 @@
+﻿The Wizard of OS
+
+
+Plot: el usuario es arrastrado al mundo de la terminal junto con sus archivos, desde la shell gráfica, sin tener demasiada idea, y tiene que seguir el camino blanco para llegar hasta el Admin (podria ser usuario experimentado, o hasta que descubre que la bruja del /var se puede derrotar con rm). Durante el camino va haciendo amigos y tiene que derrotar enemigos, como la bruja del /tmp o la bruja del /var.
+
+
+Players have to learn how to: 
+1. Change the current directory – (cd) 
+Para cambiar de lugar (mazmorra, bosque,...).
+
+
+2. Read the contents of a directory (just the name or more information) – (ls -l) 
+ls para mirar
+ls -l para ver
+ls -lh para observar minuciosamente
+
+
+3. Look the location – (pwd):
+Pregunta a alguien aleatorio de la zona o a sí misma donde se encuentra. Puede que no tenga respuesta.
+
+
+4. Read from file or stdin and print in stdout – (cat) 
+Para leer una nota que se encuentre, ya sea alguna pista para avanzar , ya sea parte de la historia en sí.
+
+
+Puede haber notas “secundarias”, extras para comprender mejor el mundo, pero que no afecten a la jugabilidad.
+
+
+5. Create a new file – (touch) 
+Para fabricar objetos del juego, si se tienen materiales suficientes en el inventario.
+
+
+6. Move a file – (mv) 
+Para llevar un item de un lugar a otro (podemos forzar al usuario que se requiera X item en un lugar diferente).
+
+
+7. Copy a file – (cp) 
+Para chasquear los dedos y hacer aparecer algo, clonar (sí, es un poco Deus ex Machina).
+
+
+8. Search a file’s contents – (grep) 
+Para buscar palabras clave en un libro extenso que se encuentre (Ejemplo: un hechizo en un libro de hechizos antiguo).
+________________
+
+
+9. Read the manual file of a command – (man) 
+Para leer la guía de viaje que se encuentre por el camino (enseñar al usuario cómo se usan los comandos)
+
+
+10. Get information about available commands – (help) 
+Para pedir ayuda a alguno de los acompañantes del usuario o a algún campesino.
+
+
+11. Remove someone or something from existence (rm)
+Para borrar algo usando un cubo de agua, como a la bruja mala de /tmp.
+Para deshacerse de las pruebas o para deshacerse de carga innecesaria durante la partida.
+
+
+12. To exit the game (exit)
+Para salir de OS, usando tus zapatos de charol, al final del juego.
+
+
+
+
+Redirecciones: 
+* Para escribir datos de las notas en tu cuaderno (te lo da un anciano), o …
+
+
+Filtros: 
+* Para  ...
+________________
+
+
+Historia:
+
+
+El usuario es arrastrado al mundo de la terminal junto con sus archivos, desde la shell gráfica, sin tener demasiada idea y acompañado de su perro Totó.
+Aparece una bruja (buena) que le dará una pequeña introducción: enseñará a usar los primeros comandos (cd, ls), le dará los zapatos de charol para seguir avanzando en la aventura y le explicará que para volver con sus padres tendrá que seguir el camino blanco para llegar hasta el Admin, que es quien le ayudará a salir de dicho mundo. (Realmente el poder de salir del mundo lo conseguirá gracias a los zapatos de charol que le ha dado esta bruja buena). También le dará a conocer el comando man, por si en cualquier punto no sabe cómo usar X comando y le exigirá llevarse el perro con él, puesto que “cosas extrañas están sucediendo últimamente”, esto lo conseguirá con mv.
+
+
+Al principio, sólo podrá acceder al campo (cd Campo), donde se encontrará al espantapájaros. Le preguntará dónde se encuentra en ese preciso instante con el comando pwd. Este le explicará al usuario que quiere tener un cerebro y le pide acompañarle al usuario para llegar al Admin en busca de su cerebro. A cambio, le dará la siguiente pista para avanzar, dado que se conoce todos los caminos de la zona.
+
+
+Continuará por el bosque (cd Bosque), donde encontrará unas manzanas (ls -l dentro de Bosque), intentará coger unas debido al hambre que tiene pero el árbol le sorprenderá diciéndole algo. Ahí al lado se juntará con el hombre de hojalata, que estará inmóvil hasta que le rocíe un poco de aceite por encima (para encontrar el bote con aceite: ls -lh dentro del Bosque). Entonces el hombre de hojalata les hablará contándoles que también les acompañará hacia el Admin porque él siempre ha querido tener un corazón. Ahí mismo también, aparecerá un león que al principio parece atacarles pero se darán cuenta que es un animal inofensivo, con bastante cobardía. Este también les acompañará a Admin, en busca de valentía para poder ser el rey de la selva.
+
+
+Seguirán por el campo de flores, donde la bruja mala les sorprenderá  con un hechizo que le causará un terrible cansancio al usuario. Aquí el usuario tendrá que buscar en el libro que llevaba X encima, posibles medicaciones usando el comando grep buscará “cansancio” dentro del libro. Usará el comando touch para chasquear los dedos y hacer aparecer la bebida que se tomará para aliviar el cansancio. Pero antes, usará cp, ya que el hechizo de la bruja mala también le afectará al león. (Podemos hacer que en el bosque recoja unas manzanas y necesite X cantidad de manzanas para poder usar estos comandos).
+
+
+Faltan usar los comandos: cat (podemos usar para que pueda leer el libro medicinal y después decirle que puede buscar x palabra con grep), rm (para destruir a la bruja mala), exit (para salir de la terminal una vez llegado a Admin).
+
+
+-------------------------------------------------------------------------------------------------------
+Notas:
+* La primera vez que escriba algo mal, le dará una advertencia, la segunda vez, la bruja mala le matará el perro, y cuando escriba tres veces algo mal, destruirá el mundo pero la bruja buena le devolverá al principio y le volverá a darle toda la charla del principio.
+* Cada vez que escribes algo mal, la terminal pita.
+________________
+The plot, story:
+
+
+Village
+
+
+-Good Witch: Hello to this strange world called Terminal! You have just arrived from your real world to this one, because the Most Evil Bad Witch wants to get those fantastic shoes to destroy your home, your fantastic and loved world. You must continue the YELLOW path to arrive at the ADMIN to be able to destroy the Most Evil Bad Witch, and when you get that you will be able to get your most admired desire, be able to get back to your admired world. To start your trip, you can use the command cd in order to move around different places and also you can use ls to watch which places are available. The use of cd is cd LOCATION, where LOCATION is a place adjacent to the player’s current location. You and your Dog will have a long journey to the ADMIN, remember if you want the Dog to be always with you you have to use the command move  to each place you wanna go. If you need to see which commands are available at any moment you can use the help command.
+
+
+-The Most Evil Bad Witch: If you insert any command in an incorrect way, I will destroy your appreciated world. Take a lot of care writing those commands, MUAJAJAJA!
+
+
+-Good Witch: Remember the terminal is dark and full of terrors. 
+
+
+[make commands get to the Grove]
+
+
+Grove
+
+
+-Scarecrow: Hi! Who are you? What 's your name? You can use the command stee name.c to edit the file that will learn your name.
+[write your name in a file]
+
+
+-Scarecrow: Hello _name.c__ , I’m Scarecrow. I suppose that you are trying to get to the ADMIN as you are in the YELLOW path. My dream is to get a  brain, I know that ADMIN could get me one, so I will help you. But first we will have to know where we are, I don’t have any idea, because of my little problem called no brain, could you help me? The good witch one day told me something about pwd I'm not sure what it is about.
+
+
+[Use command PWD]
+
+
+-Scarecrow: Where are we now? 
+
+
+[que se active sólo un stee automáticamente? es posible? o sino le decimos todo el tiempo que tenga que abrir cierto stee]
+
+
+ [Devolver el directorio completo]
+
+
+-Scarecrow: If we are in the grove now, the next place to go could be the haunted house or the Forest entrance.
+
+
+
+
+
+
+Haunted House hounted_house (secondary mission)
+
+
+-Scarecrow: This place doesn’t seem really friendly, it’s quite scary.
+
+
+-Dog: wof wof wof wof wofff wof wof wof wooooof wof wof!
+
+
+-Scarecrow: Yes let’s take a look, we can use commands known before to get it.
+
+
+        [use ls and cd to enter in rooms]
+
+
+        BEDROOM
+
+
+        -Scarecrow: this seems like a quite big bed let's take a nap!
+
+
+        -Dog: wof wof woof wof wof wof!
+
+
+        -Scarecrow: No don’t fall in temptations, we must continue with our journey. 
+
+
+        KITCHEN
+
+
+        -Scarecrow: this kitchen is a disaster, someone must have destroyed it.
+
+
+        LIVINGROOM
+
+
+-Scarecrow: Look at a Dog leash we can use to tie it! In that way, we don’t need the move command anymore! The owner of the house before must’ve been a lover of animals.
+
+
+-Dog: woof!
+
+
+[use link to tie the Dog]
+
+
+        BATHROOM
+
+
+        -Casper: BOO!
+
+
+        -Scarecrow: AAAAAAAAAHHHHHHHHH! It's a ghost!
+
+
+        -Casper: AAAAAAAAHHHHHH! It's a Scarecrow!
+
+
+        -Scarecrow: ok that was scary, and it's supposed that i’m the one who has to scare.
+
+
+        -Casper: Yes, but you are supposed to scare crows no ghosts duh.
+
+
+        -Name.c: Who are you? What are you doing here?
+
+
+        -Caster: I’m the real and original owner of this beautiful house.
+
+
+-Scarecrow:quite destroyed right now.
+
+
+-Casper: True, Oh what a cute puppy, I love Dogs, maybe you can find something really useful in the living room. 
+
+
+-Scarecrow: Thank you!
+
+
+            BASEMENT 
+
+
+        -Dog: wof, wof.
+
+
+        -Name.c: this place it’d really dark, I can’t see anything.
+
+
+-Scarecrow: Here’s the interruptor for the light.
+
+
+-Name.c: So what are you waiting for to switch on the lights.
+
+
+-Name.c: Now it’s better.
+
+
+-Scarecrow: Look there’s something there.
+
+
+-Name.c: True, we can use ls to look at what it is.
+
+
+basement_text [use ls to find the text]
+
+
+
+
+
+
+__________
+
+
+Hello adventurers:
+
+
+This is a long journey, and even that, you decided to continue. It’s not going to be easy, and there are going to be several obstacles to overcome. But be brave, don’t give up and you’ll get it. It’s not easy to get to the ADMIN, it’s even harder to enter to the Emerald city, so in order to help you I want to remember, you little adventurer,  that the game you are playing it’s called The Wizard of OS and the number 73 it’s always really special for everyone. Programming languages don’t really use capital letters and separation it’s not used in attributes. So make friends and free this world from the bad witch.
+
+
+Tour little secret admirer.
+¡Have a nice trip!
+
+
+________
+
+
+-Scarecrow: That’s a text, it was motivating...
+
+
+-Name.c: Yes it was. Now I’m more excited to continue my journey.
+
+
+
+
+
+
+Forest Entrance forest_entrance
+
+
+-Scarecrow: What the hell is that!
+
+
+-Tinman: I am Tin Man, I was created by some people that used me as an experiment. actually, in their words, i'm a piece of tin that has no use and no importance.
+
+
+-Scarecrow: oh that must have hurt. 
+
+
+-Tinman: not really, nothing can hurt me, i'm made of tin and i have no heart, so some people say i'm indestructible. 
+
+
+-Dog: < tries to bit he Tinman>
+
+
+-Tinman: Hey buddy, you can hurt me but that’s not gentle.
+
+
+-Name.c: We are trying to get to the Admin to ask our desires, you could come with us to get your heart.
+
+
+-Tinman: Is it that even possible?... I have calculated the percentage of possibilities of achieving that aim and its less than 0.0001%. The Most Evil Bad Witch will find us before getting that. I think that having a heart will just make me weaker and easier to beat. I told you I'm almost indestructible like this.
+
+
+[options to choose what Name.c would say, you must convince Tinman to come with us, in pink it’s written what it's gonna be said first.]
+
+
+
+
+-a)You're right, The Most Evil Bad Witch it's horrible, but being a human it's worse. You are weak and it's easier to kill us. But we can feel, love, trust and become better people so we achieve our objectives and enjoy life, you are indestructible but not immortal, you'll die one day, why not spice up your life a bit? 
+
+
+-a) Tinman: it makes sense but are you sure that if I start a journey with you I will get a heart? 
+
+
+-a) Scarecrow : no… but we need your help!!
+
+
+-a) Tinman: Then you are going to help me if you want me to come with you. As you see, it's not easy for me to move so I need oil, you can use one command to help me. You can have some in your inventory. 
+
+
+[prueba con algún comando, necesita aceite para moverse podríamos crear un file con el nombre oil usando touch y mandandolo al inventario o así. Crear un inventario donde podamos tener diferentes objetos y usando touch elegir el oil para ayudarlo] 
+
+
+-a) Tinman:Thank you! Now it’s easier for me to move, and we can go to our next stop. We can have some break to eat in the trees, next to here or we could go into the Forest, which has a lot of horrors.
+
+
+-b)That’s a way of seeing it but if you think about it you could have friends if you get a heart and that's the happiest thing humans have in life. Not loving someone can be tough and quite sad, we can help you to achieve that. 
+
+
+-b) Tinman: I don't need friends nor help and I'm not interested in helping anyone. Less in loving someone, love is what makes you weak, I'm sorry, well no, you don't care me, I'm not coming with you. So as you have learned you can go to your next stop. You can have a break to eat in the trees, next to here or we could go into the Forest, which has a lot of horrors.
+
+
+
+
+-c) You are completely wrong, if you don’t have a heart, you can't have a soul and you’ll never have a dream or something that inspires you. So you can be something more, you can have loved people not just information that you store, it can help you to be better and learn more about the world you live in. I'm from another world and as you are my new dear friend I will be happy to teach you about my life in that world called Earth. More colorful and cheerful than the terminal. 
+
+
+-c) Tinman: that sounds interesting, what could you teach me about your world that could be interesting for me? 
+
+
+-c) Name.c :We also have Dogs but they are not in pixels, and curveines exist. 
+-c) Tinman: what are pixels and curves? 
+
+
+-c) Name.c : If you come with us I'll explain it to you. 
+
+
+-c) Tinman: ok, I'm coming with you but you must prove that you are able to be as intelligent as me. As you see I have this marvelous book called Silvia Plath I need you to find and copy some information about it. What you have to find is daddy, and count how many times the word is repeated.
+
+
+[usar grep y luego stee, la palabra se repite 7 veces ] 
+
+
+-c) Tinman: Perfect! what you have just found it’s very useful for me. now we can go to our next stop. We can have some break to eat in the trees, next to here or we could go into the Forest, which has a lot of horrors.
+
+
+
+
+TREES (secondary mission) 
+
+
+-Tree1: What do you want? What did you come for? You are disturbing, please leave and let us take the sun. 
+
+
+-Scarecrow: We are sorry tree, we wanted some food, we are sturbing.
+
+
+-Tree2: As my friend said DO NOT DISTURB US! we are taking the sun please be silent.
+
+
+-Scarecrow: look there something written there. We can use some command to read it.
+
+
+-Tinman: I think that it’s similar to the main word but I don't remember how to spell it. It says something about kill, let's try with that! 
+
+
+-Tree2: shhhhh…
+
+
+-Name.c: It's better if we stay silent, let’s look for the text you found.
+
+
+[use the man to read the manual file of a command this could help to understand how to kill the witch]
+
+
+-Scarecrow: This could help us defeat The Most Evil Bad Witch. 
+
+
+-Name.c: ok perfect but I'm starving, I wanna eat what we can do? 
+
+
+-Tree1: pleaseeeee stay quiet I beg you, if you want to eat just take an apple from me, just stay silent. You can use touch to eat. 
+
+
+[use touch to eat, so create a new file with the name apple] 
+
+
+-Name.c: Thank you mister Tree! 
+
+
+-Tree2: yes yes now leave! Enter the forest and never come back. 
+
+
+
+
+
+
+Forest
+
+
+-Dog: wof wof woof wof wof wof!
+
+
+-Lion: aaaaaah! There's people here. Leave, go, leave me, don't hurt me please. 
+
+
+-Name.c: Why would we hurt you? 
+
+
+-Lion:  I don't know, you look scary. 
+
+
+-Scarecrow: But you are a Lion you must be the one scaring us, aren't you? 
+
+
+-Lion: Of course, but I'm the Coward Lion, I would love to be braver but it doesn't matter how hard I try it's impossible for me. I'm never gonna be brave. 
+
+
+-Scarecrow: you could get back your bravery with the ADMIN, but we need you, you must help us defeat The Most Evil Bad Witch!!! 
+
+
+-Tinman: The Lion is too cowardly, but if we try we can become brave enough to help us beat The Most Evil Bad Witch. There is a text called braver, you need to use the right command to print it.
+
+
+ [use cat command] 
+
+
+-Lion: that's empowering, if only I could internalize that, everything could be easier and I could help you. There must be a Lion directory, maybe you need to create it, but if you figure out which command to use I may help you defeat The most evil bad witch. 
+
+
+[use cp command] 
+
+
+-Lion: you don't get a sense of how much that could help me. Next stop Emerald city. 
+
+
+EMERALD CITY
+
+
+Guardian: hello, this is the entrance to Emerald city. What do you want?
+
+
+-Scarecrow: We want to visit the Admin.
+
+
+-Guardian: Do you have an appointment?
+
+
+-Name.c: no? How can we get one as fast as possible for today?
+
+
+-Guardian: Sorry but he is really busy. He doesn't have time to see you for a year.
+
+
+-Scarecrow: That’s a lot of time!
+
+
+-Lion: But there’s got to be another way to visit him.
+
+
+-Name.c: We can try to climb the wall.
+
+
+-Lion: don’t you see it, that’s too high.
+
+
+-Guardian: And full of weapons and traps.
+
+
+-Name.c: OK. what we have to visit the city, we wait to see the ADMIN but inside the city. We don’t wanna be camping outside here for a year.
+
+
+-Guardian: You need a password for that. A really hard password to guess. You have 3 tries, if you don’t get it you’ll have to start back again.
+
+
+[usar un stee para escribir la contraseña, la contraseña es wizardofos73]
+
+
+-Guardian: (if they don’t get the password right): Maybe you didn’t do your homework well and you really need to start your ath again because you haven’t discovered some places yet.
+
+
+-Guardian: Now you can start your visit to the Emerald City, I recommend you to start with the prairie.
+
+
+
+
+Prairie
+
+
+-Tinman: Name.c that was a really great idea, we can enter the city by telling the guardian that we were going to visit the city, and try to find the admin at the same time.
+
+
+-Name.c: Yes! So now we can Start finding the Admin.
+
+
+-Scarecrow: So the tourist thing was for that, I thought we were going to wait for real. You really have a brilliant brain. I hope I can get one.
+
+
+
+
+-The Most Evil Bad Witch: Welcome to my territory! JAJAJAJAJAJA! These all are my lands. You didn’t arrive at the best place. 
+
+
+-Dog: wof wooof, wof wof wooof wof wof. 
+
+
+-Lion: Scarecrow please help me, i'm scared. 
+
+
+-Name.c : You, your name describes you perfectly, you're the worst, you're a complete torment for everyone who meets you. So that's why we will defeat you. 
+
+
+-The Most Evil Bad Witch: Are you sure? You're a child who doesn't know anything about this black world, you know nothing, even though you're looking for the ADMIN to help you, you'll never arrive there, you're nothing. 
+
+
+-Lion:That's not a true name.c helped me! 
+
+
+-The Most Evil Bad Witch: ouh… you little poor, are you sure that name.c helped you because it wanted to or because it couldn't advance in it's mission any more if it didn't help you?
+
+
+-Name.c: Do not listen to her, she’s trying to manipulate us.
+
+
+-Lion: Are you sure? but she has a point, you don’t like me, you quite force me to come.
+
+
+-Scarecrow: Nobody forced you to come here, we want you to be brave and ADMIN is going to help us. 
+ 
+-The Most Evil Bad Witch: ADMIN helps no one. I asked her a lot of times for help, to free me but I still continue here and I can’t achieve my dream by being here, conquer all worlds!
+
+
+-Name.c: That’s because you are evil, and your dream will destroy thousands of other dreams.
+
+
+-Tinman: Guys, do you remember what the trees told us? We must do that. if we want to achieve our dreams, we need to do it.
+
+
+-Name.c: OK. so let’s do this.
+
+
+-The Most Evil Bad Witch: NOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO! you horrible piece of shit!
+
+
+[use kill command] 
+
+
+-Lion: Yes! no more The Most Evil Bad Witch, no more oppression, now we are free! and we can achieve what we want.
+
+
+-Scarecrow: Wiiiiiii! Let’s go to the Castle! We can meet the ADMIN there.
+
+
+CASTLE
+
+
+-ADMIN: Hello my beloved followers. I was waiting for you.
+
+
+-Name.c: For real? But the guardian told us that you were busy and we have to wait a long time to see you.
+
+
+-ADMIN: I knew for years that you were coming, I had an appointment already prepared for you, even if you didn’t know about it. I’m supreme. I know everything and I can get things for everyone. I’m anywhere and nowhere at the same time. But The Most Evil Bad Witch asked for something a long time ago that made it impossible to destroy her, so it was impossible for me to KILL her. Thank you for doing it. This world is going to really appreciate it.
+
+
+-ADMIN: Now let’s go to the important thing. Scarecrow, you want a brain. Am I right?
+
+
+-Scarecrow: Yes.
+
+
+-ADMIN: of course I am. FLIT FLAAT FLOO! There has to be some difference now. You already are owning a brain in your head.
+
+
+-Scarecrow: Do I have to notice some change right now?
+
+
+-ADMIN: Maybe not right now but yes in some time. OK, NEXT.
+
+
+-ADMIN: Tinman it’s your turn, you wanted a heart?
+
+
+-Tinman: Yes, I want to feel, not just be a robot. I want to love and what really is having friends.
+
+
+-ADMIN: Perfect, FLARAT FLUU! Now you have a heart  if I hit you like this do you feel it?
+
+
+-Tinman: Ausch! Yes, I also can feel some things, I will learn to distinguish them with the time.
+
+
+-ADMIN: Perfect whose time it’s now?
+
+
+-Lion: That 's me!
+
+
+-ADMIN: I see, You want to be braver, but I see that someone really encouraged you in this new journey.
+
+
+-Lion: Friends always help but I’m still really scared by a lot of things. Please I want to be a real Lion and as brave as we must be.
+
+
+-ADMIN: That’s done already you just need friends and them to help you, but I’ll still do it. FLUSH FLUSH! Perfect it’s not going to be momentaneous, but this can help you to be as brave as you want to be.
+
+
+-ADMIN: And now last but not least, name.c. You aren’t from this world so it’s not really easy for me to know your biggest desire. Freedom from your parents, a new phone, a new computer, a program becoming rich?
+
+
+-Name.c:  The only thing I want is to leave this place with my Dog, to be able to come back to my home page on my computer. 
+
+
+-ADMIN: Oh! that’s not hard, the only thing you need to do is use the EXIT command. Just use it and you will close the terminal world but don’t forget to say goodbye to everyone here!
+
+
+-Name.c: GOODBYE! And have a better live in this dark word and with no terrors anymore!
+
+
+[Use Exit command and finish game]
+
+
+Witch Phrases
+
+
+1st advertisement:
+
+
+-The Most Evil Bad Witch: As I suspect you are not good enough for this world. This is the first warning, be careful because Your little lovely Dog would die if you make another mistake.
+
+
+2nd advertisement:
+
+
+-The Most Evil Bad Witch: It’s time, you can start saying goodbye to your Dog, because it doesn’t exist anymore in this world, we advertise to you the Terminal is full of terrors. In the 3rd warning you will end up without legs making it impossible for you to continue with the game. MUAJAJAJA, so you know what to do? Please make another mistake, I will be able to take control of all the worlds.
+
+
+3rd advertisement:
+
+
+-The Most Evil Bad Witch: Are you prepared? No more legs for you, no more adventure for you. It 's the end.
+
+
+Good witch: I’m sorry this happened, Use …………command and start again, help us defeat this witch.
+
+
+-The Most Evil Bad Witch:Come if you dare, I'm just going to tell you that’s impossible.
+________________
+Text for the Lion:
+One thing I’m sure of is that none of us are defined by the things that don’t go our way. I think we’re defined by what we do with those experiences, by how we let ourselves feel our way through what’s going on.
+It really, really is okay to not feel okay. Your feelings are honest reflections of what wants to be healed and heard. It takes courage to see them, hear them, sit with them. It takes courage to show up for what’s showing up for you. I have a feeling that if you can be with the not okay feelings, you can trace them to other parts of yourself that don’t want to be covered up. That might be the only way to heal for real.
+Some things just won’t be the same as they were before, and that’s natural. I wish I had all the answers, but so much of life is a mystery. Most of it is, I think. Some things just need to unravel in their own way, in their own time, for their own reasons. It’s okay not to know what those reasons are yet.
+“Don't be the reason someone feels insecure. Be the reason someone feels seen, heard, and supported by the whole universe.” — Cleo Wade
+I might not have the perfect words for you, but I have so much love for you. I can promise you this: that I’m here with you. And I can give you this much: the grace to be yourself and feel what you’re feeling.
+I can’t fix this for you, but I can listen. I’ll hear you. I’ll see you. I’ll hold the space for you to be you. And I’ll care.
+You are not alone, because you have my hand to hold while you’re going through this. You have my heart to feel your fears and fortify your faith. You have my eyes to see your anxieties and dream of possibilities. You have me as a friend in this mess.
+There are times when a thousand empty words can't match the power of our silent presence.
+“Just because you are soft doesn’t mean you are not a force. Honey and wildfire are both the color gold.” — Victoria Erickson, Edge of Wonder
+________________
+
+
+POEM TO COUNT REPEATED WORDS
+word to find daddy, found 7 times
+
+
+
+
+daddy
+by sylvia plath
+ 
+you do not do, you do not do
+any more, black shoe
+in which i have lived like a foot
+for thirty years, poor and white,
+barely daring to breathe or achoo.
+ 
+daddy, i have had to kill you.
+you died before i had time—
+marble-heavy, a bag full of god,
+ghastly statue with one gray toe
+big as a frisco seal
+ 
+and a head in the freakish atlantic
+where it pours bean green over blue
+in the waters off the beautiful nauset.
+i used to pray to recover you.
+ach, du.
+ 
+in the german tongue, in the polish town
+scraped flat by the roller
+of wars, wars, wars.
+but the name of the town is common.
+my polack friend
+ 
+says there are a dozen or two.
+so i never could tell where you
+put your foot, your root,
+i never could talk to you.
+the tongue stuck in my jaw.
+ 
+it stuck in a barb wire snare.
+ich, ich, ich, ich,
+i could hardly speak.
+i thought every german was you.
+and the language obscene
+ 
+an engine, an engine,
+chuffing me off like a jew.
+a jew to dachau, auschwitz, belsen.
+i began to talk like a jew.
+i think i may well be a jew.
+ 
+the snows of the tyrol, the clear beer of vienna
+are not very pure or true.
+with my gypsy ancestress and my weird luck
+and my taroc pack and my taroc pack
+i may be a bit of a jew.
+ 
+i have always been scared of you,
+with your luftwaffe, your gobbledygoo.
+and your neat mustache
+and your aryan eye, bright blue.
+panzer-man, panzer-man, o you—
+ 
+not god but a swastika
+so black no sky could squeak through.
+every woman adores a fascist,
+the boot in the face, the brute
+brute heart of a brute like you.
+ 
+you stand at the blackboard, daddy,
+in the picture i have of you,
+a cleft in your chin instead of your foot
+but no less a devil for that, no not
+any less the black man who
+ 
+bit my pretty red heart in two.
+i was ten when they buried you.
+at twenty i tried to die
+and get back, back, back to you.
+i thought even the bones would do.
+ 
+but they pulled me out of the sack,
+and they stuck me together with glue.
+and then i knew what to do.
+i made a model of you,
+a man in black with a meinkampf look
+ 
+and a love of the rack and the screw.
+and i said i do, i do.
+so daddy, i'm finally through.
+the black telephone's off at the root,
+the voices just can't worm through.
+ 
+if i've killed one man, i've killed two—
+the vampire who said he was you
+and drank my blood for a year,
+seven years, if you want to know.
+daddy, you can lie back now.
+ 
+there's a stake in your fat black heart
+and the villagers never liked you.
+they are dancing and stamping on you.
+they always knew it was you.
+daddy, pappy, you bastard, i'm through.
+
+
+https://owlcation.com/humanities/Analysis-of-Poem-Daddy-by-Sylvia-Plath#:~:text=Line%2Dby%2DLine%20Analysis%20of%20Plath's%20%22Daddy%22&text=Lines%201%2D5%3A%20You%20do,the%20memory%20of%20her%20father.
