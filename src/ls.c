@@ -162,6 +162,11 @@ int main(int argc, const char *argv[])
 			{
 				_ls(".", op_a, op_l);
 			}
+			else
+			{
+				printerr("Option not available. Try again, you useless ape.", err_title);
+				_exit(EXIT_FAILURE);
+			}
 		}
 		else if (argc == 2)
 		{
