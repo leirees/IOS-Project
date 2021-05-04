@@ -13,28 +13,36 @@
 
 int exit_game()
 {
-    char *ans;
+    char *ofelia = OFELIA;
+    char *glinda = GLINDA;
+    char *err = THE_SYSTEM;
+
     bool exit_status = false;
- 
-    speak_charwtitle(&glinda, "Oh, my dear player, \nDo you really want to exit the game? [Y]es / [N]o, of course.", 0);
+
+    char ans[10];
+
+    speak_character(glinda, "Oh, my dear player, \nDo you really want to exit the game? [Y]es / [N]o, of course.");
     scanf("%s", ans);
 
     if (!strncmp(ans, "y", 1) || !strncmp(ans, "Y", 1))
     {
-        speak_charwtitle(&glinda, "Ok darling, have a nice day. See ya', dada!", 1);
+        speak_character(glinda, "Ok darling, have a nice day. See ya', dada!");
         exit_status = true;
     }
     else if (!strncmp(ans, "n", 1) || !strncmp(ans, "N", 1))
     {
-        speak_charwtitle(&glinda, "Well, let's play together! Let's go to hell!", 1);
+        speak_character(glinda, "Well, let's play together! Let's go to hell!");
     }
     else
     {
-        char *err = THE_SYSTEM;
-        speak_charwtitle(&ofelia, "You spoke wrongly, useless ape!", 0);
+
+        speak_character(ofelia, "HAHAHAHAHA, useless ape!");
         printerr("Say something useful, you fool!", err);
-        free(err);
     }
+
+    free(err);
+    free(ofelia);
+    free(glinda);
 
     return exit_status ? EXIT_SUCCESS : EXIT_FAILURE;
 }

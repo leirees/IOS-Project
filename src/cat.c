@@ -13,31 +13,31 @@
 
 int main(int argc, char *argv[])
 {
-   char ch[30] = "";
-   char str[80];
+   int file_descriptor;
+   ssize_t write_buff, bytes_read;
+
    char *err_sys = THE_SYSTEM;
-   ssize_t write_buff;
+   char *ch;
 
    if (argc == 2)
    {
-      int bytes_read = 0;
-
       // Open the file in read-only mode.
-      int file_descriptor = open(argv[1], O_RDONLY);
+      file_descriptor = open(argv[1], O_RDONLY);
 
       // If there is any error when trying to open the file.
-      if (file_descriptor < 0)
+      if (file_descriptor == -1)
       {
          printerr("Error while opening the file.", err_sys);
+         printerr("YOU DON'T EVEN KNOW TO READ!!!", err_sys);
+         free(err_sys);
          exit(EXIT_FAILURE);
       }
 
       // Read while it has more lines, else, stop and close the file.
       do
       {
-         bytes_read = (file_descriptor, ch, MAXLINE);
-         sprintf(str, "Bytes read: %ld", bytes_read);
-         print(str);
+         bytes_read = read(file_descriptor, ch, 1);
+         print(ch);
       } while (bytes_read > 0);
 
       close(file_descriptor);
@@ -46,7 +46,11 @@ int main(int argc, char *argv[])
    {
       // If the command is used incorrectly, it will teach the user how to use it.
       printerr("No, no, no. Usage: cat file_name. Revise your notes, please.", err_sys);
+      char *glinda = GLINDA;
+      speak_character(glinda, "Please, remember to go to class, player. It is good for you, sweety.");
+      free(glinda);
    }
 
+   free(err_sys);
    exit(EXIT_SUCCESS);
 }

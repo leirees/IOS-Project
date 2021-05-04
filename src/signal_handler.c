@@ -4,6 +4,7 @@
 void signal_handler(int sig)
 {
    char *err_title = THE_SYSTEM;
+   char *glinda = GLINDA;
 
    switch (sig)
    {
@@ -14,8 +15,8 @@ void signal_handler(int sig)
       }
       else
       {
-         speak_charwtitle(&glinda, "Oh, are you abandonning this reality this way, aren't you?", 0);
-         speak_charwtitle(&glinda, "Then, I'm afraid there must be something wrong with you, player.", 1);
+         speak_character(glinda, "Oh, are you abandonning this reality this way, aren't you?");
+         speak_character(glinda, "Then, I'm afraid there must be something wrong with you, player.");
          kill(child_pid, SIGINT);
       }
       break;
@@ -24,4 +25,7 @@ void signal_handler(int sig)
       printerr("Hey! STOP IT NOW //////#!@@@@@ I'm the master here!!!· >:(", err_title);
       break;
    }
+
+   free(err_title);
+   free(glinda);
 }

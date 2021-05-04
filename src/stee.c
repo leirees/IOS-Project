@@ -14,6 +14,8 @@
 int stee()
 {
    char *err_title = THE_SYSTEM;
+   char *glinda = GLINDA;
+
    char *name;
    int fd;
 
@@ -28,13 +30,15 @@ int stee()
       return EXIT_FAILURE;
    }
 
-   speak_charwtitle(&glinda, "What's your name, darling?", 0);
+   speak_character(glinda, "What's your name, darling?");
    scanf("%s", name);
 
-   char *ans;
+   // Welcome the user to the game.
+   char *ans = (char *) malloc(strlen("Hello %s, I'm glad of hearing from you!") + strlen(name));
    sprintf(ans, "Hello %s, I'm glad of hearing from you!", name);
-   speak_charwtitle(&glinda, ans, 1);
+   speak_character(glinda, ans);
    free(ans);
+
 
    // Record name.
    buff = write(fd, name, strlen(name));

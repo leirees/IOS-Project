@@ -69,14 +69,6 @@ typedef struct
  */
 void create_character(character *c, char *name, unsigned char has_magic, unsigned char is_evil, unsigned char is_with_you);
 
-/**
- * @brief Makes the character speak.
- * 
- * @param c The character.
- * @param text The text.
- */
-void speak_character(character *c, char *text);
-
 /* Definition of generic CHARACTERS WITH TITLES */
 /**
  * @brief A brief definition of a character with title.
@@ -114,33 +106,9 @@ void create_charwtitle(character_with_title *c, char *name, char *short_title, c
 void create_witch(character_with_title *c, char *name, char *short_title, char *long_title, unsigned char is_evil);
 
 /**
- * @brief The character speaks.
+ * @brief Makes the character speak.
  * 
- * @param c The character with title.
- * @param str The text she says.
- * @param is_title_short 1, if the title is short; else, 0.
+ * @param c The character.
+ * @param text The text.
  */
-void speak_charwtitle(character_with_title *c, char *text, unsigned char is_title_short);
-
-// Character's definition.
-// Main character
-static player dorothy;
-
-static character scarecrown;
-static character tinman;
-static character lion;
-
-static character_with_title glinda;
-static character_with_title ofelia;
-
-// Secondary character
-static character admin;
-static character dog;
-
-static character_with_title gertrudis;
-static character_with_title jasmine;
-
-// Extras
-static character trees;
-static character guardian;
-static character ghost;
+void speak_character(const char *title, char *text);

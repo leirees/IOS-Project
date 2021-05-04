@@ -24,7 +24,7 @@ int main(int argc, char *argv[])
     if (argc < 4)
     {
         printerr("Pattern recognition error! The CORRECT SYNTAX is : grep \"pattern\" \"filename\". Revise your notes, please.", err_title);
-        exit(EXIT_FAILURE);
+        _exit(EXIT_FAILURE);
     }
 
     lineflag = 0;
@@ -83,9 +83,12 @@ int main(int argc, char *argv[])
     close(des);
     arg_ind++;
 
-    char *res;
+    // Show results.
+    char *res = (char *)malloc(strlen("Number of occurances: %d") + sizeof(occurances));
     sprintf(res, "Number of occurances: %d", occurances);
     println(bold(res));
+    free(res);
+    free(err_title);
 
-    exit(EXIT_SUCCESS);
+    _exit(EXIT_SUCCESS);
 }

@@ -10,69 +10,45 @@
 
 #include "headers/mv.h"
 #include "headers/characters/character.h"
+#include <sys/fcntl.h>
+#include <sys/stat.h>
 
 void howToUse()
 {
-    printf("Usage:\n mv file.txt new_location\n");
-    exit(1);
+    char *err_sys = THE_SYSTEM;
+    char *glinda = GLINDA;
+    printerr("HAHAHAHAHAHA, useless ape!", err_sys);
+    speak_character(glinda, "My dear sweet child, do <<mv file.txt new_location>>, please :)");
+    free(err_sys);
+    free(glinda);
+}
+
+void error()
+{
+    char *err_title = THE_SYSTEM;
+    // If there is no directory to reach,
+    printerr("I cannot reach that place, ape. Move on!", err_title);
+
+    printerr("I cannot move there!", err_title);
+    free(err_title);
 }
 
 int mv(char *origin_file, char *end_file)
 {
-    struct dirent *name_file;
-
-    char *err_title = THE_SYSTEM;
-    char *this_dir;
-
-    /* 1- Try to open the directory */
-    DIR *end = opendir(end_file);
-
-    if (end == NULL)
-    {
-        if (errno == ENOENT)
-        {
-            // If there is no directory to reach,
-            printerr("I cannot reach that place, ape. Move on!", err_title);
-        }
-        else
-        {
-            // If the directory cannot be opened,
-            printerr("I cannot go to that place, ape. Move on!", err_title);   
-        }
-
-        printerr("I cannot move there!", err_title);
-        _exit(EXIT_FAILURE);
-    }
-
-    /* 2- Try to move the file, from "origin" to "end" */
-    // TODO: edit this part. Not working properly.
-    name_file = readdir(end);
-    
-    // Get the current directory path. Never NULL.
-    this_dir = getcwd((char *)NULL, 0);
-
-    // Attach mv location to path && keep original file name
-    char *res = concat(concat(concat(concat(this_dir, "/"), end_file), "/"), origin_file);
-
-    bool not_success = false;
-
-    if (rename(origin_file, name_file->d_name) == -1)
-    {
-        printerr("Error: directory not found!", err_title);
-        not_success = true;
-    }
-
-    closedir(end);
-    return not_success ? EXIT_FAILURE : EXIT_SUCCESS;
+    return link((const char *)origin_file, (const char *)end_file) || unlink((const char *)origin_file) ? EXIT_FAILURE : EXIT_SUCCESS;
 }
 
 int main(int argc, char *argv[])
 {
+    int err;
     if (argc == 3)
     {
-        char *origin_file = argv[1];
-        char *end_file = argv[2];
-        _exit(mv(origin_file, end_file) ? EXIT_FAILURE : EXIT_SUCCESS);
+        err = mv(argv[1], argv[2]);
+        if (err)
+        {
+            error();
+        }
+        _exit(err ? EXIT_FAILURE : EXIT_SUCCESS);
     }
     else
     {

@@ -47,7 +47,7 @@ gcc -c src/headers/characters/character.c -o build/characters.o
 # Compile CAT command.
 if [[ $ALL == "true" || $last_vers != $vers || !(-s bin/cat) || -n "$(git diff src/cat.c)" || -n "$(git diff src/headers/cat.h)" ]]; then
     echo "Compile cat."
-    gcc src/cat.c -o bin/cat -lstring
+    gcc src/cat.c build/characters.o -o bin/cat -lstring
 fi
 
 # Compile CP command.

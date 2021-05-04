@@ -18,6 +18,31 @@ bool eof;
 
 u8 last_state;
 
+// Character's definition.
+// Main character
+player dorothy;
+
+character scarecrown;
+character tinman;
+character lion;
+
+character_with_title glinda;
+character_with_title ofelia;
+
+// Secondary character
+character admin;
+character dog;
+
+character_with_title gertrudis;
+character_with_title jasmine;
+
+// Extras
+character trees;
+character guardian;
+character ghost;
+
+char *game_dir;
+
 void setup_signals()
 {
    signal(SIGINT, signal_handler);
@@ -27,11 +52,14 @@ void setup_signals()
 void setup_game()
 {
    // Root dir
+   root_dir = (char *)malloc(strlen(getcwd((char *)NULL, 0)));
    root_dir = getcwd((char *)NULL, 0);
+   game_dir = (char *)malloc(strlen(concat(getcwd((char *)NULL, 0), "config/.gamedir")));
+   game_dir = concat(getcwd((char *)NULL, 0), "config/.gamedir");
 
    // PID
-   child_pid = -1;
    parent_pid = getpid();
+   child_pid = -1;
 
    create_characters();
 }
@@ -82,7 +110,7 @@ void create_characters()
 
 int read_args(int16 *argcp, char *args[], int max, bool *eofp)
 {
-   static char cmd[MAXLINE];
+   char cmd[MAXLINE];
    char *cmdp;
    int ret, i = 0;
 
@@ -219,10 +247,7 @@ int shell(char *path[NUMCOMMANDS], char *err_title, char *prompt)
       }
    }
 
-   if (eof)
-   {
-      return EXIT_SUCCESS;
-   }
+   return EXIT_SUCCESS;
 }
 
 int main()
@@ -311,5 +336,5 @@ int main()
       }
    } while (true);
 
-   _exit(EXIT_SUCCESS);
+   exit(EXIT_SUCCESS);
 }

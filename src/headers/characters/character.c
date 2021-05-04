@@ -22,11 +22,6 @@ void create_character(character *c, char *name, unsigned char has_magic, unsigne
     c->is_dead = 0;
 }
 
-void speak_character(character *c, char *text)
-{
-    println((concat(c->name, ": "), text));
-}
-
 void create_charwtitle(character_with_title *c, char *name, char *short_title, char *long_title, unsigned char has_magic, unsigned char is_evil, unsigned char is_with_you)
 {
     create_character(c->cwtitle, name, has_magic, is_evil, is_with_you);
@@ -39,7 +34,7 @@ void create_witch(character_with_title *c, char *name, char *short_title, char *
     create_charwtitle(c, name, short_title, long_title, 1, is_evil, 0);
 }
 
-void speak_charwtitle(character_with_title *someone, char *text, unsigned char is_title_short)
+void speak_character(const char *title, char *text)
 {
-    println(concat(is_title_short ? someone->short_title : someone->long_title, text));
+    println((concat(concat((char *)title, ": "), text)));
 }

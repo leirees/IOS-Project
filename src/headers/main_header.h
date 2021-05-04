@@ -69,5 +69,5 @@ static int8 state;
 static char *root_dir;
 
 // PID.
-static pid_t child_pid;
 static pid_t parent_pid;
+static pid_t child_pid;

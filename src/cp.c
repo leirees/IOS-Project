@@ -35,10 +35,12 @@ int main(int argc, char *argv[])
 
         if (end < 0)
         {
+            err = (char *)malloc(strlen("Error opening file %s errno = %d") + strlen(argv[2]) + sizeof(errno));
             sprintf(err, "Error opening file %s errno = %d", argv[2], errno);
             printerr(err, err_title);
+            free(err);
             free(err_title);
-            exit(EXIT_FAILURE);
+            _exit(EXIT_FAILURE);
         }
 
         oread = read(origin, buffer, sizeof(buffer));
@@ -47,10 +49,12 @@ int main(int argc, char *argv[])
         {
             if (write(end, buffer, oread) != oread)
             {
+                err = (char *)malloc(strlen("Error in writing data to %s") + strlen(argv[2]));
                 sprintf(err, "Error in writing data to %s", argv[2]);
                 printerr(err, err_title);
+                free(err);
                 free(err_title);
-                exit(EXIT_FAILURE);
+                _exit(EXIT_FAILURE);
             }
 
             oread = read(origin, buffer, sizeof(buffer));
@@ -58,8 +62,8 @@ int main(int argc, char *argv[])
     }
     else
     {
-        printerr("Revise your notes. Usage:\n cp file new_file\n", err_title);
+        printerr("Revise your notes. Usage: cp file new_file.", err_title);
     }
     
-    return EXIT_SUCCESS;
+    _exit(EXIT_SUCCESS);
 }
