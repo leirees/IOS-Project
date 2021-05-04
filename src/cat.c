@@ -31,14 +31,19 @@ int main(int argc, char *argv[])
          free(err_sys);
          exit(EXIT_FAILURE);
       }
-      printf("The contents of the file %s are:\n", argv[1]);
+
+      // Print title:
+      char *contents = (char *)malloc(strlen("The contents of the file %s are:") + strlen(argv[1]));
+      sprintf(contents, "The contents of the file %s are:", argv[1]);
+      println(bold(concat(ANSI_COLOR_MAGENTA, contents)));
+      free(contents);
 
       // Read while it has more lines, else, stop and close the file.
-      while(read(file_descriptor, ch, 1) != 0)
+      do
       {
          bytes_read = read(file_descriptor, ch, 1);
          print(ch);
-      } while (bytes_read > 0);
+      } while (bytes_read != 0);
 
       close(file_descriptor);
    }
