@@ -1,6 +1,6 @@
 /**
  * @file grep.c
- * @author The Wizard of OS team
+ * @author Zdravko Todorov, Team 2.2
  * @brief Prints the line containing the word and the occurance number
  * @version 1
  * @date 2021-03-30
@@ -69,7 +69,7 @@ int main(int argc, char *argv[])
                 if (k == strlen(argv[2]))
                 {
                     // Print out the line
-                    printf("%s", line);
+                    println(line);
                     // Count occurances of that string
                     occurances++;
                 }
