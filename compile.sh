@@ -34,8 +34,8 @@ if [[ $ALL == "true" || $last_vers != $vers || -n "$(git diff src/headers/libstr
     echo "Compile libstring."
     gcc -c -fpic src/headers/libstring/libstring.c -o build/libstring.o
     gcc -shared build/libstring.o -o build/libstring.so 
-    chmod 0755 build/libstring.so
     sudo cp build/libstring.so /usr/lib
+    sudo chmod 0755 /usr/lib/libstring.so
 fi
 
 sudo ldconfig

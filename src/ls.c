@@ -13,9 +13,11 @@
 void _ls(const char *dir, int op_a, int op_l)
 {
 	char *err_title = THE_SYSTEM;
-
+	
 	// Pointer to stat struct
 	struct stat sfile;
+	char *size = (char *)malloc(strlen("Size: %ld") + sizeof(sfile.st_size));
+	char *uid = (char *)malloc(strlen("User ID: %d") + sizeof(sfile.st_uid));
 
 	// Here we will list the directory
 	struct dirent *d;
@@ -24,7 +26,7 @@ void _ls(const char *dir, int op_a, int op_l)
 	DIR *dh = opendir(dir);
 
 	//If the directory is not accessible
-	if (!dh)
+	if (dh == NULL)
 	{
 		// Throw error and exit
 		if (errno = ENOENT)
@@ -38,6 +40,7 @@ void _ls(const char *dir, int op_a, int op_l)
 			printerr("Unable to read directory. Try again, ape.", err_title);
 		}
 
+		printerr("ERROR!", err_title);
 		_exit(EXIT_FAILURE);
 	}
 
@@ -71,41 +74,42 @@ void _ls(const char *dir, int op_a, int op_l)
 		}
 
 		// If ls -l,
-		if (op_l) 
+		if (op_l)
 		{
 			// Stat syscall, in order to get additional info about a file.
 			stat(d->d_name, &sfile);
 
 			//Accessing st_size (of stat struct) --> Size
-			printf("Size: %ld", sfile.st_size);
-			//Accessing st_uid (of stat struct) --> User ID
-			printf("\n  User ID: %d", sfile.st_uid);
-			//Accessing st_mode (of stat struct) --> Permissions
-			printf("\n  File Permissions User: ");
-			printf((sfile.st_mode & S_IRUSR) ? "r" : "-");
-			printf((sfile.st_mode & S_IWUSR) ? "w" : "-");
-			printf((sfile.st_mode & S_IXUSR) ? "x" : "-");
-			printf("\n");
+			// printf("Size: %ld", sfile.st_size);
+			// //Accessing st_uid (of stat struct) --> User ID
+			// printf("\n  User ID: %d", sfile.st_uid);
+			// //Accessing st_mode (of stat struct) --> Permissions
+			// printf("\n  File Permissions User: ");
+			// printf((sfile.st_mode & S_IRUSR) ? "r" : "-");
+			// printf((sfile.st_mode & S_IWUSR) ? "w" : "-");
+			// printf((sfile.st_mode & S_IXUSR) ? "x" : "-");
+			// printf("\n");
 
 			/* Properties of the file */
 			// Accessing st_size --> Size.
-			// char *size;
-			// sprintf(size, "Size: %ld", sfile.st_size);
-			// println(size);
-			// // Accessing st_uid  --> User ID.
-			// char *uid;
-			// sprintf(uid, "User ID: %d", sfile.st_uid);
-			// println(uid);
-			// // Accessing st_mode --> Permissions.
-			// println("User file permissions: ");
-			// print("\t");
-			// print((sfile.st_mode & S_IRUSR) ? "r" : "-");
-			// print((sfile.st_mode & S_IWUSR) ? "w" : "-");
-			// print((sfile.st_mode & S_IXUSR) ? "x" : "-");
-			// print("\n");
+			sprintf(size, "Size: %ld", sfile.st_size);
+			println(size);
+			// Accessing st_uid  --> User ID.
+			sprintf(uid, "User ID: %d", sfile.st_uid);
+			println(uid);
+			// Accessing st_mode --> Permissions.
+			println("User file permissions: ");
+			print("\t");
+			print((sfile.st_mode & S_IRUSR) ? "r" : "-");
+			print((sfile.st_mode & S_IWUSR) ? "w" : "-");
+			print((sfile.st_mode & S_IXUSR) ? "x" : "-");
+			print("\n");
 		}
 	}
 
+	free(err_title);
+	free(size);
+	free(uid);
 }
 
 int main(int argc, const char *argv[])
