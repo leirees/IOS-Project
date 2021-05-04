@@ -1,6 +1,6 @@
 /**
  * @file grep.c
- * @author The Wizard of OS team
+ * @author Zdravko Todorov, Team 2.2
  * @brief Prints the line containing the word and the occurance number
  * @version 1
  * @date 2021-03-30
@@ -24,7 +24,7 @@ int main(int argc, char *argv[])
     if (argc < 4)
     {
         printerr("Pattern recognition error! The CORRECT SYNTAX is : grep \"pattern\" \"filename\". Revise your notes, please.", err_title);
-        exit(EXIT_FAILURE);
+        _exit(EXIT_FAILURE);
     }
 
     lineflag = 0;
@@ -69,7 +69,7 @@ int main(int argc, char *argv[])
                 if (k == strlen(argv[2]))
                 {
                     // Print out the line
-                    printf("%s", line);
+                    println(line);
                     // Count occurances of that string
                     occurances++;
                 }
@@ -87,5 +87,5 @@ int main(int argc, char *argv[])
     sprintf(res, "Number of occurances: %d", occurances);
     println(bold(res));
 
-    exit(EXIT_SUCCESS);
+    _exit(EXIT_SUCCESS);
 }
