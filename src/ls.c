@@ -121,7 +121,7 @@ int main(int argc, const char *argv[])
 		// If there is one argument, call ls alone, to ".".
 		_ls(".", 0, 0);
 	}
-	else if (argc <= 3)
+	else
 	{
 		// If there are two arguments, check if a valid option is passed:
 		if (argv[1][0] == '-')
