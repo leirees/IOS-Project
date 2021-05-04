@@ -13,7 +13,7 @@
 void _ls(const char *dir, int op_a, int op_l)
 {
 	char *err_title = THE_SYSTEM;
-	
+
 	// Pointer to stat struct
 	struct stat sfile;
 	char *size = (char *)malloc(strlen("Size: %ld") + sizeof(sfile.st_size));
@@ -121,7 +121,7 @@ int main(int argc, const char *argv[])
 		// If there is one argument, call ls alone, to ".".
 		_ls(".", 0, 0);
 	}
-	else if (argc == 2)
+	else if (argc <= 3)
 	{
 		// If there are two arguments, check if a valid option is passed:
 		if (argv[1][0] == '-')
@@ -154,8 +154,23 @@ int main(int argc, const char *argv[])
 				p++;
 			}
 
-			// Call ls
-			_ls(".", op_a, op_l);
+			if (argc == 3)
+			{
+				_ls(argv[2], op_a, op_l);
+			}
+			else if (argc == 2)
+			{
+				_ls(".", op_a, op_l);
+			}
+		}
+		else if (argc == 2)
+		{
+			_ls(argv[1], 0, 0);
+		}
+		else
+		{
+			printerr("Option not available. Try again, you useless ape.", err_title);
+			_exit(EXIT_FAILURE);
 		}
 	}
 
