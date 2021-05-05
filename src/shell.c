@@ -272,6 +272,7 @@ int main()
 
    // 1. Set game state to configuration state, and deal with signal handling.
    state = CONFIG_TERM;
+   option = 0;
 
    do
    {
@@ -279,11 +280,11 @@ int main()
       {
       case CONFIG_TERM:
          // Setup game and change state.
-         print("Setting up game... OK");
+         print("Setting the game up... OK");
          setup_game();
          last_state = state;
          print("OK\n");
-         
+
          state = INIT_MENU;
          break;
 
@@ -304,30 +305,29 @@ int main()
 
       case CHOOSE_MENU_OPTIONS:
          // Choose menu options.
-         option = 0;
-         do
+         print_menu_options(option);
+         scanf("%d", &option);
+
+         if (option)
          {
             print_menu_options(option);
-            scanf("%d", &option);
-            print_menu_options(option);
-         } while (getchar() != ENTER_KEY);
+            wait_term();
 
-         last_state = state;
+            last_state = state;
+            switch (option)
+            {
+            case 1:
+               state = GAME_RUNNING;
+               break;
 
-         // Enter the game :)
-         switch (option)
-         {
-         case 1:
-            state = GAME_RUNNING;
-            break;
+            case 2:
+               state = SHOW_SCORES;
+               break;
 
-         case 2:
-            state = SHOW_SCORES;
-            break;
-
-         case 3:
-            state = GAME_OVER_EXIT;
-            break;
+            case 3:
+               state = GAME_OVER_EXIT;
+               break;
+            }
          }
          break;
 

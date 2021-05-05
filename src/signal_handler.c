@@ -6,6 +6,8 @@ void signal_handler(int sig)
    char *err_title = THE_SYSTEM;
    char *glinda = GLINDA;
 
+   println("");
+
    switch (sig)
    {
    case SIGINT:
@@ -15,9 +17,15 @@ void signal_handler(int sig)
       }
       else
       {
+         
          speak_character(glinda, "Oh, are you abandonning this reality this way, aren't you?");
          speak_character(glinda, "Then, I'm afraid there must be something wrong with you, player.");
+         do {
+
+         } while (getchar() != ENTER_KEY);
+         
          kill(child_pid, SIGINT);
+         _exit(0);
       }
       break;
 

@@ -16,11 +16,17 @@ int cd(char *path)
     char *err_title = THE_SYSTEM;
     char *glinda = GLINDA;
 
+    char *directory_path;
+
     if (!strcmp("", path))
     {
         // If the directory field is empty,
         // go to the root directory.
-        path = root_dir;
+        directory_path = root_dir;
+    }
+    else
+    {
+        directory_path = path;
     }
 
     DIR *dh = opendir(path);
@@ -47,8 +53,9 @@ int cd(char *path)
 
     // Then, if the directory is closed, we can change of dir.
     closedir(dh);
+
     // Change of dir,
-    chdir((const char *)path);
+    chdir((const char *)directory_path);
 
     free(glinda);
     free(err_title);
