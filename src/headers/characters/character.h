@@ -75,9 +75,13 @@ void create_character(character *c, char *name, unsigned char has_magic, unsigne
  */
 typedef struct
 {
-    character *cwtitle;
+    char *name;
     char *short_title;
     char *long_title;
+    unsigned char has_magic;
+    unsigned char is_evil;
+    unsigned char is_with_you;
+    unsigned char is_dead;
 } character_with_title;
 
 /**

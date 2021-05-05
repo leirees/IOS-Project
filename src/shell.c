@@ -61,11 +61,6 @@ void setup_game()
    parent_pid = getpid();
    child_pid = -1;
 
-   create_characters();
-}
-
-void create_characters()
-{
    /* Characters creation */
    // Companion creation
    char *scarecrown_name = SCARECROWN;
@@ -250,20 +245,30 @@ int shell(char *path[NUMCOMMANDS], char *err_title, char *prompt)
    return EXIT_SUCCESS;
 }
 
+void wait_term()
+{
+   do
+   {
+
+   } while (getchar() != ENTER_KEY);
+}
+
 int main()
 {
    // Setup System Agent: the one that provides its body as the work in which we work.
-   char *err_title = THE_SYSTEM;
+   print("Setting up the prompt...");
    u8 option;
-   
+   char *err_title = THE_SYSTEM;
    // Setup command path.
    char *path[NUMCOMMANDS] = COMMANDS;
-
    // Set the default prompt design.
    char *prompt = PROMPT;
+   print("OK\n");
 
    // Setup signals
+   print("Setting up signals...");
    setup_signals();
+   print("OK\n");
 
    // 1. Set game state to configuration state, and deal with signal handling.
    state = CONFIG_TERM;
@@ -274,13 +279,20 @@ int main()
       {
       case CONFIG_TERM:
          // Setup game and change state.
+         print("Setting up game... OK");
          setup_game();
          last_state = state;
+         print("OK\n");
+         
          state = INIT_MENU;
          break;
 
       case INIT_MENU:
          // Initial menu: if ENTER_KEY pressed, go to CHOOSE_MENU_OPTIONS.
+         println("Initialising game menu. OK");
+         println("Press enter to continue...");
+         wait_term();
+
          do
          {
             print_menu();
