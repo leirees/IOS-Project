@@ -15,10 +15,6 @@
 
 /* COMMANDS for the game */
 #define NUMCOMMANDS 13
-#define COMMANDS                                                                                     \
-    {                                                                                                \
-        "cat", "cd", "cp", "exit", "grep", "help", "ls", "mv", "pwd", "stee", "touch", "help", "man" \
-    }
 
 // CD
 #include "cd.h"
@@ -30,7 +26,6 @@
 
 // PROMPT DESIGN
 #define PROMPT_NAME "GlindOS"
-#define PROMPT concat(concat(ANSI_COLOR_BLUE, PROMPT_NAME), concat(ANSI_COLOR_RESET, "$ "))
 
 /**
  * @brief Setup all the characters, variables.
@@ -72,10 +67,7 @@ int execute(int argc, char *argv[]);
 
 /**
  * @brief Shell object, for game.
- * 
- * @param path The path with all the commands.
- * @param err_title The error title, for error handling.
- * @param prompt The prompt design.
+
  * @return int 1 iff failure.
  */
-int shell(char *path[NUMCOMMANDS], char *err_title, char *prompt);
+int shell();

@@ -2,18 +2,19 @@
 
 void create_player(player *p, char *name)
 {
-    print("Creating player...");
+    p->name = (char*)malloc(strlen(name));
     p->name = name;
+
     p->fails = 0;
     p->score = 0;
     p->is_dead = 0;
-    print("OK!\n");
+    println("Creating PLAYER... OK");
 }
 
 void create_character(character *c, char *name, unsigned char has_magic, unsigned char is_evil, unsigned char is_with_you)
 {
-    print(concat(concat("Creating character ", name), "..."));
     // The name of the character.
+    c->name = (char*)malloc(strlen(name));
     c->name = name;
 
     // Some flags to control the character.
@@ -23,13 +24,14 @@ void create_character(character *c, char *name, unsigned char has_magic, unsigne
 
     // When the character is created, is alive.
     c->is_dead = 0;
-    print("OK!\n");
+    println(concat(concat("Creating character ", name), "...OK"));
 }
 
 void create_charwtitle(character_with_title *c, char *name, char *short_title, char *long_title, unsigned char has_magic, unsigned char is_evil, unsigned char is_with_you)
 {
-    print(concat(concat("Creating character ", long_title), "..."));
+    c->name = (char*)malloc(strlen(name));
     c->name = name;
+    
     c->short_title = short_title;
     c->long_title = long_title;
     c->has_magic = has_magic;
@@ -40,7 +42,7 @@ void create_charwtitle(character_with_title *c, char *name, char *short_title, c
 
     // Is the character dead?
     c->is_dead = 0;
-    print("OK!\n");
+    println(concat(concat("Creating character ", name), "...OK"));
 }
 
 void create_witch(character_with_title *c, char *name, char *short_title, char *long_title, unsigned char is_evil)
@@ -48,7 +50,7 @@ void create_witch(character_with_title *c, char *name, char *short_title, char *
     create_charwtitle(c, name, short_title, long_title, 1, is_evil, 0);
 }
 
-void speak_character(const char *title, char *text)
+void speak_character(char *title, char *text)
 {
-    println((concat(concat((char *)title, ": "), text)));
+    println((concat(concat(title, ": "), text)));
 }

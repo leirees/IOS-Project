@@ -14,6 +14,7 @@ void signal_handler(int sig)
       if (child_pid < 0)
       {
          exit_game();
+         _exit(0);
       }
       else
       {

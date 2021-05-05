@@ -40,9 +40,5 @@ int exit_game()
         printerr("Say something useful, you fool!", err);
     }
 
-    free(err);
-    free(ofelia);
-    free(glinda);
-
     return exit_status ? EXIT_SUCCESS : EXIT_FAILURE;
 }

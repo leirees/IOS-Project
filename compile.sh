@@ -44,6 +44,12 @@ sudo ldconfig
 echo "Precompiling characters..."
 gcc -c src/headers/characters/character.c -o build/characters.o
 
+# Compiling CLEAR command.
+if [[ $ALL == "true" || $last_vers != $vers || !(-s bin/clear) || -n "$(git diff src/clear.c)" ]]; then
+    echo "Compile clear."
+    gcc src/clear.c -o bin/clear -lstring
+fi
+
 # Compile CAT command.
 if [[ $ALL == "true" || $last_vers != $vers || !(-s bin/cat) || -n "$(git diff src/cat.c)" || -n "$(git diff src/headers/cat.h)" ]]; then
     echo "Compile cat."

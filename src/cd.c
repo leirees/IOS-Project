@@ -16,22 +16,7 @@ int cd(char *path)
     char *err_title = THE_SYSTEM;
     char *glinda = GLINDA;
 
-    char *directory_path;
-
-    if (!strcmp("", path))
-    {
-        // If the directory field is empty,
-        // go to the root directory.
-        directory_path = root_dir;
-    }
-    else
-    {
-        directory_path = path;
-    }
-
-    DIR *dh = opendir(path);
-
-    if (dh == NULL)
+    if (chdir((const char *)path) == -1)
     {
         // If the directory is not found.
         if (errno = ENOENT)
@@ -45,19 +30,9 @@ int cd(char *path)
             // If the directory is not readable, then throw error and exit.
             printerr("No DIR found. %ERROR!\n Revise your internal configuration, player.", err_title);
         }
-
-        free(err_title);
-        free(glinda);
+        
         return EXIT_FAILURE;
     }
 
-    // Then, if the directory is closed, we can change of dir.
-    closedir(dh);
-
-    // Change of dir,
-    chdir((const char *)directory_path);
-
-    free(glinda);
-    free(err_title);
     return EXIT_SUCCESS;
 }

@@ -8,29 +8,44 @@
 
 // Definition of THE WITCHES
 // The four witches' titles
-#define GLINDA underlined(concat(concat(concat(ANSI_COLOR_CYAN, bold("Glinda")), ", \"The Good Witch of the NORTH\""), ANSI_COLOR_RESET));
-#define SHORT_GLINDA underlined(concat(concat(ANSI_COLOR_CYAN, bold("Glinda")), ANSI_COLOR_RESET));
-#define OFELIA underlined(concat(concat(concat(ANSI_COLOR_RED, bold("Ofelia")), ", \"The Most Evil Bad Witch, The Witch of the WEST\""), ANSI_COLOR_RESET));
-#define SHORT_OFELIA underlined(concat(concat(concat(ANSI_COLOR_RED, bold("Ofelia")), ", \"The Most Evil Bad Witch\""), ANSI_COLOR_RESET));
-#define GERTRUDIS underlined(concat(concat(concat(ANSI_COLOR_YELLOW, bold("Gertrudis")), ", \"The Evil Witch of the EAST\""), ANSI_COLOR_RESET));
-#define SHORT_GERTRUDIS underlined(concat(concat(ANSI_COLOR_YELLOW, bold("Gertrudis")), ANSI_COLOR_RESET));
-#define JASMINE underlined(concat(concat(concat(ANSI_COLOR_GREEN, bold("Jasmine")), ", \"The Good Witch of the SOUTH\""), ANSI_COLOR_RESET));
-#define SHORT_JASMINE underlined(concat(concat(ANSI_COLOR_GREEN, bold("Jasmine")), ANSI_COLOR_RESET));
+#define GLINDA_NAME "Glinda"
+#define GLINDA_TITLE ", <<The Good Witch of the NORTH>>"
+#define GLINDA_COMPLETE concat(BOLD, underlined(concat(ANSI_COLOR_CYAN, concat(GLINDA_NAME, GLINDA_TITLE))))
+#define GLINDA GLINDA_COMPLETE
+#define SHORT_GLINDA concat(BOLD, underlined(concat(ANSI_COLOR_CYAN, GLINDA_NAME)))
+
+#define OFELIA_NAME "Ofelia"
+#define OFELIA_TITLE ", <<The Most Evil Bad Witch, The Witch of the WEST>>"
+#define OFELIA_COMPLETE concat(BOLD, underlined(concat(ANSI_COLOR_RED, concat(OFELIA_NAME, OFELIA_TITLE))))
+#define OFELIA OFELIA_COMPLETE
+#define SHORT_OFELIA concat(BOLD, underlined(concat(ANSI_COLOR_RED, concat(OFELIA_NAME, ", <<The Most Evil Bad Witch>>"))))
+
+#define GERTRUDIS_NAME "Gertrudis"
+#define GERTRUDIS_TITLE ", <<The Evil Witch of the EAST>>"
+#define GERTRUDIS_COMPLETE concat(BOLD, underlined(concat(ANSI_COLOR_YELLOW, concat(GERTRUDIS_NAME, GERTRUDIS_TITLE))))
+#define GERTRUDIS GERTRUDIS_COMPLETE
+#define SHORT_GERTRUDIS concat(BOLD, underlined(concat(ANSI_COLOR_YELLOW, GERTRUDIS_NAME)))
+
+#define JASMINE_NAME "Jasmine"
+#define JASMINE_TITLE ", <<The Good Witch of the SOUTH>>"
+#define JASMINE_COMPLETE concat(BOLD, underlined(concat(ANSI_COLOR_GREEN, concat(JASMINE_NAME, JASMINE_TITLE))))
+#define JASMINE JASMINE_COMPLETE
+#define SHORT_JASMINE concat(BOLD, underlined(concat(ANSI_COLOR_GREEN, GERTRUDIS_NAME)))
 
 /* Definition of the COMPANIONS */
 // The Three Knights of the Player + DOG
-#define SCARECROWN underlined(bold("The Brainless Scarecrown"));
-#define TINMAN underlined(bold("The Heartless Tinman"));
-#define LION underlined(bold("The Coward Lion"));
+#define SCARECROWN underlined(bold("The Brainless Scarecrown"))
+#define TINMAN underlined(bold("The Heartless Tinman"))
+#define LION underlined(bold("The Coward Lion"))
 
 // This is Toto, you fellow dog :DD
-#define DOG underlined(concat(concat(ANSI_COLOR_WHITE, bold("Toto")), ANSI_COLOR_RESET));
+#define DOG concat(BOLD, underlined("TOTO <<My doge>>"))
 
 /* Definition of EXTRAS */
-#define TREES underlined(bold("Forest trees"))
-#define GUARDIAN underlined(bold("Guardian"))
-#define GHOST underlined(bold("Ghost"))
-#define ADMIN underlined(bold("ADMIN"))
+#define TREES concat(BOLD, underlined("Forest trees"))
+#define GUARDIAN concat(BOLD, underlined("Guardian"))
+#define GHOST concat(BOLD, underlined("CASPER <<The Friendly Ghost>>"))
+#define ADMIN concat(BOLD, underlined("THE ADMIN"))
 
 typedef struct
 {
@@ -115,4 +130,4 @@ void create_witch(character_with_title *c, char *name, char *short_title, char *
  * @param c The character.
  * @param text The text.
  */
-void speak_character(const char *title, char *text);
+void speak_character(char *title, char *text);

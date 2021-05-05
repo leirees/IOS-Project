@@ -14,12 +14,6 @@
 #include <errno.h>
 
 /**
- * @brief Explain the user how to use the command.
- * 
- */
-void howToUse();
-
-/**
  * @brief Move one file from "origin" to "end".
  * 
  * @param origin_file The original path of the file.

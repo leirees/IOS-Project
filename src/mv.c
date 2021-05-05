@@ -13,26 +13,6 @@
 #include <sys/fcntl.h>
 #include <sys/stat.h>
 
-void howToUse()
-{
-    char *err_sys = THE_SYSTEM;
-    char *glinda = GLINDA;
-    printerr("HAHAHAHAHAHA, useless ape!", err_sys);
-    speak_character(glinda, "My dear sweet child, do <<mv file.txt new_location>>, please :)");
-    free(err_sys);
-    free(glinda);
-}
-
-void error()
-{
-    char *err_title = THE_SYSTEM;
-    // If there is no directory to reach,
-    printerr("I cannot reach that place, ape. Move on!", err_title);
-
-    printerr("I cannot move there!", err_title);
-    free(err_title);
-}
-
 int mv(char *origin_file, char *end_file)
 {
     return link((const char *)origin_file, (const char *)end_file) || unlink((const char *)origin_file) ? EXIT_FAILURE : EXIT_SUCCESS;
@@ -40,20 +20,25 @@ int mv(char *origin_file, char *end_file)
 
 int main(int argc, char *argv[])
 {
-    int err;
+    char *err_sys = THE_SYSTEM;
+    char *glinda = GLINDA;
+
     if (argc == 3)
     {
-        err = mv(argv[1], argv[2]);
-        if (err)
+        if (mv(argv[1], argv[2]))
         {
-            error();
+            // If there is no directory to reach,
+            printerr("I cannot reach that place, ape. Move on!", err_sys);
+            printerr("I cannot move there!", err_sys);
+            
+            _exit(EXIT_FAILURE);
         }
-        _exit(err ? EXIT_FAILURE : EXIT_SUCCESS);
+        _exit(EXIT_SUCCESS);
     }
-    else
-    {
-        // If the command is used incorrectly, it will teach the user how to use it.
-        howToUse();
-        _exit(EXIT_FAILURE);
-    }
+
+    // If the command is used incorrectly, it will teach the user how to use it.
+    printerr("HAHAHAHAHAHA, useless ape!", err_sys);
+    speak_character(glinda, "My dear sweet child, do <<mv file.txt new_location>>, please :)");
+
+    _exit(EXIT_FAILURE);
 }
