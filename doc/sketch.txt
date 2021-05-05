@@ -1,0 +1,97 @@
+The Wizard of OS
+
+
+Plot: el usuario es arrastrado al mundo de la terminal junto con sus archivos, desde la shell gráfica, sin tener demasiada idea, y tiene que seguir el camino blanco para llegar hasta el Admin (podria ser usuario experimentado, o hasta que descubre que la bruja del /var se puede derrotar con rm). Durante el camino va haciendo amigos y tiene que derrotar enemigos, como la bruja del /tmp o la bruja del /var.
+
+
+Players have to learn how to: 
+1. Change the current directory – (cd) 
+Para cambiar de lugar (mazmorra, bosque,...).
+
+
+2. Read the contents of a directory (just the name or more information) – (ls -l) 
+ls para mirar
+ls -l para ver
+ls -lh para observar minuciosamente
+
+
+3. Look the location – (pwd):
+Pregunta a alguien aleatorio de la zona o a sí misma donde se encuentra. Puede que no tenga respuesta.
+
+
+4. Read from file or stdin and print in stdout – (cat) 
+Para leer una nota que se encuentre, ya sea alguna pista para avanzar , ya sea parte de la historia en sí.
+
+
+Puede haber notas “secundarias”, extras para comprender mejor el mundo, pero que no afecten a la jugabilidad.
+
+
+5. Create a new file – (touch) 
+Para fabricar objetos del juego, si se tienen materiales suficientes en el inventario.
+
+
+6. Move a file – (mv) 
+Para llevar un item de un lugar a otro (podemos forzar al usuario que se requiera X item en un lugar diferente).
+
+
+7. Copy a file – (cp) 
+Para chasquear los dedos y hacer aparecer algo, clonar (sí, es un poco Deus ex Machina).
+
+
+8. Search a file’s contents – (grep) 
+Para buscar palabras clave en un libro extenso que se encuentre (Ejemplo: un hechizo en un libro de hechizos antiguo).
+________________
+
+
+9. Read the manual file of a command – (man) 
+Para leer la guía de viaje que se encuentre por el camino (enseñar al usuario cómo se usan los comandos)
+
+
+10. Get information about available commands – (help) 
+Para pedir ayuda a alguno de los acompañantes del usuario o a algún campesino.
+
+
+11. Remove someone or something from existence (rm)
+Para borrar algo usando un cubo de agua, como a la bruja mala de /tmp.
+Para deshacerse de las pruebas o para deshacerse de carga innecesaria durante la partida.
+
+
+12. To exit the game (exit)
+Para salir de OS, usando tus zapatos de charol, al final del juego.
+
+
+
+
+Redirecciones: 
+* Para escribir datos de las notas en tu cuaderno (te lo da un anciano), o …
+
+
+Filtros: 
+* Para  ...
+________________
+
+
+Historia:
+
+
+El usuario es arrastrado al mundo de la terminal junto con sus archivos, desde la shell gráfica, sin tener demasiada idea y acompañado de su perro Totó.
+Aparece una bruja (buena) que le dará una pequeña introducción: enseñará a usar los primeros comandos (cd, ls), le dará los zapatos de charol para seguir avanzando en la aventura y le explicará que para volver con sus padres tendrá que seguir el camino blanco para llegar hasta el Admin, que es quien le ayudará a salir de dicho mundo. (Realmente el poder de salir del mundo lo conseguirá gracias a los zapatos de charol que le ha dado esta bruja buena). También le dará a conocer el comando man, por si en cualquier punto no sabe cómo usar X comando y le exigirá llevarse el perro con él, puesto que “cosas extrañas están sucediendo últimamente”, esto lo conseguirá con mv.
+
+
+Al principio, sólo podrá acceder al campo (cd Campo), donde se encontrará al espantapájaros. Le preguntará dónde se encuentra en ese preciso instante con el comando pwd. Este le explicará al usuario que quiere tener un cerebro y le pide acompañarle al usuario para llegar al Admin en busca de su cerebro. A cambio, le dará la siguiente pista para avanzar, dado que se conoce todos los caminos de la zona.
+
+
+Continuará por el bosque (cd Bosque), donde encontrará unas manzanas (ls -l dentro de Bosque), intentará coger unas debido al hambre que tiene pero el árbol le sorprenderá diciéndole algo. Ahí al lado se juntará con el hombre de hojalata, que estará inmóvil hasta que le rocíe un poco de aceite por encima (para encontrar el bote con aceite: ls -lh dentro del Bosque). Entonces el hombre de hojalata les hablará contándoles que también les acompañará hacia el Admin porque él siempre ha querido tener un corazón. Ahí mismo también, aparecerá un león que al principio parece atacarles pero se darán cuenta que es un animal inofensivo, con bastante cobardía. Este también les acompañará a Admin, en busca de valentía para poder ser el rey de la selva.
+
+
+Seguirán por el campo de flores, donde la bruja mala les sorprenderá  con un hechizo que le causará un terrible cansancio al usuario. Aquí el usuario tendrá que buscar en el libro que llevaba X encima, posibles medicaciones usando el comando grep buscará “cansancio” dentro del libro. Usará el comando touch para chasquear los dedos y hacer aparecer la bebida que se tomará para aliviar el cansancio. Pero antes, usará cp, ya que el hechizo de la bruja mala también le afectará al león. (Podemos hacer que en el bosque recoja unas manzanas y necesite X cantidad de manzanas para poder usar estos comandos).
+
+
+Faltan usar los comandos: cat (podemos usar para que pueda leer el libro medicinal y después decirle que puede buscar x palabra con grep), rm (para destruir a la bruja mala), exit (para salir de la terminal una vez llegado a Admin).
+
+
+-------------------------------------------------------------------------------------------------------
+Notas:
+* La primera vez que escriba algo mal, le dará una advertencia, la segunda vez, la bruja mala le matará el perro, y cuando escriba tres veces algo mal, destruirá el mundo pero la bruja buena le devolverá al principio y le volverá a darle toda la charla del principio.
+* Cada vez que escribes algo mal, la terminal pita.
+________________
