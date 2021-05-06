@@ -8,10 +8,8 @@
  * @copyright Copyright (c) 2021
  */
 
-#include "headers/libstring/libstring.h"
-
-#include <stdlib.h>
 #include <unistd.h>
+#include <string.h>
 
 /**
  * @brief Writes the current path from root, of the user.
@@ -21,8 +19,11 @@
 int pwd()
 {
     // Inside the game, it is impossible to have a directory without permissions to read but to access.
-    println(getcwd((char *)NULL, 0));
-    return EXIT_SUCCESS;
+    char *res = getcwd((char *)NULL, 0);
+    write(1, res, strlen(res));
+    write(1, "\n", 1);
+
+    return 0;
 }
 
 int main(int argc, char *argv[])

@@ -48,36 +48,6 @@ if [[ $ALL == "true" || $last_vers != $vers || !(-s shell) || -n "$(git diff src
     gcc -c src/headers/characters/character.c -o build/characters.o
 fi
 
-# Precompiling CD
-if [[ $ALL == "true" || $last_vers != $vers || !(-s shell) || -n "$(git diff src/cd.c)" || -n "$(git diff src/headers/cd.h)" ]]; then
-    echo "Precompiling cd..."
-    cc -c src/cd.c -o build/cd.o
-fi
-
-# Precompiling exit
-if [[ $ALL == "true" || $last_vers != $vers || !(-s shell) || -n "$(git diff src/exit.c)" || -n "$(git diff src/headers/exit.h)" ]]; then
-    echo "Precompiling exit..."
-    gcc -c src/exit.c -o build/exit.o
-fi
-
-# Precompiling signal handler
-if [[ $ALL == "true" || $last_vers != $vers || !(-s shell) || -n "$(git diff src/signal_handler.c)" || -n "$(git diff src/headers/signal_handler.h)" ]]; then
-    echo "Precompiling signal handler..."
-    gcc -c src/signal_handler.c -o build/signal_handler.o
-fi
-
-# Precompiling menu
-if [[ $ALL == "true" || $last_vers != $vers || !(-s shell) || -n "$(git diff src/menu.c)" || -n "$(git diff src/headers/menu.h)" ]]; then
-    echo "Precompiling menu..."
-    gcc -c src/menu.c -o build/menu.o
-fi
-
-# Compiling CLEAR command.
-if [[ $ALL == "true" || $last_vers != $vers || !(-s bin/clear) || -n "$(git diff src/clear.c)" || -n "$(git diff src/headers/clear.h)" ]]; then
-    echo "Precompiling clear..."
-    gcc -c src/clear.c -o build/clear.o
-fi
-
 echo "**COMPILATION**"
 
 # Compile CAT command.
@@ -145,7 +115,7 @@ fi
 # COMPILE SHELL.
 if [[ $ALL == "true" || $last_vers != $vers || !(-s shell) || -n "$(git diff src/shell.c)" ]]; then
     echo "COMPILING GAME FILE"
-    gcc src/shell.c build/cd.o build/exit.o build/signal_handler.o build/clear.o build/menu.o build/characters.o -o TheWizardOfOS -lstring
+    gcc src/shell.c src/cd.c src/exit.c src/signal_handler.c src/clear.c src/menu.c src/headers/characters/character.c -o TheWizardOfOS -lstring
 fi
 
 if [[ $last_vers != $vers ]]; then

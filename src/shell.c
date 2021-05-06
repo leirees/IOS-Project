@@ -1,96 +1,36 @@
 /**
- * @file ansshell.c
+ * @file shell.c
  * @author IOS Lecturer, 2.2 Team
  * @brief Implementation of shell.
  * @version 0.1
- * @date 2021-03-10
+ * @date 2021-05-07
  * 
  * @copyright Copyright (c) 2021
  */
 
-// CD command.
-#include "headers/cd.h"
-// Exit command.
-#include "headers/exit.h"
-// Menus.
-#include "headers/menu.h"
-// Signal handler.
-#include "headers/signal_handler.h"
-// Characters list.
-#include "headers/characters/character.h"
-// Mod. libstring.h
 #include "headers/libstring/libstring.h"
+#include "headers/cd.h"
+#include "headers/exit.h"
+#include "headers/menu.h"
 #include "headers/clear.h"
+#include "headers/signal_handler.h"
 
-#include <sys/wait.h>
-#include <dirent.h>
-#include <signal.h>
-#include <errno.h>
-#include <stdlib.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <unistd.h>
+#include <string.h>
+#include <errno.h>
 
-// Number of commands in the main path.
-#define NUMCOMMANDS 13
-// Prompt name.
-#define PROMPT_NAME "GlindOS"
+#include <sys/types.h>
+#include <sys/wait.h>
 
+#define error(a) \
+   {             \
+      perror(a); \
+      exit(1);   \
+   };
 #define MAXLINE 200
 #define MAXARGS 20
-
-/* KEYBOARD */
-// Keyboard letters.
-#define I_KEY 73
-#define K_KEY 75
-
-// Lowecase code ASCII gap.
-#define LOWERCASE 22
-
-// Arrow keys.
-#define UP_ARROW 65
-#define DOWN_ARROW 66
-#define RIGHT_ARROW 67
-#define LEFT_ARROW 68
-
-#define ENTER_KEY 10
-
-/**
- * New status of the game.
- */
-#define CONFIG_TERM -1
-#define INIT_MENU 0
-#define CHOOSE_MENU_OPTIONS 1
-#define GAME_RUNNING 2
-#define SHOW_SCORES 3
-#define EXIT 4
-#define GAME_OVER 5
-
-/* GLOBAL VARIABLES */
-int state;
-int last_state;
-
-// Character's definition.
-// Main character
-static player dorothy;
-
-static character scarecrown;
-static character tinman;
-static character lion;
-
-static character_with_title glinda;
-static character_with_title ofelia;
-
-// Secondary character
-static character admin;
-static character dog;
-
-static character_with_title gertrudis;
-static character_with_title jasmine;
-
-// Extras
-static character trees;
-static character guardian;
-static character ghost;
 
 /**
  * @brief Read all the entries in a line of written code, for shell.
@@ -178,14 +118,12 @@ int execute(int argc, char *argv[])
 
    case 0:
       // Child process
-      signal(SIGINT, signint_child);
       execvp(argv[0], argv);
       break;
 
    default:
       // Parent process.
       wait(NULL);
-      signal(SIGINT, signint_parent);
       break;
    }
 
@@ -194,165 +132,81 @@ int execute(int argc, char *argv[])
 
 int main()
 {
-
-   const char *err_title = THE_SYSTEM;
-   const char *root_dir = getcwd((char *)NULL, 0);
-   const char *game_dir = concat(root_dir, "/config/.gamedir");
-
-   char *args[MAXARGS];
+   char *Prompt = "GlindOS";
+   int eof = 0;
    int argc;
-   int eof;
+   char *args[MAXARGS];
 
-   short command;
-   short option;
-   int buffstatus;
+   char *path[10] = {"cat", "cp", "grep", "help", "ls", "man", "mv", "pwd", "touch", "stee"};
+   int index;
 
-   // Setup signals
-   print("Setting up signals...");
-   signal(SIGINT, signint_parent);
-   signal(SIGTSTP, signstp);
-   print("OK\n");
+   char *root_dir = getcwd((char *)NULL, 0);
 
-   // 1. Set game state to configuration state, and deal with signal handling.
-   state = CONFIG_TERM;
+   char *cmd_dir = concat(root_dir, "/bin/");
+   char *game_dir = concat(root_dir, "/config/.gamedir/village/");
+   char *current_dir;
 
-   do
+   char *prompt_name;
+
+   // Set game_dir
+   cd(game_dir);
+
+   while (1)
    {
-      switch (state)
+      current_dir = getcwd((char *)NULL, 0);
+      prompt_name = (char *)malloc(strlen(Prompt) + strlen(current_dir) + 6);
+      strcpy(prompt_name, Prompt);
+      strcat(prompt_name, "[");
+      strcat(prompt_name, current_dir);
+      strcat(prompt_name, "]$ ");
+
+      write(0, prompt_name, strlen(prompt_name));
+
+      if (read_args(&argc, args, MAXARGS, &eof) && argc > 0)
       {
-      case CONFIG_TERM:
-         println("Setting the game up...");
-
-         // Set in root dir
-         chdir(root_dir);
-
-         /* Characters creation */
-         // Companion creation
-         char *scarecrown_name = SCARECROWN;
-         char *tinman_name = TINMAN;
-         char *lion_name = LION;
-
-         // Witches creation
-         char *short_title_glinda = SHORT_GLINDA;
-         char *short_title_ofelia = SHORT_OFELIA;
-         char *short_title_gertrudis = SHORT_GERTRUDIS;
-         char *short_title_jasmine = SHORT_JASMINE;
-         char *title_glinda = GLINDA;
-         char *title_ofelia = OFELIA;
-         char *title_gertrudis = GERTRUDIS;
-         char *title_jasmine = JASMINE;
-
-         char *admin_name = ADMIN;
-
-         char *dog_name = DOG;
-
-         char *trees_name = TREES;
-         char *ghost_name = GHOST;
-         char *guardian_name = GUARDIAN;
-
-         create_character(&scarecrown, scarecrown_name, 0, 0, 1);
-         create_character(&lion, lion_name, 0, 0, 1);
-         create_character(&tinman, tinman_name, 0, 0, 1);
-
-         create_witch(&glinda, "Glinda", short_title_glinda, title_glinda, 0);
-         create_witch(&ofelia, "Ofelia", short_title_ofelia, title_ofelia, 1);
-         create_witch(&gertrudis, "Gertrudis", short_title_gertrudis, title_gertrudis, 1);
-         create_witch(&jasmine, "Jasmine", short_title_jasmine, title_jasmine, 0);
-
-         // Secondary characters
-         create_character(&admin, admin_name, 1, 0, 0);
-         create_character(&dog, dog_name, 0, 0, 0);
-
-         // Extras
-         create_character(&trees, trees_name, 0, 0, 0);
-         create_character(&ghost, ghost_name, 1, 0, 0);
-         create_character(&guardian, guardian_name, 0, 0, 0);
-
-         println("OK\n");
-
-         println("Initialising game menu. OK");
-         println("Press enter to continue...");
-
-         do
+         if (!strcmp(args[0], "exit"))
          {
-
-         } while (getchar() != ENTER_KEY);
-
-         last_state = state;
-         state = INIT_MENU;
-
-         break;
-
-      case INIT_MENU:
-         clear_screen();
-
-         do
-         {
-            print_menu();
-         } while (getchar() != ENTER_KEY);
-
-         last_state = state;
-         state = CHOOSE_MENU_OPTIONS;
-
-         break;
-
-      case CHOOSE_MENU_OPTIONS:
-         clear_screen();
-
-         print_menu_options();
-         scanf("%d", &option);
-
-         last_state = state;
-
-         switch (option)
-         {
-         case 1:
-            state = GAME_RUNNING;
-            break;
-
-         case 2:
-            state = SHOW_SCORES;
-            break;
-
-         case 3:
-            state = EXIT;
-            break;
-         }
-
-         clear_screen();
-
-         break;
-
-      case GAME_RUNNING:
-         print(concat(concat(ANSI_COLOR_BLUE, concat(PROMPT_NAME, ANSI_COLOR_RESET)), concat(concat("[", concat(game_dir, "]")), "$ ")));
-
-         if (read_args(&argc, args, MAXARGS, &eof) && argc > 0)
-         {
-            if (!strcmp(args[0], "exit"))
+            if (!exit_game())
             {
-               state = EXIT;
-               continue;
-            }
-
-            if (!strncmp(args[1], "./", 2))
-            {
-               buffstatus = execute(argc, args);
+               exit(127);
             }
          }
-
-         if (eof)
+         else if (!strcmp(args[0], "cd"))
          {
-            return 1;
+            cd(args[1]);
          }
+         else if (!strcmp(args[0], "clear"))
+         {
+            clear_screen();
+         }
+         else if (!strncmp(args[0], "./", 2))
+         {
+            execute(argc, args);
+         }
+         else
+         {
+            for (index = 0; index < 10; index++)
+            {
+               if (!strcmp(args[0], path[index]))
+               {
+                  args[0] = (char *)malloc(strlen(cmd_dir) + strlen(path[index]));
+                  
+                  strcpy(args[0], cmd_dir);
+                  strcat(args[0], path[index]);
 
-         break;
+                  execute(argc, args);
 
-      case EXIT:
-         exit_game();
-         break;
+                  break;
+               }
+            }
+         }
       }
 
-   } while (1);
+      if (eof)
+      {
+         exit(0);
+      }
+   }
 
    return 0;
 }

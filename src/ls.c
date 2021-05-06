@@ -35,8 +35,6 @@ void _ls(const char *dir, int op_a, int op_l)
 
 	// Pointer to stat struct
 	struct stat sfile;
-	char *size = (char *)malloc(strlen("Size: %ld") + sizeof(sfile.st_size));
-	char *uid = (char *)malloc(strlen("User ID: %d") + sizeof(sfile.st_uid));
 
 	// Here we will list the directory
 	struct dirent *d;
@@ -97,16 +95,7 @@ void _ls(const char *dir, int op_a, int op_l)
 		{
 			// Stat syscall, in order to get additional info about a file.
 			stat(d->d_name, &sfile);
-
-			/* Properties of the file */
-			// Accessing st_size --> Size.
-			sprintf(size, "Size: %ld", sfile.st_size);
-			println(size);
-
-			// Accessing st_uid  --> User ID.
-			sprintf(uid, "User ID: %d", sfile.st_uid);
-			println(uid);
-
+			
 			// Accessing st_mode --> Permissions.
 			println("User file permissions: ");
 			println((sfile.st_mode & S_IRUSR) ? "You can see whats appening there!" : "Get out of there!!!");
