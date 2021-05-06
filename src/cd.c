@@ -2,7 +2,7 @@
  * @file cd.c
  * @author Mikel Aristu, David Cuenca Marcos
  * @brief Utilities to deal with files, directories.
- * @version 2
+ * @version 3
  * @date 2021-04-16
  * 
  * @copyright Copyright (c) 2021
@@ -37,8 +37,8 @@ int cd(char *path)
             printerr("No DIR found. %ERROR!\n Revise your internal configuration, player.", err_title);
         }
         
-        return EXIT_FAILURE;
+        return 1;
     }
 
-    return EXIT_SUCCESS;
+    return 0;
 }

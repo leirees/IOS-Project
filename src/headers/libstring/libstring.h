@@ -42,6 +42,15 @@
 extern char *concat(char *str1, char *str2);
 
 /**
+ * @brief Compare two string, naturally.
+ * 
+ * @param str1 
+ * @param str2 
+ * @return int 
+ */
+extern int strcomp(char *str1, char *str2);
+
+/**
  * @brief Print a string, without an ending char implicit.
  * 
  * @param str String to print.

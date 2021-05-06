@@ -62,19 +62,12 @@
 #define CHOOSE_MENU_OPTIONS 1
 #define GAME_RUNNING 2
 #define SHOW_SCORES 3
-#define GAME_OVER_EXIT 4
+#define EXIT 4
 #define GAME_OVER 5
 
 /* GLOBAL VARIABLES */
-static int state;
-static int last_state;
-
-// Root dir
-static char *root_dir;
-
-// PID.
-static pid_t parent_pid;
-static pid_t child_pid;
+int state;
+int last_state;
 
 // Character's definition.
 // Main character
@@ -111,76 +104,59 @@ static character ghost;
  */
 int read_args(int *argcp, char *args[], int max, int *eofp)
 {
-   char cmd[MAXLINE];
+   static char cmd[MAXLINE];
    char *cmdp;
-   int ret, i = 0;
+   int ret, i;
 
    *argcp = 0;
    *eofp = 0;
-
-   do
+   i = 0;
+   while ((ret = read(0, cmd + i, 1)) == 1)
    {
-      ret = read(0, cmd + i, 1);
       if (cmd[i] == '\n')
-      {
-         // Correct line
-         break;
-      }
+         break; // correct line
       i++;
-
       if (i >= MAXLINE)
       {
-         // Line too long
-         ret = -2;
+         ret = -2; // line too long
          break;
       }
-   } while (ret == 1);
-
+   }
    switch (ret)
    {
    case 1:
-      // Correct reading
-      cmd[i + 1] = '\0';
+      cmd[i + 1] = '\0'; // correct reading
       break;
-
    case 0:
-      // End of file
-      *eofp = 1;
-      return EXIT_SUCCESS;
-
+      *eofp = 1; // end of file
+      return 0;
+      break;
    case -1:
-      // Reading failure
-      *argcp = -1;
+      *argcp = -1; // reading failure
       fprintf(stderr, "Reading failure \n");
-      return EXIT_SUCCESS;
-
+      return 0;
+      break;
    case -2:
-      // Line too long
-      *argcp = -1;
+      *argcp = -1; // line too long
       fprintf(stderr, "Line too long -- removed command\n");
-      return EXIT_SUCCESS;
+      return 0;
+      break;
    }
-
    // Analyzing the line
    cmdp = cmd;
    for (i = 0; i < max; i++)
-   {
-      args[i] = strtok(cmdp, " \t\n");
-      /* to show every argument */
-      if (args[i] == (char *)NULL)
+   { /* to show every argument */
+      if ((args[i] = strtok(cmdp, " \t\n")) == (char *)NULL)
          break;
-
       cmdp = NULL;
    }
-
    if (i >= max)
    {
       fprintf(stderr, "Too many arguments -- removed command\n");
       return 0;
    }
-
    *argcp = i;
-   return EXIT_FAILURE;
+   return 1;
 }
 
 /**
@@ -192,13 +168,13 @@ int read_args(int *argcp, char *args[], int max, int *eofp)
  */
 int execute(int argc, char *argv[])
 {
-   child_pid = fork();
+   pid_t child_pid = fork();
 
    switch (child_pid)
    {
    case -1:
-      // Error in fork() (not so common)
-      return EXIT_FAILURE;
+      return 1;
+      break;
 
    case 0:
       // Child process
@@ -213,28 +189,23 @@ int execute(int argc, char *argv[])
       break;
    }
 
-   return EXIT_SUCCESS;
+   return 0;
 }
 
 int main()
 {
-   char *err_title = THE_SYSTEM;
-   char *game_dir = "$HOME";
-   char *prompt;
 
-   // Change the official dir to the root dir.
-   // chdir((const char *)root);
+   const char *err_title = THE_SYSTEM;
+   const char *root_dir = getcwd((char *)NULL, 0);
+   const char *game_dir = concat(root_dir, "/config/.gamedir");
+
    char *args[MAXARGS];
    int argc;
    int eof;
 
-   DIR *path;
-   struct dirent *cmd;
-
    short command;
-
-   int status;
    short option;
+   int buffstatus;
 
    // Setup signals
    print("Setting up signals...");
@@ -250,25 +221,16 @@ int main()
       switch (state)
       {
       case CONFIG_TERM:
-         // Setup game and change state.
          println("Setting the game up...");
 
-         // Root dir
-         root_dir = getcwd((char *)NULL, 0);
-
-         // PID
-         parent_pid = getpid();
-         child_pid = -1;
+         // Set in root dir
+         chdir(root_dir);
 
          /* Characters creation */
          // Companion creation
          char *scarecrown_name = SCARECROWN;
          char *tinman_name = TINMAN;
          char *lion_name = LION;
-
-         create_character(&scarecrown, scarecrown_name, 0, 0, 1);
-         create_character(&lion, lion_name, 0, 0, 1);
-         create_character(&tinman, tinman_name, 0, 0, 1);
 
          // Witches creation
          char *short_title_glinda = SHORT_GLINDA;
@@ -280,41 +242,50 @@ int main()
          char *title_gertrudis = GERTRUDIS;
          char *title_jasmine = JASMINE;
 
+         char *admin_name = ADMIN;
+
+         char *dog_name = DOG;
+
+         char *trees_name = TREES;
+         char *ghost_name = GHOST;
+         char *guardian_name = GUARDIAN;
+
+         create_character(&scarecrown, scarecrown_name, 0, 0, 1);
+         create_character(&lion, lion_name, 0, 0, 1);
+         create_character(&tinman, tinman_name, 0, 0, 1);
+
          create_witch(&glinda, "Glinda", short_title_glinda, title_glinda, 0);
          create_witch(&ofelia, "Ofelia", short_title_ofelia, title_ofelia, 1);
          create_witch(&gertrudis, "Gertrudis", short_title_gertrudis, title_gertrudis, 1);
          create_witch(&jasmine, "Jasmine", short_title_jasmine, title_jasmine, 0);
 
          // Secondary characters
-         char *admin_name = ADMIN;
          create_character(&admin, admin_name, 1, 0, 0);
-
-         char *dog_name = DOG;
          create_character(&dog, dog_name, 0, 0, 0);
 
          // Extras
-         char *trees_name = TREES;
-         char *ghost_name = GHOST;
-         char *guardian_name = GUARDIAN;
-
          create_character(&trees, trees_name, 0, 0, 0);
          create_character(&ghost, ghost_name, 1, 0, 0);
          create_character(&guardian, guardian_name, 0, 0, 0);
 
-         last_state = state;
          println("OK\n");
-
-         state = INIT_MENU;
 
          println("Initialising game menu. OK");
          println("Press enter to continue...");
 
-         scanf("%c", NULL);
+         do
+         {
+
+         } while (getchar() != ENTER_KEY);
+
+         last_state = state;
+         state = INIT_MENU;
 
          break;
 
       case INIT_MENU:
-         // Initial menu: if ENTER_KEY pressed, go to CHOOSE_MENU_OPTIONS.
+         clear_screen();
+
          do
          {
             print_menu();
@@ -322,34 +293,30 @@ int main()
 
          last_state = state;
          state = CHOOSE_MENU_OPTIONS;
+
          break;
 
       case CHOOSE_MENU_OPTIONS:
-         // Choose menu options.
-         option = 0;
-         print_menu_options(option);
+         clear_screen();
+
+         print_menu_options();
          scanf("%d", &option);
 
-         if (option)
+         last_state = state;
+
+         switch (option)
          {
-            print_menu_options(option);
+         case 1:
+            state = GAME_RUNNING;
+            break;
 
-            last_state = state;
+         case 2:
+            state = SHOW_SCORES;
+            break;
 
-            switch (option)
-            {
-            case 1:
-               state = GAME_RUNNING;
-               break;
-
-            case 2:
-               state = SHOW_SCORES;
-               break;
-
-            case 3:
-               state = GAME_OVER_EXIT;
-               break;
-            }
+         case 3:
+            state = EXIT;
+            break;
          }
 
          clear_screen();
@@ -357,112 +324,34 @@ int main()
          break;
 
       case GAME_RUNNING:
-         prompt = concat(concat(ANSI_COLOR_BLUE, concat(PROMPT_NAME, ANSI_COLOR_RESET)), concat(concat("[", concat(game_dir, "]")), "$"));
+         print(concat(concat(ANSI_COLOR_BLUE, concat(PROMPT_NAME, ANSI_COLOR_RESET)), concat(concat("[", concat(game_dir, "]")), "$ ")));
 
-         while (1)
+         if (read_args(&argc, args, MAXARGS, &eof) && argc > 0)
          {
-            // Print the prompt on screen.
-            print(prompt);
-
-            if (read_args(&argc, args, MAXARGS, &eof) && argc > 0)
+            if (!strcmp(args[0], "exit"))
             {
-               path = opendir(concat(root_dir, "/bin"));
-
-               if (!path)
-               {
-                  if (errno == ENOENT)
-                  {
-                     printerr("Oh, oh... NO root dir!", err_title);
-                  }
-                  else
-                  {
-                     printerr("Oh, oh... cannot open root dir!", err_title);
-                  }
-               }
-
-               while ((cmd = readdir(path)) != NULL)
-               {
-                  if (!strncmp(cmd->d_name, args[0], 20))
-                  {
-                     args[0] = concat("/bin/", args[0]);
-                     status = execute(argc, args);
-                     break;
-                  }
-               }
-
-               closedir(path);
-
-               if (!strcmp(args[0], "cd"))
-               {
-                  if (argc == 2)
-                  {
-                     // CD command, to some place.
-                     if (cd(args[1]) != -1)
-                     {
-                        if (!strcmp(args[1], "~") || !strcmp(args[1], "$HOME") || !strcmp(args[1], "village"))
-                        {
-                           game_dir = "$HOME";
-                        }
-                        else
-                        {
-                           game_dir = concat(game_dir, args[1]);
-                        }
-                     }
-                     else
-                     {
-                        printerr("Not POSSIBLE TO MOVE", err_title);
-                     }
-                  }
-                  else if (argc == 1)
-                  {
-                     // Else, go to the game root dir.
-                     cd(root_dir);
-                     game_dir = "$HOME";
-                  }
-                  else
-                  {
-                     printerr("Oh, oh... CD not OK!", err_title);
-                  }
-               }
-               else if (!strcmp(args[0], "exit"))
-               {
-                  // EXIT command.
-                  last_state = state;
-                  state = GAME_OVER_EXIT;
-               }
-
-               // Check commands from outside the path.
-               if (!strncmp("./", args[0], 2))
-               {
-                  status = execute(argc, args);
-               }
+               state = EXIT;
+               continue;
             }
 
-            if (eof)
+            if (!strncmp(args[1], "./", 2))
             {
-               return EXIT_FAILURE;
+               buffstatus = execute(argc, args);
             }
-               }
+         }
+
+         if (eof)
+         {
+            return 1;
+         }
+
          break;
 
-      case GAME_OVER_EXIT:
-         if (exit_game())
-         {
-            state = last_state;
-         }
-         else
-         {
-            if (last_state == GAME_RUNNING)
-            {
-               state = CONFIG_TERM;
-            }
-            else if (last_state == CHOOSE_MENU_OPTIONS)
-            {
-               _exit(EXIT_SUCCESS);
-            }
-         }
+      case EXIT:
+         exit_game();
          break;
       }
+
    } while (1);
 
    return 0;

@@ -32,7 +32,7 @@
  */
 int mv(char *origin_file, char *end_file)
 {
-    return link((const char *)origin_file, (const char *)end_file) || unlink((const char *)origin_file) ? EXIT_FAILURE : EXIT_SUCCESS;
+    return link((const char *)origin_file, (const char *)end_file) || unlink((const char *)origin_file);
 }
 
 int main(int argc, char *argv[])
@@ -40,22 +40,23 @@ int main(int argc, char *argv[])
     char *err_sys = THE_SYSTEM;
     char *glinda = GLINDA;
 
-    if (argc == 3)
+    if (argc != 3)
     {
-        if (mv(argv[1], argv[2]))
-        {
-            // If there is no directory to reach,
-            printerr("I cannot reach that place, ape. Move on!", err_sys);
-            printerr("I cannot move there!", err_sys);
-            
-            _exit(EXIT_FAILURE);
-        }
-        _exit(EXIT_SUCCESS);
+        // If the command is used incorrectly, it will teach the user how to use it.
+        printerr("HAHAHAHAHAHA, useless ape!", err_sys);
+        speak_character(glinda, "My dear sweet child, do <<mv file.txt new_location>>, please :)");
+
+        return 1;
     }
 
-    // If the command is used incorrectly, it will teach the user how to use it.
-    printerr("HAHAHAHAHAHA, useless ape!", err_sys);
-    speak_character(glinda, "My dear sweet child, do <<mv file.txt new_location>>, please :)");
+    if (mv(argv[1], argv[2]))
+    {
+        // If there is no directory to reach,
+        printerr("I cannot reach that place, ape. Move on!", err_sys);
+        printerr("I cannot move there!", err_sys);
 
-    _exit(EXIT_FAILURE);
+        return 1;
+    }
+
+    return 0;
 }

@@ -27,5 +27,5 @@ int pwd()
 
 int main(int argc, char *argv[])
 {
-    _exit(pwd() ? EXIT_FAILURE : EXIT_SUCCESS);
+    return pwd();
 }

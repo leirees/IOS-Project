@@ -2,7 +2,7 @@
  * @file cat.c
  * @author Mikel Aristu, David Cuenca, Team 2.2
  * @brief The command used to read files.
- * @version 0.2
+ * @version 3
  * @date 2021-05-04
  * @copyright Copyright (c) 2021
  */
@@ -39,7 +39,7 @@ int main(int argc, char *argv[])
          printerr("Error while opening the file.", err_sys);
          printerr("YOU DON'T EVEN KNOW TO READ!!!", err_sys);
 
-         exit(EXIT_FAILURE);
+         return 1;
       }
 
       // Print title:
@@ -56,11 +56,12 @@ int main(int argc, char *argv[])
 
       close(file_descriptor);
 
-      exit(EXIT_FAILURE);
+      return 0;
    }
 
    // If the command is used incorrectly, it will teach the player how to use it.
    printerr("No, no, no. Usage: cat file_name. Revise your notes, please.", err_sys);
    speak_character(glinda, "Please, remember to go to class, player. It is good for you, sweety.");
-   exit(EXIT_FAILURE);
+   
+   return 1;
 }

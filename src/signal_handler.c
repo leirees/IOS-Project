@@ -3,12 +3,13 @@
 #include "headers/exit.h"
 
 #include <signal.h>
+#include <unistd.h>
 
 void signint_parent(int sig) {
    char *glinda = GLINDA;
    speak_character(glinda, "Oh, are you abandonning this reality this way, aren't you?");
    speak_character(glinda, "Then, I'm afraid there must be something wrong with you, player.");
-   exit_game();
+   _exit(127);
 }
 
 void signint_child(int sig) {

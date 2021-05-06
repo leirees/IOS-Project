@@ -33,20 +33,18 @@ char *concat(char *str1, char *str2)
     return r_string;
 }
 
+int strcomp(char *str1, char *str2)
+{
+    return !strcmp(str1, str2);
+}
+
 void print(char *str)
 {
     char *result;
+    ssize_t buff;
 
-    if (str[strlen(str) - 1] != ANSI_COLOR_RESET)
-    {
-        result = concat(str, ANSI_COLOR_RESET);
-    }
-    else
-    {
-        result = str;
-    }
-
-    ssize_t buff = write(1, result, strlen(result));
+    result = concat(str, ANSI_COLOR_RESET);
+    buff = write(1, result, strlen(result));
 }
 
 void println(char *str)
@@ -62,30 +60,15 @@ void printerr(char *str, char *err_title)
 
 char *bold(char *str)
 {
-    if (str[strlen(str) - 1] != ANSI_COLOR_RESET)
-    {
-        return concat(concat(BOLD, str), ANSI_COLOR_RESET);
-    }
-
-    return concat(BOLD, str);
+    return concat(concat(BOLD, str), NO_BOLD);
 }
 
 char *underlined(char *str)
 {
-    if (str[strlen(str) - 1] != ANSI_COLOR_RESET)
-    {
-        return concat(concat(UNDERLINE, str), ANSI_COLOR_RESET);
-    }
-
-    return concat(UNDERLINE, str);
+    return concat(concat(UNDERLINE, str), NO_UNDERLINE);
 }
 
 char *reversed(char *str)
 {
-    if (str[strlen(str) - 1] != ANSI_COLOR_RESET)
-    {
-        return concat(concat(REVERSE, str), ANSI_COLOR_RESET);
-    }
-
-    return concat(REVERSE, str);
+    return concat(concat(REVERSE, str), NO_REVERSE);
 }

@@ -16,6 +16,6 @@ void print_menu();
 
 /**
  * @brief The options menu!
- * @param selected_option The selected option, as an integer.
+ * 
  */
-void print_menu_options(int selected_option);
+void print_menu_options();

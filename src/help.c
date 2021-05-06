@@ -67,10 +67,10 @@ int main(int argc, const char *argv[])
 		// Bad witch in action, oh yeah.
 		speak_character(ofelia, "Look at the manual, you little useless piece of garbage!");
 
-		_exit(EXIT_FAILURE);
+		return 1;
 	}
 
 	// If there is only ARGUMENT, that is, if only "help" is written.
 	_help();
-	_exit(EXIT_SUCCESS);
+	return 0;
 }

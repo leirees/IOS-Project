@@ -152,7 +152,7 @@ int main(int argc, const char *argv[])
 				else
 				{
 					printerr("Option not available. Try again, you useless ape.", err_title);
-					_exit(EXIT_FAILURE);
+					return 1;
 				}
 
 				p++;
@@ -169,7 +169,7 @@ int main(int argc, const char *argv[])
 			else
 			{
 				printerr("Option not available. Try again, you useless ape.", err_title);
-				_exit(EXIT_FAILURE);
+				return 1;
 			}
 		}
 		else if (argc == 2)
@@ -179,9 +179,9 @@ int main(int argc, const char *argv[])
 		else
 		{
 			printerr("Option not available. Try again, you useless ape.", err_title);
-			_exit(EXIT_FAILURE);
+			return 1;
 		}
 	}
 
-	_exit(EXIT_SUCCESS);
+	return 0;
 }

@@ -96,5 +96,5 @@ int main(int argc, char *argv[])
     sprintf(res, "Number of occurances: %d", occurances);
     println(bold(res));
 
-    _exit(EXIT_SUCCESS);
+    return 1;
 }

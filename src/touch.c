@@ -49,8 +49,8 @@ int main(int argc, char *argv[])
 
     if (argc != 2) {
         printerr("Oh no, you hit your hand while you where making that tool. You should revise it before it gets worse.", err_title);
-        _exit(EXIT_FAILURE);
+        return 1;
     }
 
-    _exit(touch(argv[1]) ? EXIT_FAILURE : EXIT_SUCCESS);
+    return touch(argv[1]);
 }
