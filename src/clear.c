@@ -1,16 +1,21 @@
-#include "headers/main_header.h"
-#include "headers/libstring/libstring.h"
+/**
+ * @file clear.c
+ * @author David Cuenca Marcos
+ * @brief Clear the screen.
+ * @version 0.1
+ * @date 2021-05-06
+ * 
+ * @copyright Copyright (c) 2021
+ */
+
+#include <unistd.h>
+
+#define MAXLINE 200
 
 void clear_screen()
 {
-    for (u16 rows = 0; rows < MAXLINE; rows++)
+    for (int rows = 0; rows < MAXLINE; rows++)
     {
-        println("");
+        write(1, "\n", 1);
     }
-}
-
-int main()
-{
-    clear_screen();
-    _exit(0);
 }

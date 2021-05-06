@@ -8,8 +8,15 @@
  * @copyright Copyright (c) 2021
  *
  */
-#include "headers/stee.h"
+
 #include "headers/characters/character.h"
+#include "headers/libstring/libstring.h"
+
+#include <stdlib.h>
+#include <stdio.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <unistd.h>
 
 int stee()
 {
@@ -22,7 +29,7 @@ int stee()
    ssize_t buff;
 
    // Try to open the file.
-   fd = open(concat(root_dir, "config/.player/.ref"), O_RDWR | O_CREAT, S_IWUSR | S_IRUSR | S_IRGRP | S_IROTH);
+   fd = open("hehe.txt", O_RDWR | O_CREAT, S_IWUSR | S_IRUSR | S_IRGRP | S_IROTH);
 
    if (fd == -1)
    {
@@ -37,13 +44,12 @@ int stee()
    char *ans = (char *) malloc(strlen("Hello %s, I'm glad of hearing from you!") + strlen(name));
    sprintf(ans, "Hello %s, I'm glad of hearing from you!", name);
    speak_character(glinda, ans);
-   free(ans);
 
 
    // Record name.
    buff = write(fd, name, strlen(name));
    close(fd);
-   free(err_title);
+
    return EXIT_SUCCESS;
 }
 
@@ -56,7 +62,6 @@ int main(int argc, char *argv[])
       printerr("Error! You don't even know how to write you name, you ape? OK, write <<stee \"your_name\">>", err_title);
       return EXIT_FAILURE;
    }
-
-   free(err_title);
+   
    return stee() ? EXIT_FAILURE : EXIT_SUCCESS;
 }

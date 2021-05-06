@@ -8,8 +8,12 @@
  * @copyright Copyright (c) 2021
  */
 
-#include "headers/exit.h"
 #include "headers/characters/character.h"
+#include "headers/libstring/libstring.h"
+#include "headers/exit.h"
+
+#include <stdlib.h>
+#include <stdio.h>
 
 int exit_game()
 {
@@ -17,7 +21,7 @@ int exit_game()
     char *glinda = GLINDA;
     char *err = THE_SYSTEM;
 
-    bool exit_status = false;
+    short exit_status = 0;
 
     char ans[10];
 
@@ -27,7 +31,7 @@ int exit_game()
     if (!strncmp(ans, "y", 1) || !strncmp(ans, "Y", 1))
     {
         speak_character(glinda, "Ok darling, have a nice day. See ya', dada!");
-        exit_status = true;
+        exit_status = 1;
     }
     else if (!strncmp(ans, "n", 1) || !strncmp(ans, "N", 1))
     {

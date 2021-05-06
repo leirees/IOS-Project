@@ -1,40 +1,23 @@
-#include "headers/signal_handler.h"
 #include "headers/characters/character.h"
+#include "headers/libstring/libstring.h"
+#include "headers/exit.h"
 
-void signal_handler(int sig)
-{
-   char *err_title = THE_SYSTEM;
+#include <signal.h>
+
+void signint_parent(int sig) {
    char *glinda = GLINDA;
+   speak_character(glinda, "Oh, are you abandonning this reality this way, aren't you?");
+   speak_character(glinda, "Then, I'm afraid there must be something wrong with you, player.");
+   exit_game();
+}
 
-   println("");
+void signint_child(int sig) {
+   char *glinda = GLINDA;
+   speak_character(glinda, "Do you really want to exit the game, honey?");
+   speak_character(glinda, "I think you don't, >:)");
+}
 
-   switch (sig)
-   {
-   case SIGINT:
-      if (child_pid < 0)
-      {
-         exit_game();
-         _exit(0);
-      }
-      else
-      {
-         
-         speak_character(glinda, "Oh, are you abandonning this reality this way, aren't you?");
-         speak_character(glinda, "Then, I'm afraid there must be something wrong with you, player.");
-         do {
-
-         } while (getchar() != ENTER_KEY);
-         
-         kill(child_pid, SIGINT);
-         _exit(0);
-      }
-      break;
-
-   case SIGTSTP:
-      printerr("Hey! STOP IT NOW //////#!@@@@@ I'm the master here!!!· >:(", err_title);
-      break;
-   }
-
-   free(err_title);
-   free(glinda);
+void signstp(int sig) {
+   char *err_title = THE_SYSTEM;
+   printerr("Hey! STOP IT NOW!!", err_title);
 }

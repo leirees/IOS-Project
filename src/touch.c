@@ -10,9 +10,20 @@
  * @copyright Copyright (c) 2021
  */
 
-#include "headers/touch.h"
 #include "headers/characters/character.h"
+#include "headers/libstring/libstring.h"
 
+#include <stdlib.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <unistd.h>
+
+/**
+* @brief This void method will call to the open function. In case of error, the open system call will return -1 and an error message will appear.
+*
+* @param f_name that will be the wanted file name to be created.
+* @return int 1 iff failure.
+*/
 int touch(char *f_name)
 {
     char *err_title = THE_SYSTEM;

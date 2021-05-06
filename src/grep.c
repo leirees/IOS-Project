@@ -8,8 +8,16 @@
  * @copyright Copyright (c) 2021
  */
 
-#include "headers/grep.h"
 #include "headers/characters/character.h"
+#include "headers/libstring/libstring.h"
+
+// Defines flags for open and related library functions
+#include <fcntl.h>
+// For write system call
+#include <unistd.h>
+// Stdlib library
+#include <stdlib.h>
+#include <stdio.h>
 
 int main(int argc, char *argv[])
 {
@@ -87,8 +95,6 @@ int main(int argc, char *argv[])
     char *res = (char *)malloc(strlen("Number of occurances: %d") + sizeof(occurances));
     sprintf(res, "Number of occurances: %d", occurances);
     println(bold(res));
-    free(res);
-    free(err_title);
 
     _exit(EXIT_SUCCESS);
 }

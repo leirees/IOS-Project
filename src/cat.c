@@ -7,13 +7,23 @@
  * @copyright Copyright (c) 2021
  */
 
-#include "headers/cat.h"
 #include "headers/characters/character.h"
+#include "headers/libstring/libstring.h"
+
+// Syscalls && util
+#include <unistd.h>
+// Std library
+#include <stdlib.h>
+#include <stdio.h>
+// System flags.
+#include <fcntl.h>
 
 int main(int argc, char *argv[])
 {
+   char *glinda = GLINDA;
+
    int file_descriptor;
-   ssize_t write_buff, bytes_read;
+   ssize_t bytes_read;
 
    char *err_sys = THE_SYSTEM;
    char *ch;
@@ -28,7 +38,7 @@ int main(int argc, char *argv[])
       {
          printerr("Error while opening the file.", err_sys);
          printerr("YOU DON'T EVEN KNOW TO READ!!!", err_sys);
-         free(err_sys);
+
          exit(EXIT_FAILURE);
       }
 
@@ -36,26 +46,21 @@ int main(int argc, char *argv[])
       char *contents = (char *)malloc(strlen("The contents of the file %s are:") + strlen(argv[1]));
       sprintf(contents, "The contents of the file %s are:", argv[1]);
       println(bold(concat(ANSI_COLOR_MAGENTA, contents)));
-      free(contents);
 
       // Read while it has more lines, else, stop and close the file.
       do
       {
          bytes_read = read(file_descriptor, ch, 1);
          print(ch);
-      } while (bytes_read != 0);
+      } while (bytes_read > 0);
 
       close(file_descriptor);
-   }
-   else
-   {
-      // If the command is used incorrectly, it will teach the player how to use it.
-      printerr("No, no, no. Usage: cat file_name. Revise your notes, please.", err_sys);
-      char *glinda = GLINDA;
-      speak_character(glinda, "Please, remember to go to class, player. It is good for you, sweety.");
-      free(glinda);
+
+      exit(EXIT_FAILURE);
    }
 
-   free(err_sys);
-   exit(EXIT_SUCCESS);
+   // If the command is used incorrectly, it will teach the player how to use it.
+   printerr("No, no, no. Usage: cat file_name. Revise your notes, please.", err_sys);
+   speak_character(glinda, "Please, remember to go to class, player. It is good for you, sweety.");
+   exit(EXIT_FAILURE);
 }

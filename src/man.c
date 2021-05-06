@@ -9,8 +9,10 @@
  * 
  */
 
-#include "headers/man.h"
+#include "headers/libstring/libstring.h"
 #include "headers/characters/character.h"
+
+#include <stdlib.h>
 
 int main(int argc, char *argv[])
 {

@@ -8,9 +8,16 @@
  * @copyright Copyright (c) 2021
  */
 
-#include "headers/pwd.h"
-#include "headers/characters/character.h"
+#include "headers/libstring/libstring.h"
 
+#include <stdlib.h>
+#include <unistd.h>
+
+/**
+ * @brief Writes the current path from root, of the user.
+ * 
+ * @return int 1 iff error.
+ */
 int pwd()
 {
     // Inside the game, it is impossible to have a directory without permissions to read but to access.

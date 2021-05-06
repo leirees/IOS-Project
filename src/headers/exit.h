@@ -8,8 +8,6 @@
  * @copyright Copyright (c) 2021
  */
 
-#include "main_header.h"
-
 /**
  * @brief Finish the execution of the terminal.
  * Indeed, exit the game at once.

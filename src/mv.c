@@ -8,11 +8,28 @@
  * @copyright Copyright (c) 2021
  */
 
-#include "headers/mv.h"
 #include "headers/characters/character.h"
-#include <sys/fcntl.h>
-#include <sys/stat.h>
+#include "headers/libstring/libstring.h"
 
+// To deal with directories.
+#include <dirent.h>
+// Error control.
+#include <errno.h>
+// System flags.
+#include <sys/fcntl.h>
+// Stat!
+#include <sys/stat.h>
+// Stdlib util
+#include <stdlib.h>
+#include <unistd.h>
+
+/**
+ * @brief Move one file from "origin" to "end".
+ * 
+ * @param origin_file The original path of the file.
+ * @param end_file The end destinations of the file.
+ * @return int 1 iff failure.
+ */
 int mv(char *origin_file, char *end_file)
 {
     return link((const char *)origin_file, (const char *)end_file) || unlink((const char *)origin_file) ? EXIT_FAILURE : EXIT_SUCCESS;

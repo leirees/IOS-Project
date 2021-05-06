@@ -1,5 +1,3 @@
-#include "../libstring/libstring.h"
-
 /* SYSTEM definition, for error messages inside the game (for the player) */
 #define THE_SYSTEM underlined(concat(reversed(concat(ANSI_COLOR_RED, "THE SYSTEM")), ANSI_COLOR_RESET));
 

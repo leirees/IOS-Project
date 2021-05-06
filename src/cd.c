@@ -10,6 +10,12 @@
 
 #include "headers/cd.h"
 #include "headers/characters/character.h"
+#include "headers/libstring/libstring.h"
+
+#include <stdlib.h>
+#include <dirent.h>
+#include <errno.h>
+#include <unistd.h>
 
 int cd(char *path)
 {

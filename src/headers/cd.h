@@ -8,11 +8,6 @@
  * @copyright Copyright (c) 2021
  */
 
-#include "main_header.h"
-
-#include <dirent.h>
-#include <errno.h>
-
 /**
  * @brief Change of directory, from current process.
  * 

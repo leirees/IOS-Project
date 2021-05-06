@@ -9,26 +9,15 @@
  * 
  */
 
-#include "headers/menu.h"
-#include "headers/characters/character.h"
+#include "headers/libstring/libstring.h"
 
-void restore_terminal(struct termios *saved_glindos)
-{
-    tcsetattr(STDIN_FILENO, TCSANOW, saved_glindos);
-}
+#define MAXLINE 200
 
-void clear_screen()
-{
-    for (u16 rows = 0; rows < MAXLINE; rows++)
-    {
-        println("");
-    }
-}
-
+/**
+* @brief The menu screen!
+*/
 void print_menu()
 {
-    clear_screen();
-
     println("***************************************************************");
     println("***************************************************************");
     println("***************************************************************");
@@ -46,9 +35,12 @@ void print_menu()
     println("***************************************************************");
 }
 
-void print_menu_options(u8 selected_option)
+/**
+ * @brief The options menu!
+ * @param selected_option The selected option, as an integer.
+ */
+void print_menu_options(int selected_option)
 {
-    clear_screen();
     switch (selected_option)
     {
     case 1:

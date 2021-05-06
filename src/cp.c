@@ -9,8 +9,15 @@
  *
  */
 
-#include "headers/cp.h"
 #include "headers/characters/character.h"
+#include "headers/libstring/libstring.h"
+
+#include <stdlib.h>
+#include <stdio.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <unistd.h>
+#include <errno.h>
 
 int main(int argc, char *argv[])
 {
@@ -27,7 +34,6 @@ int main(int argc, char *argv[])
         if (origin < 0)
         {
             printerr("Error opening the file.", err_title);
-            free(err_title);
             exit(EXIT_FAILURE);
         }
 
@@ -38,8 +44,6 @@ int main(int argc, char *argv[])
             err = (char *)malloc(strlen("Error opening file %s errno = %d") + strlen(argv[2]) + sizeof(errno));
             sprintf(err, "Error opening file %s errno = %d", argv[2], errno);
             printerr(err, err_title);
-            free(err);
-            free(err_title);
             _exit(EXIT_FAILURE);
         }
 
@@ -52,8 +56,6 @@ int main(int argc, char *argv[])
                 err = (char *)malloc(strlen("Error in writing data to %s") + strlen(argv[2]));
                 sprintf(err, "Error in writing data to %s", argv[2]);
                 printerr(err, err_title);
-                free(err);
-                free(err_title);
                 _exit(EXIT_FAILURE);
             }
 

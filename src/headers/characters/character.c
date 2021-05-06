@@ -1,5 +1,8 @@
 #include "character.h"
 
+#include "../libstring/libstring.h"
+#include <stdlib.h>
+
 void create_player(player *p, char *name)
 {
     p->name = (char*)malloc(strlen(name));

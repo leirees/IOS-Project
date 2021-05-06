@@ -8,8 +8,11 @@
  * @copyright Copyright (c) 2021
  */
 
-#include "headers/help.h"
 #include "headers/characters/character.h"
+#include "headers/libstring/libstring.h"
+
+#include <stdlib.h>
+#include <unistd.h>
 
 void _help()
 {
@@ -50,8 +53,6 @@ void _help()
 	// EXIT
 	println(bold("exit :"));
 	println("\tTo save your progress and exit the game.");
-
-	free(jasmine);
 }
 
 int main(int argc, const char *argv[])
@@ -66,16 +67,10 @@ int main(int argc, const char *argv[])
 		// Bad witch in action, oh yeah.
 		speak_character(ofelia, "Look at the manual, you little useless piece of garbage!");
 
-		free(ofelia);
-		free(err_title);
-
 		_exit(EXIT_FAILURE);
 	}
 
 	// If there is only ARGUMENT, that is, if only "help" is written.
-	free(ofelia);
-	free(err_title);
-
 	_help();
 	_exit(EXIT_SUCCESS);
 }

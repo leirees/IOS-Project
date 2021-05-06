@@ -8,94 +8,108 @@
  * @copyright Copyright (c) 2021
  */
 
-#include "headers/shell.h"
+// CD command.
+#include "headers/cd.h"
+// Exit command.
+#include "headers/exit.h"
+// Menus.
+#include "headers/menu.h"
+// Signal handler.
+#include "headers/signal_handler.h"
+// Characters list.
 #include "headers/characters/character.h"
+// Mod. libstring.h
+#include "headers/libstring/libstring.h"
+#include "headers/clear.h"
+
+#include <sys/wait.h>
+#include <dirent.h>
+#include <signal.h>
+#include <errno.h>
+#include <stdlib.h>
+#include <stdio.h>
+#include <unistd.h>
+
+// Number of commands in the main path.
+#define NUMCOMMANDS 13
+// Prompt name.
+#define PROMPT_NAME "GlindOS"
+
+#define MAXLINE 200
+#define MAXARGS 20
+
+/* KEYBOARD */
+// Keyboard letters.
+#define I_KEY 73
+#define K_KEY 75
+
+// Lowecase code ASCII gap.
+#define LOWERCASE 22
+
+// Arrow keys.
+#define UP_ARROW 65
+#define DOWN_ARROW 66
+#define RIGHT_ARROW 67
+#define LEFT_ARROW 68
+
+#define ENTER_KEY 10
+
+/**
+ * New status of the game.
+ */
+#define CONFIG_TERM -1
+#define INIT_MENU 0
+#define CHOOSE_MENU_OPTIONS 1
+#define GAME_RUNNING 2
+#define SHOW_SCORES 3
+#define GAME_OVER_EXIT 4
+#define GAME_OVER 5
+
+/* GLOBAL VARIABLES */
+static int state;
+static int last_state;
+
+// Root dir
+static char *root_dir;
+
+// PID.
+static pid_t parent_pid;
+static pid_t child_pid;
 
 // Character's definition.
 // Main character
-player dorothy;
+static player dorothy;
 
-character scarecrown;
-character tinman;
-character lion;
+static character scarecrown;
+static character tinman;
+static character lion;
 
-character_with_title glinda;
-character_with_title ofelia;
+static character_with_title glinda;
+static character_with_title ofelia;
 
 // Secondary character
-character admin;
-character dog;
+static character admin;
+static character dog;
 
-character_with_title gertrudis;
-character_with_title jasmine;
+static character_with_title gertrudis;
+static character_with_title jasmine;
 
 // Extras
-character trees;
-character guardian;
-character ghost;
+static character trees;
+static character guardian;
+static character ghost;
 
-// State...
-static int8 status;
-static int8 last_state;
-
-void setup_signals()
-{
-   signal(SIGINT, signal_handler);
-   signal(SIGTSTP, signal_handler);
-}
-
-void setup_game()
-{
-   // Root dir
-   root_dir = getcwd((char *)NULL, 0);
-
-   // PID
-   parent_pid = getpid();
-   child_pid = -1;
-
-   /* Characters creation */
-   // Companion creation
-   char *scarecrown_name = SCARECROWN;
-   char *tinman_name = TINMAN;
-   char *lion_name = LION;
-
-   create_character(&scarecrown, scarecrown_name, false, false, true);
-   create_character(&lion, lion_name, false, false, true);
-   create_character(&tinman, tinman_name, false, false, true);
-
-   // Witches creation
-   char *short_title_glinda = SHORT_GLINDA;
-   char *short_title_ofelia = SHORT_OFELIA;
-   char *short_title_gertrudis = SHORT_GERTRUDIS;
-   char *short_title_jasmine = SHORT_JASMINE;
-   char *title_glinda = GLINDA;
-   char *title_ofelia = OFELIA;
-   char *title_gertrudis = GERTRUDIS;
-   char *title_jasmine = JASMINE;
-
-   create_witch(&glinda, "Glinda", short_title_glinda, title_glinda, false);
-   create_witch(&ofelia, "Ofelia", short_title_ofelia, title_ofelia, true);
-   create_witch(&gertrudis, "Gertrudis", short_title_gertrudis, title_gertrudis, true);
-   create_witch(&jasmine, "Jasmine", short_title_jasmine, title_jasmine, false);
-
-   // Secondary characters
-   char *admin_name = ADMIN;
-   create_character(&admin, admin_name, true, false, false);
-
-   char *dog_name = DOG;
-   create_character(&dog, dog_name, false, false, false);
-
-   // Extras
-   char *trees_name = TREES;
-   char *ghost_name = GHOST;
-   char *guardian_name = GUARDIAN;
-
-   create_character(&trees, trees_name, false, false, false);
-   create_character(&ghost, ghost_name, true, false, false);
-   create_character(&guardian, guardian_name, false, false, false);
-}
-
-int read_args(int16 *argcp, char *args[], int max, bool *eofp)
+/**
+ * @brief Read all the entries in a line of written code, for shell.
+ * For reading commands.
+ * 
+ * @param argcp 
+ * @param args 
+ * @param max 
+ * @param eofp 
+ * @return int 
+ */
+int read_args(int *argcp, char *args[], int max, int *eofp)
 {
    char cmd[MAXLINE];
    char *cmdp;
@@ -169,6 +183,13 @@ int read_args(int16 *argcp, char *args[], int max, bool *eofp)
    return EXIT_FAILURE;
 }
 
+/**
+ * @brief Execute a process, given a command and its arguments.
+ * 
+ * @param argc Argument counter: the number of arguments that are passed (int, >= 1).
+ * @param argv Argument vector: the arguments that are passed (char*, len(char*) >= 1)
+ * @return int -1 if error creating the process, 1 if error while executing the process or 0 if ok.
+ */
 int execute(int argc, char *argv[])
 {
    child_pid = fork();
@@ -181,104 +202,15 @@ int execute(int argc, char *argv[])
 
    case 0:
       // Child process
+      signal(SIGINT, signint_child);
       execvp(argv[0], argv);
       break;
 
    default:
       // Parent process.
       wait(NULL);
+      signal(SIGINT, signint_parent);
       break;
-   }
-
-   return EXIT_SUCCESS;
-}
-
-int shell()
-{
-   char *err_title = THE_SYSTEM;
-   char *game_dir = concat(root_dir, "/config/.gamedir");
-   char *prompt = concat(concat(ANSI_COLOR_BLUE, concat(PROMPT_NAME, ANSI_COLOR_RESET)), concat(concat("[", concat(game_dir, "]")), "$"));
-
-   // Change the official dir to the root dir.
-   // chdir((const char *)root);
-   char *args[MAXARGS];
-   int16 argc;
-   bool eof;
-
-   u8 command;
-
-   while (1)
-   {
-      // Print the prompt on screen.
-      print(prompt);
-
-      if (read_args(&argc, args, MAXARGS, &eof) && argc > 0)
-      {
-         DIR *path = opendir(concat(root_dir, "/bin"));
-
-         if (!path)
-         {
-            if (errno == ENOENT)
-            {
-               printerr("Oh, oh... NO root dir!", err_title);
-            }
-            else
-            {
-               printerr("Oh, oh... cannot open root dir!", err_title);
-            }
-         }
-
-         struct dirent *cmd;
-
-         while ((cmd = readdir(path)) != NULL)
-         {
-            if (!strncmp(cmd->d_name, args[0], 20))
-            {
-               args[0] = concat("/bin/", args[0]);
-               status = execute(argc, args);
-               break;
-            }
-         }
-
-         closedir(path);
-
-         if (!strcmp(args[0], "cd"))
-         {
-            if (argc == 2)
-            {
-               // CD command, to some place.
-               cd(args[1]);
-               game_dir = getcwd((char *)NULL, 0);
-            }
-            else if (argc == 1)
-            {
-               // Else, go to the game root dir.
-               cd(root_dir);
-               game_dir = concat(root_dir, "/config/.gamedir");
-            }
-            else
-            {
-               printerr("Oh, oh... CD not OK!", err_title);
-            }
-         }
-         else if (!strcmp(args[0], "exit"))
-         {
-            // EXIT command.
-            last_state = state;
-            state = GAME_OVER_EXIT;
-         }
-
-         // Check commands from outside the path.
-         if (!strncmp("./", args[0], 2))
-         {
-            status = execute(argc, args);
-         }
-      }
-
-      if (eof)
-      {
-         return EXIT_FAILURE;
-      }
    }
 
    return EXIT_SUCCESS;
@@ -286,12 +218,28 @@ int shell()
 
 int main()
 {
-   // Setup System Agent: the one that provides its body as the work in which we work.
-   u8 option;
+   char *err_title = THE_SYSTEM;
+   char *game_dir = "$HOME";
+   char *prompt;
+
+   // Change the official dir to the root dir.
+   // chdir((const char *)root);
+   char *args[MAXARGS];
+   int argc;
+   int eof;
+
+   DIR *path;
+   struct dirent *cmd;
+
+   short command;
+
+   int status;
+   short option;
 
    // Setup signals
    print("Setting up signals...");
-   setup_signals();
+   signal(SIGINT, signint_parent);
+   signal(SIGTSTP, signstp);
    print("OK\n");
 
    // 1. Set game state to configuration state, and deal with signal handling.
@@ -304,23 +252,69 @@ int main()
       case CONFIG_TERM:
          // Setup game and change state.
          println("Setting the game up...");
-         setup_game();
+
+         // Root dir
+         root_dir = getcwd((char *)NULL, 0);
+
+         // PID
+         parent_pid = getpid();
+         child_pid = -1;
+
+         /* Characters creation */
+         // Companion creation
+         char *scarecrown_name = SCARECROWN;
+         char *tinman_name = TINMAN;
+         char *lion_name = LION;
+
+         create_character(&scarecrown, scarecrown_name, 0, 0, 1);
+         create_character(&lion, lion_name, 0, 0, 1);
+         create_character(&tinman, tinman_name, 0, 0, 1);
+
+         // Witches creation
+         char *short_title_glinda = SHORT_GLINDA;
+         char *short_title_ofelia = SHORT_OFELIA;
+         char *short_title_gertrudis = SHORT_GERTRUDIS;
+         char *short_title_jasmine = SHORT_JASMINE;
+         char *title_glinda = GLINDA;
+         char *title_ofelia = OFELIA;
+         char *title_gertrudis = GERTRUDIS;
+         char *title_jasmine = JASMINE;
+
+         create_witch(&glinda, "Glinda", short_title_glinda, title_glinda, 0);
+         create_witch(&ofelia, "Ofelia", short_title_ofelia, title_ofelia, 1);
+         create_witch(&gertrudis, "Gertrudis", short_title_gertrudis, title_gertrudis, 1);
+         create_witch(&jasmine, "Jasmine", short_title_jasmine, title_jasmine, 0);
+
+         // Secondary characters
+         char *admin_name = ADMIN;
+         create_character(&admin, admin_name, 1, 0, 0);
+
+         char *dog_name = DOG;
+         create_character(&dog, dog_name, 0, 0, 0);
+
+         // Extras
+         char *trees_name = TREES;
+         char *ghost_name = GHOST;
+         char *guardian_name = GUARDIAN;
+
+         create_character(&trees, trees_name, 0, 0, 0);
+         create_character(&ghost, ghost_name, 1, 0, 0);
+         create_character(&guardian, guardian_name, 0, 0, 0);
+
          last_state = state;
          println("OK\n");
 
          state = INIT_MENU;
+
+         println("Initialising game menu. OK");
+         println("Press enter to continue...");
+
+         scanf("%c", NULL);
+
          break;
 
       case INIT_MENU:
          // Initial menu: if ENTER_KEY pressed, go to CHOOSE_MENU_OPTIONS.
-         println("Initialising game menu. OK");
-         println("Press enter to continue...");
-
-         do
-         {
-
-         } while (getchar() != ENTER_KEY);
-
          do
          {
             print_menu();
@@ -363,7 +357,92 @@ int main()
          break;
 
       case GAME_RUNNING:
-         shell();
+         prompt = concat(concat(ANSI_COLOR_BLUE, concat(PROMPT_NAME, ANSI_COLOR_RESET)), concat(concat("[", concat(game_dir, "]")), "$"));
+
+         while (1)
+         {
+            // Print the prompt on screen.
+            print(prompt);
+
+            if (read_args(&argc, args, MAXARGS, &eof) && argc > 0)
+            {
+               path = opendir(concat(root_dir, "/bin"));
+
+               if (!path)
+               {
+                  if (errno == ENOENT)
+                  {
+                     printerr("Oh, oh... NO root dir!", err_title);
+                  }
+                  else
+                  {
+                     printerr("Oh, oh... cannot open root dir!", err_title);
+                  }
+               }
+
+               while ((cmd = readdir(path)) != NULL)
+               {
+                  if (!strncmp(cmd->d_name, args[0], 20))
+                  {
+                     args[0] = concat("/bin/", args[0]);
+                     status = execute(argc, args);
+                     break;
+                  }
+               }
+
+               closedir(path);
+
+               if (!strcmp(args[0], "cd"))
+               {
+                  if (argc == 2)
+                  {
+                     // CD command, to some place.
+                     if (cd(args[1]) != -1)
+                     {
+                        if (!strcmp(args[1], "~") || !strcmp(args[1], "$HOME") || !strcmp(args[1], "village"))
+                        {
+                           game_dir = "$HOME";
+                        }
+                        else
+                        {
+                           game_dir = concat(game_dir, args[1]);
+                        }
+                     }
+                     else
+                     {
+                        printerr("Not POSSIBLE TO MOVE", err_title);
+                     }
+                  }
+                  else if (argc == 1)
+                  {
+                     // Else, go to the game root dir.
+                     cd(root_dir);
+                     game_dir = "$HOME";
+                  }
+                  else
+                  {
+                     printerr("Oh, oh... CD not OK!", err_title);
+                  }
+               }
+               else if (!strcmp(args[0], "exit"))
+               {
+                  // EXIT command.
+                  last_state = state;
+                  state = GAME_OVER_EXIT;
+               }
+
+               // Check commands from outside the path.
+               if (!strncmp("./", args[0], 2))
+               {
+                  status = execute(argc, args);
+               }
+            }
+
+            if (eof)
+            {
+               return EXIT_FAILURE;
+            }
+               }
          break;
 
       case GAME_OVER_EXIT:
@@ -384,7 +463,7 @@ int main()
          }
          break;
       }
-   } while (true);
+   } while (1);
 
    return 0;
 }

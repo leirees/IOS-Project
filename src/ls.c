@@ -7,9 +7,28 @@
  * 
  * @copyright Copyright (c) 2021
  */
-#include "headers/ls.h"
-#include "headers/characters/character.h"
 
+#include "headers/characters/character.h"
+#include "headers/libstring/libstring.h"
+
+//Used for handling directory files
+#include <dirent.h>
+//For stat system call for file attributes
+#include <sys/stat.h>
+// Error control
+#include <errno.h>
+// Stdlib
+#include <stdlib.h>
+#include <unistd.h>
+#include <stdio.h>
+
+/**
+ * @brief List directory.
+ * 
+ * @param dir The directory 'to list'.
+ * @param op_a -a option selected.
+ * @param op_l -l option selected.
+ */
 void _ls(const char *dir, int op_a, int op_l)
 {
 	char *err_title = THE_SYSTEM;
@@ -79,37 +98,22 @@ void _ls(const char *dir, int op_a, int op_l)
 			// Stat syscall, in order to get additional info about a file.
 			stat(d->d_name, &sfile);
 
-			//Accessing st_size (of stat struct) --> Size
-			// printf("Size: %ld", sfile.st_size);
-			// //Accessing st_uid (of stat struct) --> User ID
-			// printf("\n  User ID: %d", sfile.st_uid);
-			// //Accessing st_mode (of stat struct) --> Permissions
-			// printf("\n  File Permissions User: ");
-			// printf((sfile.st_mode & S_IRUSR) ? "r" : "-");
-			// printf((sfile.st_mode & S_IWUSR) ? "w" : "-");
-			// printf((sfile.st_mode & S_IXUSR) ? "x" : "-");
-			// printf("\n");
-
 			/* Properties of the file */
 			// Accessing st_size --> Size.
 			sprintf(size, "Size: %ld", sfile.st_size);
 			println(size);
+
 			// Accessing st_uid  --> User ID.
 			sprintf(uid, "User ID: %d", sfile.st_uid);
 			println(uid);
+
 			// Accessing st_mode --> Permissions.
 			println("User file permissions: ");
-			print("\t");
-			print((sfile.st_mode & S_IRUSR) ? "r" : "-");
-			print((sfile.st_mode & S_IWUSR) ? "w" : "-");
-			print((sfile.st_mode & S_IXUSR) ? "x" : "-");
-			print("\n");
+			println((sfile.st_mode & S_IRUSR) ? "You can see whats appening there!" : "Get out of there!!!");
+			println((sfile.st_mode & S_IWUSR) ? "You can call the door!" : "You CANNOT call the door, very shy :)");
+			println((sfile.st_mode & S_IXUSR) ? "You can enter!!!" : "You CANNOT enter");
 		}
 	}
-
-	free(err_title);
-	free(size);
-	free(uid);
 }
 
 int main(int argc, const char *argv[])
@@ -179,6 +183,5 @@ int main(int argc, const char *argv[])
 		}
 	}
 
-	free(err_title);
 	_exit(EXIT_SUCCESS);
 }

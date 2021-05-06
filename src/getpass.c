@@ -10,7 +10,12 @@
  * @copyright Copyright (c) 2021
  */
 
-#include "headers/getpass.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+
+#include <sys/types.h>
+#include <sys/wait.h>
 
 void docommand()
 {

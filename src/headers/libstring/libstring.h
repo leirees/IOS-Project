@@ -8,10 +8,7 @@
  * @copyright Copyright (c) 2021
  */
 
-#include <stdio.h>
-#include <stdlib.h>
 #include <string.h>
-#include <unistd.h>
 
 // COLORS in ANSI, for Terminal coloring
 #define ANSI_COLOR_RED "\x1b[31m"

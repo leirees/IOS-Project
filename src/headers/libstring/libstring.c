@@ -9,6 +9,8 @@
  */
 
 #include "libstring.h"
+#include <stdlib.h>
+#include <unistd.h>
 
 char *concat(char *str1, char *str2)
 {
@@ -33,36 +35,57 @@ char *concat(char *str1, char *str2)
 
 void print(char *str)
 {
-    char *result = concat(str, ANSI_COLOR_RESET);
+    char *result;
+
+    if (str[strlen(str) - 1] != ANSI_COLOR_RESET)
+    {
+        result = concat(str, ANSI_COLOR_RESET);
+    }
+    else
+    {
+        result = str;
+    }
+
     ssize_t buff = write(1, result, strlen(result));
-    // free(result);
 }
 
 void println(char *str)
 {
-    char *result = concat(str, concat(ANSI_COLOR_RESET, "\n"));
-    ssize_t buff = write(1, result, strlen(result));
-    // free(result);
+    print(concat(str, "\n"));
 }
 
 void printerr(char *str, char *err_title)
 {
     char *result = concat(concat(concat(err_title, ": "), str), "\n");
     ssize_t buff = write(2, result, strlen(result));
-    // free(result);
 }
 
 char *bold(char *str)
 {
-    return concat(concat(BOLD, str), ANSI_COLOR_RESET);
+    if (str[strlen(str) - 1] != ANSI_COLOR_RESET)
+    {
+        return concat(concat(BOLD, str), ANSI_COLOR_RESET);
+    }
+
+    return concat(BOLD, str);
 }
 
 char *underlined(char *str)
 {
-    return concat(concat(UNDERLINE, str), ANSI_COLOR_RESET);
+    if (str[strlen(str) - 1] != ANSI_COLOR_RESET)
+    {
+        return concat(concat(UNDERLINE, str), ANSI_COLOR_RESET);
+    }
+
+    return concat(UNDERLINE, str);
 }
 
 char *reversed(char *str)
 {
-    return concat(concat(REVERSE, str), ANSI_COLOR_RESET);
+    if (str[strlen(str) - 1] != ANSI_COLOR_RESET)
+    {
+        return concat(concat(REVERSE, str), ANSI_COLOR_RESET);
+    }
+
+    return concat(REVERSE, str);
 }
