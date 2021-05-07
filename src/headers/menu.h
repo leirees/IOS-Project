@@ -13,9 +13,3 @@
 * @brief The menu screen!
 */
 void print_menu();
-
-/**
- * @brief The options menu!
- * 
- */
-void print_menu_options();

@@ -113,9 +113,14 @@ fi
 ############### COMMAND COMPILATION PROCESS ###############
 
 # COMPILE SHELL.
-if [[ $ALL == "true" || $last_vers != $vers || !(-s shell) || -n "$(git diff src/shell.c)" ]]; then
+if [[ $ALL == "true" || $last_vers != $vers || !(-s gsh) || -n "$(git diff src/shell.c)" ]]; then
+    echo "COMPILING SHELL"
+    gcc src/shell.c src/cd.c src/exit.c src/signal_handler.c src/clear.c src/menu.c src/headers/characters/character.c -o gsh -lstring
+fi
+
+if [[ $ALL == "true" || $last_vers != $vers || !(-s game) || -n "$(git diff src/game.c)" ]]; then
     echo "COMPILING GAME FILE"
-    gcc src/shell.c src/cd.c src/exit.c src/signal_handler.c src/clear.c src/menu.c src/headers/characters/character.c -o TheWizardOfOS -lstring
+    gcc src/game.c src/exit.c src/signal_handler.c src/clear.c src/menu.c src/cd.c src/headers/characters/character.c -o TWOS_Game -lstring
 fi
 
 if [[ $last_vers != $vers ]]; then

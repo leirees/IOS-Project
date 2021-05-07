@@ -42,11 +42,6 @@ int main(int argc, char *argv[])
          return 1;
       }
 
-      // Print title:
-      char *contents = (char *)malloc(strlen("The contents of the file %s are:") + strlen(argv[1]));
-      sprintf(contents, "The contents of the file %s are:", argv[1]);
-      println(bold(concat(ANSI_COLOR_MAGENTA, contents)));
-
       // Read while it has more lines, else, stop and close the file.
       do
       {

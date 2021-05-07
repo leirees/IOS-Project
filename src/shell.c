@@ -11,7 +11,6 @@
 #include "headers/libstring/libstring.h"
 #include "headers/cd.h"
 #include "headers/exit.h"
-#include "headers/menu.h"
 #include "headers/clear.h"
 #include "headers/signal_handler.h"
 
@@ -62,6 +61,7 @@ int read_args(int *argcp, char *args[], int max, int *eofp)
          break;
       }
    }
+
    switch (ret)
    {
    case 1:
@@ -154,6 +154,7 @@ int main()
    while (1)
    {
       current_dir = getcwd((char *)NULL, 0);
+
       prompt_name = (char *)malloc(strlen(Prompt) + strlen(current_dir) + 6);
       strcpy(prompt_name, Prompt);
       strcat(prompt_name, "[");
@@ -173,7 +174,22 @@ int main()
          }
          else if (!strcmp(args[0], "cd"))
          {
-            cd(args[1]);
+            if (argc == 1)
+            {
+               cd(game_dir);
+            }
+            else if (argc == 2)
+            {
+               if (strlen(args[1]) < strlen(game_dir) || strncmp(current_dir, args[1], strlen(current_dir))) {
+                  perror("That is not a valid cd instruction, player.");
+               } else {
+                  cd(args[1]);
+               }
+            }
+            else
+            {
+               perror("That is not a valid cd instruction, player.");
+            }
          }
          else if (!strcmp(args[0], "clear"))
          {
