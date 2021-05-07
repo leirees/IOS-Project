@@ -151,6 +151,8 @@ int main()
    // Set game_dir
    cd(game_dir);
 
+   int failed = 0;
+
    while (1)
    {
       current_dir = getcwd((char *)NULL, 0);
@@ -180,15 +182,20 @@ int main()
             }
             else if (argc == 2)
             {
-               if (strlen(args[1]) < strlen(game_dir) || strncmp(current_dir, args[1], strlen(current_dir))) {
+               if (strlen(args[1]) < strlen(game_dir) || strncmp(current_dir, args[1], strlen(current_dir)))
+               {
                   perror("That is not a valid cd instruction, player.");
-               } else {
+                  _exit(1);
+               }
+               else
+               {
                   cd(args[1]);
                }
             }
             else
             {
                perror("That is not a valid cd instruction, player.");
+               _exit(1);
             }
          }
          else if (!strcmp(args[0], "clear"))

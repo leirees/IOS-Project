@@ -81,40 +81,44 @@ int read_doc(char *filename)
 
 int execute(char *argv[])
 {
-   pid_t child_pid = fork();
+    int status;
+    pid_t child_pid = fork();
 
-   switch (child_pid)
-   {
-   case -1:
-      return 1;
-      break;
+    switch (child_pid)
+    {
+    case -1:
+        return 1;
 
-   case 0:
-      // Child process
-      execvp(argv[0], argv);
-      break;
+    case 0:
+        // Child process
+        execvp(argv[0], argv);
+        break;
 
-   default:
-      // Parent process.
-      wait(NULL);
-      break;
-   }
+    default:
+        // Parent process.
+        wait(&status);
+        return WIFEXITED(status) > 0 ? 1 : 0;
+    }
 
-   return 0;
+    return 0;
 }
 
 int main()
 {
+    char *glinda = GLINDA;
+    char *ofelia = OFELIA;
+    char *scarecrown = SCARECROWN;
+
     root_dir = getcwd((char *)NULL, 0);
     game_dir = concat(root_dir, "/config/.gamedir/village/");
     char *current_dir;
     char *args[200];
 
-    char *glinda = GLINDA;
-
     pid_t child_pid;
 
     state = MENU;
+
+    args[0] = concat(root_dir, "/gsh");
 
     while (1)
     {
@@ -128,7 +132,7 @@ int main()
         case MENU:
             clear_screen();
             print_menu();
-            write(0, "Press some key to START...", 27);
+            write(0, "Press ENTER to START...", 24);
             wait_until_enter();
             clear_screen();
 
@@ -138,24 +142,58 @@ int main()
             break;
 
         case VILLAGE:
+            clear_screen();
+            println(concat(ANSI_COLOR_YELLOW, bold("CHAPTER 1: <<VILLAGE>>")));
+            write(0, "Press enter to continue...\n", 28);
+            wait_until_enter();
+
             cd(game_dir);
             read_doc("village");
-
-            args[0] = concat(root_dir, "/gsh");
 
             speak_character(glinda, "I recommend you to ask for HELP in this new utility to my sisters!");
             speak_character(glinda, "We'll see in the grove, near someone who's speacial for me.");
             speak_character(glinda, "Remember the command <<exit>> in order to exit this game, honey :) Have FUN!");
-            
-            execute(args);
+
+            cd(root_dir);
+            fails += execute(args);
+            cd(game_dir);
+
+            if (fails == 1)
+            {
+                // TODO: read Ofelia's phrases from a file...
+                speak_character(ofelia, "As I suspect you are not good enough for this world. This is the first warning, be careful because Your little lovely Dog would die if you make another mistake.");
+            }
+            else
+            {
+                speak_character(glinda, "Oh! Good, did you have fun with those commands? I guess you had, my dear.");
+                speak_character(glinda, "But now its time to save OS from my sis.");
+                speak_character(glinda, "Quick! We don't so much time!");
+            }
+
+            println("");
+            write(0, "Press enter to continue...\n", 28);
+            wait_until_enter();
 
             state = GROVE;
 
             break;
 
         case GROVE:
+            clear_screen();
+            println(concat(ANSI_COLOR_YELLOW, bold("CHAPTER 2: <<THE GROVE>>")));
+            write(0, "Press enter to continue...\n", 28);
+            wait_until_enter();
+
             cd(concat(game_dir, "/grove/"));
             read_doc("grove");
+
+            speak_character(scarecrown, "I don't know where are we. Can you help us?");
+            speak_character(scarecrown, "I think you could use <<pwd>>. The Good Witch told me.");
+
+            cd(root_dir);
+            fails += execute(args);
+            cd(game_dir);
+
             break;
 
         case HAUNTED_HOUSE:
