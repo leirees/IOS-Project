@@ -29,7 +29,7 @@ int stee()
    ssize_t buff;
 
    // Try to open the file.
-   fd = open("hehe.txt", O_RDWR | O_CREAT, S_IWUSR | S_IRUSR | S_IRGRP | S_IROTH);
+   fd = open("name.c", O_RDWR | O_CREAT, S_IWUSR | S_IRUSR | S_IRGRP | S_IROTH);
 
    if (fd == -1)
    {
@@ -57,7 +57,7 @@ int main(int argc, char *argv[])
 {
    char *err_title = THE_SYSTEM;
 
-   if (argc != 1)
+   if (argc != 2)
    {
       printerr("Error! You don't even know how to write you name, you ape? OK, write <<stee \"your_name\">>", err_title);
       return EXIT_FAILURE;

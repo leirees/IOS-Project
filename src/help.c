@@ -46,7 +46,7 @@ void _help()
 	println("\tTo locate yourself in OS. Answer: <<Where Am I?>>");
 	// STEE
 	println(bold("stee :"));
-	println("\tTo edit a file. Take a pencil and change it as you wish!");
+	println("\tWhat's your name, darling?");
 	// TOUCH
 	println(bold("touch :"));
 	println("\tTo craft a new item, following a recipe.");
