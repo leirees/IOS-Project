@@ -182,15 +182,7 @@ int main()
             }
             else if (argc == 2)
             {
-               if (strlen(args[1]) < strlen(game_dir) || strncmp(current_dir, args[1], strlen(current_dir)))
-               {
-                  perror("That is not a valid cd instruction, player.");
-                  _exit(1);
-               }
-               else
-               {
-                  cd(args[1]);
-               }
+               cd(args[1]);
             }
             else
             {

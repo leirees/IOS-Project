@@ -14,22 +14,9 @@
 
 char *concat(char *str1, char *str2)
 {
-    size_t length_str1 = strlen(str1);
-    size_t length_str2 = strlen(str2);
-
-    int i;
-    char *r_string = (char *)malloc(length_str1 + length_str2);
-
-    for (i = 0; i < length_str1; i++)
-    {
-        r_string[i] = str1[i];
-    }
-
-    for (i = 0; i < length_str2; i++)
-    {
-        r_string[i + length_str1] = str2[i];
-    }
-
+    char *r_string = (char *)malloc(strlen(str1) + strlen(str2));
+    strcpy(r_string, str1);
+    strcat(r_string, str2);
     return r_string;
 }
 
